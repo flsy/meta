@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "lib": ["es6", "dom"],
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "lib",
+    "strict": true,
+    "removeComments": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
