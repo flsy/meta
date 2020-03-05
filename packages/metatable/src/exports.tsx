@@ -1,1 +1,1 @@
-export { default } from './components/MetaTable'
+export { default } from './components/MetaTable';
