@@ -25,6 +25,45 @@ const trains: IColumn[] = [
   { path: "persons", value: persons }
 ];
 
+const Person = objectType({
+  name: "Person",
+  definition: (t) => {
+    t.int("id");
+    t.string("firstName");
+    t.string("lastName");
+    t.int("age", { nullable: true });
+    t.boolean("isArchived", { nullable: true });
+    t.field("trains", { type: Train, list: true, nullable: true });
+  },
+});
+
+const Train = objectType({
+  name: "Train",
+  definition: (t) => {
+    t.int("id");
+    t.int("number");
+    t.field("persons", { type: Person, list: true, nullable: true });
+  },
+});
+
+const trainsQuery = (type, args) => ({
+  type,
+  nullable: true,
+  args,
+  resolve: async (parent: TrainEntity, args: IPaginatorArguments<TrainEntity>, { database }) => {
+    return toPaginatedResponse(database.getRepository(TrainEntity), args, ["persons"])
+  },
+});
+
+const personsQuery = (type, args) => ({
+  type,
+  args,
+  nullable: true,
+  resolve: async (parent: PersonEntity, args: IPaginatorArguments<PersonEntity>, { database }) => {
+    return toPaginatedResponse(database.getRepository(PersonEntity), args, ["trains"]);
+  },
+});
+
 const person = metatable(Person, "PersonListPaginated", persons);
 const train = metatable(Train, "TrainListPaginated", trains);
 
@@ -35,5 +74,4 @@ const Query = objectType({
     t.field("trains", trainsQuery(train.type, train.args));
   },
 });
-
 ```
