@@ -17,12 +17,12 @@
   "dependencies": {
     "@nexus/schema": "^0.15.0",
     "graphql": "^15.3.0",
-    "metafilters": "^0.0.4",
     "typescript": "^4.0.2"
   },
   "devDependencies": {
     "apollo-server": "^2.17.0",
     "sqlite3": "^5.0.0",
+    "metafilters": "^0.0.4",
     "typeorm": "^0.2.26"
   }
 }

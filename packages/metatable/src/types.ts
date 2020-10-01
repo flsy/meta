@@ -1,4 +1,6 @@
 import { enumType, objectType, inputObjectType } from "@nexus/schema";
+import { IColumnClassic } from './interfaces';
+import { getOperators } from './metatable';
 
 export const Sort = enumType({
   name: "Sort",
@@ -67,8 +69,8 @@ export const Column = objectType({
     t.string("name");
     t.string("label", { nullable: true });
     t.string("path", { nullable: true });
-    t.string("sortOptions", { nullable: true, list: [false] });
-    t.string("filterOperators", { nullable: true, list: [false] });
+    t.string("sortOptions", { nullable: true, list: [false], resolve: (column: IColumnClassic) => column.isSortable ? ['ASC', 'DESC', null]: [] });
+    t.string("filterOperators", { nullable: true, list: [false], resolve: (column: IColumnClassic) => column.isFilterable ? getOperators(column) : [] });
   },
 });
 

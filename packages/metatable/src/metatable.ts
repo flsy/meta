@@ -5,7 +5,7 @@ import { NexusObjectTypeDef } from '@nexus/schema/dist/definitions/objectType';
 
 const isNestedColumn = (column: IColumn): column is IColumnNested => !!column.path
 
-const getOperators = (column: IColumnClassic): Array<string | null> => {
+export const getOperators = (column: IColumnClassic): Array<string | null> => {
   switch (column.type) {
     case 'string':
       return ["EQ", "LIKE", null]
@@ -70,8 +70,6 @@ const toClassicColumns = (columns: IColumn[] = []): IColumnClassic[] =>
 
 
 export const metatable =<TypeName extends string>(type: NexusObjectTypeDef<TypeName>, name: string, columns: IColumn[]) => {
-  const classicColumns = toClassicColumns(columns);
-
   return {
     args: {
       limit: intArg(),
@@ -83,15 +81,7 @@ export const metatable =<TypeName extends string>(type: NexusObjectTypeDef<TypeN
       name,
       definition: (t) => {
         t.field("nodes", { type, list: [false], nullable: true });
-        t.field("columns", { type: Column, list: [false], resolve: () =>
-            classicColumns.map(column => {
-              return {
-                ...column,
-                sortOptions: column.isSortable ? ['ASC', 'DESC', null]: [],
-                filterOperators: column.isFilterable ? getOperators(column) : [],
-              }
-            })
-        });
+        t.field("columns", { type: Column, list: [false], resolve: () => toClassicColumns(columns) });
         t.string("cursor", { nullable: true });
         t.int("count");
       },
