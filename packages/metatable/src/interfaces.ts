@@ -1,12 +1,8 @@
-export type IColumnNested = { path: string, value: IColumn[] };
-
-export type IColumnClassic = {
+export type IColumn = {
   type: "string" | "number" | "boolean";
-  name: string;
+  path: string[];
   label?: string;
-  path?: string;
+  key?: boolean;
   isSortable?: boolean;
   isFilterable?: boolean;
 };
-
-export type IColumn = IColumnClassic | IColumnNested

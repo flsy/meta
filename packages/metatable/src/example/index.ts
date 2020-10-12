@@ -6,27 +6,26 @@ import { Train, trainsQuery } from './trains';
 import { PersonEntity, TrainEntity } from './entities';
 import { IColumn } from '../interfaces';
 import { metatable } from '../metatable';
+import * as path from 'path';
+
 
 const persons: IColumn[] = [
-  { type: "string", name: "lastName", label: 'Last name', isSortable: true, isFilterable: true },
-  { type: "string", name: "firstName",label: 'First name', isSortable: true, isFilterable: true },
-  { type: "number", name: "age", label: 'Age', isSortable: true, isFilterable: true },
-  { type: "boolean", name: "isArchived", label: 'Is archived', isSortable: true, isFilterable: true },
-  { path: 'trains', value: [
-      { type: "number", name: "id" },
-      { type: "number", name: "number", label: 'number', isSortable: true, isFilterable: true },
-    ]
-  }
+  { type: "number", path: ["id"], label: 'ID', key: true, isSortable: true, isFilterable: true },
+  { type: "string", path: ["lastName"], label: 'Last name', isSortable: true, isFilterable: true },
+  { type: "string", path: ["firstName"],label: 'First name', isSortable: true, isFilterable: true },
+  { type: "number", path: ["age"], label: 'Age', isSortable: true, isFilterable: true },
+  { type: "boolean", path: ["isArchived"], label: 'Is archived', isSortable: true, isFilterable: true },
+  { type: "number", path: ["train", "number"], label: 'Train number', isSortable: true, isFilterable: true },
+  { type: "number", path: ["train", "id"], label: 'Train id', isSortable: true, isFilterable: true },
 ]
 
 const trains: IColumn[] = [
-  { type: "number", name: "id" },
-  { type: "number", name: "number", label: 'number', isSortable: true, isFilterable: true },
-  { path: "persons", value: persons }
+  { type: "number", path: ["id"], key: true },
+  { type: "number", path: ["number"], label: 'Number', isSortable: true, isFilterable: true },
 ];
 
-const person = metatable(Person, "PersonListPaginated", persons);
-const train = metatable(Train, "TrainListPaginated", trains);
+const person = metatable(Person, "PersonList", persons);
+const train = metatable(Train, "TrainList", trains);
 
 const Query = objectType({
   name: "Query",
@@ -75,9 +74,7 @@ const seed = async (database: Connection) => {
   train3.number = 850;
   train3.persons = Promise.resolve([result[0], result[1], result[2], result[3]]);
 
-  await database.getRepository(TrainEntity).save(train1);
-  await database.getRepository(TrainEntity).save(train2);
-  await database.getRepository(TrainEntity).save(train3);
+  await database.getRepository(TrainEntity).save([train1, train2, train3]);
 };
 
 const getConnection = async () =>
@@ -95,9 +92,15 @@ const main = async () => {
   await seed(database);
 
   new ApolloServer({
+    cors: {
+      origin: '*',
+      credentials: true
+    },
     schema: makeSchema({
       types: [Query],
-      outputs: false,
+      outputs: {
+        schema: path.join(__dirname, '../../schema.graphql'),
+      },
     }),
     context: () => ({
       database,

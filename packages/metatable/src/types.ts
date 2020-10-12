@@ -1,5 +1,5 @@
 import { enumType, objectType, inputObjectType } from "@nexus/schema";
-import { IColumnClassic } from './interfaces';
+import { IColumn } from './interfaces';
 import { getOperators } from './metatable';
 
 export const Sort = enumType({
@@ -66,11 +66,25 @@ export const Column = objectType({
   name: "Column",
   definition: (t) => {
     t.field("type", { type: ColumnType });
-    t.string("name");
+    t.string("path", { list: true });
+    t.boolean("key", { nullable: true });
     t.string("label", { nullable: true });
-    t.string("path", { nullable: true });
-    t.string("sortOptions", { nullable: true, list: [false], resolve: (column: IColumnClassic) => column.isSortable ? ['ASC', 'DESC', null]: [] });
-    t.string("filterOperators", { nullable: true, list: [false], resolve: (column: IColumnClassic) => column.isFilterable ? getOperators(column) : [] });
+    t.boolean("isFiltered", { nullable: true });
+    t.field("sorted", { nullable: true, type: Sort });
+    t.string("sortOptions", { nullable: true, list: [false], resolve: (column: IColumn) => column.isSortable ? ['ASC', 'DESC', null]: [] });
+    t.string("filterOperators", { nullable: true, list: [false], resolve: (column: IColumn) => column.isFilterable ? getOperators(column) : [] });
   },
 });
+
+
+// todo:
+//   - isFiltered: true,
+//   - sorted: 'ASC',
+//   - filterForm: {
+//      name: {
+//        type: 'number',
+//      },
+//      submit: {
+//        type: 'submit',
+//      },
 

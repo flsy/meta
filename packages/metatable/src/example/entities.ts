@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
 import { Nullable } from "./interfaces";
 
 @Entity()
@@ -18,8 +18,8 @@ export class PersonEntity {
   @Column("boolean", { nullable: true })
   isArchived?: Nullable<boolean>;
 
-  @ManyToMany(() => TrainEntity, (train) => train.persons, { nullable: true, lazy: true })
-  trains?: Promise<TrainEntity[]>;
+  @ManyToOne(() => TrainEntity, (train) => train.persons, { nullable: true, lazy: true })
+  train?: Promise<TrainEntity>;
 }
 
 // tslint:disable-next-line:max-classes-per-file
@@ -31,7 +31,6 @@ export class TrainEntity {
   @Column({ type: "int" })
   number!: number;
 
-  @ManyToMany(() => PersonEntity, (person) => person.trains, { lazy: true })
-  @JoinTable()
+  @OneToMany(() => PersonEntity, (person) => person.train, { lazy: true })
   persons?: Promise<PersonEntity[]>;
 }

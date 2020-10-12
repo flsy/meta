@@ -12,7 +12,7 @@ export const Person = objectType({
     t.string("lastName");
     t.int("age", { nullable: true });
     t.boolean("isArchived", { nullable: true });
-    t.field("trains", { type: Train, list: true, nullable: true });
+    t.field("train", { type: Train, nullable: true });
   },
 });
 
@@ -21,7 +21,7 @@ export const personsQuery = (type: any, args: any) => ({
   args,
   nullable: true,
   resolve: async (parent: PersonEntity, args: IPaginatorArguments<PersonEntity>, { database }: any) => {
-    return toPaginatedResponse(database.getRepository(PersonEntity), args, ["trains"]);
+    return toPaginatedResponse(database.getRepository(PersonEntity), args, ["train"]);
   },
 });
 
