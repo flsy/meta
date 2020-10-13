@@ -42,7 +42,7 @@ const contacts = {
     type: 'number',
     label: 'Id',
     key: true,
-    filterForm:{
+    filterForm: {
       id: {
         type: 'number',
         label: 'Filter by Id',
@@ -57,7 +57,7 @@ const contacts = {
     type: 'string',
     label: 'First name',
     filterForm: {
-      firstName :{
+      firstName: {
         type: 'string',
         label: 'Filter by first name'
       },
@@ -79,7 +79,7 @@ const Query = objectType({
       type,
       args,
       nullable: true,
-      resolve: async (parent: ContactEntity, args: IPaginatorArguments<ContactEntity>) =>
+      resolve: async (parent, args: IPaginatorArguments<ContactEntity>) =>
         toPaginatedResponse(database.getRepository(ContactEntity), args)
     });
   },
