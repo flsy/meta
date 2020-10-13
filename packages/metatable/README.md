@@ -3,75 +3,86 @@
 `npm i metatable --save`
 
 
+# development
+
+you can fire up local graphQL server with test data by running `yarn dev` and visit playground on [http://localhost:4000/](http://localhost:4000/).
+
 # usage
+
+Complete example is covered in this test file [simple.spec.ts](src/__tests__/simple.spec.ts).
 
 ```typescript
 import { objectType } from '@nexus/schema';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { metatable } from 'metatable';
 import { toPaginatedResponse, IPaginatorArguments } from 'metafilters';
-import metatable, { IColumn } from 'metatable';
 
+// Define Entity
+@Entity()
+class ContactEntity {
+  @PrimaryGeneratedColumn()
+  id!: number;
 
-const persons: IColumn[] = [
-  { type: "string", name: "lastName", label: 'Last name', isSortable: true, isFilterable: true },
-  { type: "string", name: "firstName",label: 'First name', isSortable: true, isFilterable: true },
-  { type: "number", name: "age", label: 'Age', isSortable: true, isFilterable: true },
-  { type: "boolean", name: "isArchived", label: 'Is archived', isSortable: true, isFilterable: true },
-  { path: 'trains', value: trains }
-]
+  @Column({ nullable: true })
+  firstName?: string;
+}
 
-const trains: IColumn[] = [
-  { type: "number", name: "id" },
-  { type: "number", name: "number", label: 'number', isSortable: true, isFilterable: true },
-  { path: "persons", value: persons }
-];
-
-const Person = objectType({
-  name: "Person",
+// Define GraphQL object
+const Contact = objectType({
+  name: "Contact",
   definition: (t) => {
     t.int("id");
     t.string("firstName");
-    t.string("lastName");
-    t.int("age", { nullable: true });
-    t.boolean("isArchived", { nullable: true });
-    t.field("trains", { type: Train, list: true, nullable: true });
   },
 });
 
-const Train = objectType({
-  name: "Train",
-  definition: (t) => {
-    t.int("id");
-    t.int("number");
-    t.field("persons", { type: Person, list: true, nullable: true });
+// Define table structure
+const contacts = {
+  id: {
+    type: 'number',
+    label: 'Id',
+    key: true,
+    filterForm:{
+      id: {
+        type: 'number',
+        label: 'Filter by Id',
+      },
+      submit: {
+        type: 'submit',
+        label: 'Filter'
+      }
+    }
   },
-});
+  firstName: {
+    type: 'string',
+    label: 'First name',
+    filterForm: {
+      firstName :{
+        type: 'string',
+        label: 'Filter by first name'
+      },
+      submit: {
+        type: 'submit',
+        label: 'Filter'
+      }
+    }
+  }
+};
 
-const trainsQuery = (type, args) => ({
-  type,
-  nullable: true,
-  args,
-  resolve: async (parent: TrainEntity, args: IPaginatorArguments<TrainEntity>, { database }) => {
-    return toPaginatedResponse(database.getRepository(TrainEntity), args, ["persons"])
-  },
-});
-
-const personsQuery = (type, args) => ({
-  type,
-  args,
-  nullable: true,
-  resolve: async (parent: PersonEntity, args: IPaginatorArguments<PersonEntity>, { database }) => {
-    return toPaginatedResponse(database.getRepository(PersonEntity), args, ["trains"]);
-  },
-});
-
-const person = metatable(Person, "PersonListPaginated", persons);
-const train = metatable(Train, "TrainListPaginated", trains);
-
+// and you're ready to integrate it into graphQL schema
 const Query = objectType({
   name: "Query",
   definition: (t) => {
-    t.field("persons", personsQuery(person.type, person.args));
-    t.field("trains", trainsQuery(train.type, train.args));
+    const { type, args } = metatable(Contact, "ContactsList", contacts);
+
+    t.field("contacts", {
+      type,
+      args,
+      nullable: true,
+      resolve: async (parent: ContactEntity, args: IPaginatorArguments<ContactEntity>) =>
+        toPaginatedResponse(database.getRepository(ContactEntity), args)
+    });
   },
 });
+
 ```

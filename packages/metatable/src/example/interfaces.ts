@@ -5,25 +5,11 @@ export type Nullable<T> = T | null;
 export type Optional<T> = T | undefined;
 export type ValueOf<T> = T[keyof T];
 
-interface INumberInput {
-  type: 'number';
-  placeholder?: string;
-  label?: string;
-  value?: string;
-}
-
-interface IStringInput {
-  type: 'string';
+interface IInput<Type> {
+  type: Type;
   placeholder?: string;
   label?: string;
   value?: number;
-}
-
-interface ICheckboxInput {
-  type: 'checkbox';
-  placeholder?: string;
-  label?: string;
-  value?: boolean;
 }
 
 interface ISubmitInput {
@@ -33,9 +19,9 @@ interface ISubmitInput {
 
 type IFilterForm = IForm<{ submit: ISubmitInput }>
 
-type INumberForm<Name extends string> = IForm<{ [key in Name]: INumberInput } & IFilterForm>
-type IStringForm<Name extends string> = IForm<{ [key in Name]: IStringInput } & IFilterForm>
-type IBooleanForm<Name extends string> = IForm<{ [key in Name]: ICheckboxInput } & IFilterForm>
+type INumberForm<Name extends string> = IForm<{ [key in Name]: IInput<'number'> } & IFilterForm>
+type IStringForm<Name extends string> = IForm<{ [key in Name]: IInput<'string'> } & IFilterForm>
+type IBooleanForm<Name extends string> = IForm<{ [key in Name]: IInput<'checkbox'> } & IFilterForm>
 
 
 interface INumberColumn<Name extends string> extends IColumnBody<INumberForm<Name>> {

@@ -7,17 +7,16 @@ import * as path from 'path';
 import { Author, authorsQuery } from './types';
 import { authors, seed } from './data';
 
-const getConnection = async () =>
+export const getConnection = async (entities: any[]) =>
   createConnection({
     type: "sqlite",
     database: ":memory:",
-    entities: [AuthorEntity, PhotoEntity, NameEntity],
+    entities,
     synchronize: true,
-    // logging: true,
   });
 
 const main = async () => {
-  const database = await getConnection();
+  const database = await getConnection([AuthorEntity, PhotoEntity, NameEntity]);
   await seed(database);
 
   const author = metatable(Author, "AuthorList", authors);
