@@ -1,5 +1,5 @@
 import { enumType, objectType, inputObjectType } from "@nexus/schema";
-import { IColumn } from './interfaces';
+import { IColumn, IColumnBody } from './interfaces';
 import { getOperators } from './metatable';
 
 export const Sort = enumType({
@@ -57,34 +57,22 @@ export const BooleanFilter = inputObjectType({
   },
 });
 
-const ColumnType = enumType({
-  name: "ColumnType",
-  members: ["string", "number", "boolean"],
-});
+// const ColumnType = enumType({
+//   name: "ColumnType",
+//   members: ["string", "number", "boolean"],
+// });
 
-export const Column = objectType({
-  name: "Column",
-  definition: (t) => {
-    t.field("type", { type: ColumnType });
-    t.string("path", { list: true });
-    t.boolean("key", { nullable: true });
-    t.string("label", { nullable: true });
-    t.boolean("isFiltered", { nullable: true });
-    t.field("sorted", { nullable: true, type: Sort });
-    t.string("sortOptions", { nullable: true, list: [false], resolve: (column: IColumn) => column.isSortable ? ['ASC', 'DESC', null]: [] });
-    t.string("filterOperators", { nullable: true, list: [false], resolve: (column: IColumn) => column.isFilterable ? getOperators(column) : [] });
-  },
-});
-
-
-// todo:
-//   - isFiltered: true,
-//   - sorted: 'ASC',
-//   - filterForm: {
-//      name: {
-//        type: 'number',
-//      },
-//      submit: {
-//        type: 'submit',
-//      },
-
+// export const Column = objectType({
+//   name: "Column",
+//   definition: (t) => {
+//     t.field("type", { type: ColumnType });
+//     t.string("path", { list: true });
+//     t.boolean("key", { nullable: true });
+//     t.string("label", { nullable: true });
+//     t.boolean("isFiltered", { nullable: true }); // todo
+//     t.boolean("filterForm", { nullable: true, resolve: (column: IColumn) => column.isFilterable });
+//     t.field("sorted", { nullable: true, type: Sort }); // todo
+//     t.string("sortOptions", { nullable: true, list: [false], resolve: (column: IColumn) => column.isSortable ? ['ASC', 'DESC', null]: [] });
+//     t.string("filterOperators", { nullable: true, list: [false], resolve: (column) => column.isFilterable ? getOperators(column) : [] });
+//   },
+// });

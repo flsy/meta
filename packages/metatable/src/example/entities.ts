@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn, OneToOne } from 'typeorm';
 import { Nullable } from "./interfaces";
 
 @Entity()
-export class PersonEntity {
+export class NameEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -12,25 +12,39 @@ export class PersonEntity {
   @Column()
   lastName?: string;
 
-  @Column("int", { nullable: true })
-  age?: Nullable<number>;
-
-  @Column("boolean", { nullable: true })
-  isArchived?: Nullable<boolean>;
-
-  @ManyToOne(() => TrainEntity, (train) => train.persons, { nullable: true, lazy: true })
-  train?: Promise<TrainEntity>;
+  @OneToOne(() => NameEntity, (x) =>x.id,  { lazy: true })
+  author!: Promise<AuthorEntity>;
 }
 
-// tslint:disable-next-line:max-classes-per-file
 @Entity()
-export class TrainEntity {
+export class AuthorEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ type: "int" })
-  number!: number;
+  credit?: number;
 
-  @OneToMany(() => PersonEntity, (person) => person.train, { lazy: true })
-  persons?: Promise<PersonEntity[]>;
+  @OneToOne(() => NameEntity, (x) =>x.id,  { lazy: true })
+  @JoinColumn()
+  name!: Promise<NameEntity>;
+
+  @OneToMany(() => PhotoEntity, (photo) => photo.author, { nullable: true, lazy: true })
+  photos?: Promise<PhotoEntity[]>;
+}
+
+// tslint:disable-next-line:max-classes-per-file
+@Entity()
+export class PhotoEntity {
+  @PrimaryGeneratedColumn()
+  id!: number;
+
+  @Column()
+  title!: string;
+
+  @Column("boolean", { nullable: true })
+  isPublished?: Nullable<boolean>;
+
+  @ManyToOne(() => AuthorEntity, (author) => author.photos, { lazy: true })
+  @JoinColumn()
+  author?: Promise<AuthorEntity>;
 }

@@ -1,7 +1,4 @@
-import { IColumn } from '../interfaces';
-import { setNestedData, toTree } from '../tools';
-
-
+import { setNestedData } from '../tools';
 
 describe('lens', () => {
   it('works', async () => {
@@ -13,60 +10,60 @@ describe('lens', () => {
   })
 
 
-  it('ok', () => {
-
-    const persons: IColumn[] = [
-      { type: "number", path: ["id"], label: 'ID', key: true, },
-      { type: "string", path: ["lastName"], label: 'Last name' },
-      { type: "string", path: ["firstName"],label: 'First name' },
-      { type: "number", path: ["age"], label: 'Age' },
-      { type: "boolean", path: ["isArchived"], label: 'Is archived' },
-      { type: "number", path: ["train", "number"], label: 'Train number' },
-      { type: "string", path: ["train", "name"], label: 'Train name' },
-      { type: "number", path: ["train", "id", "honza"], label: 'Train id' },
-    ]
-
-
-
-    expect(toTree(persons)).toEqual({
-      age: {
-        label: "Age",
-        type: "number"
-      },
-      firstName: {
-        label: "First name",
-        type: "string"
-      },
-      id: {
-        key: true,
-        label: "ID",
-        type: "number"
-      },
-      isArchived: {
-        label: "Is archived",
-        type: "boolean"
-      },
-      lastName: {
-        label: "Last name",
-        type: "string"
-      },
-      train: {
-        id: {
-          honza: {
-            label: "Train id",
-            type: "number"
-          }
-        },
-        name: {
-          label: "Train name",
-          type: "string"
-        },
-        number: {
-          label: "Train number",
-          type: "number"
-        }
-      }
-    })
-
-  })
+  // it('ok', () => {
+  //
+  //   const persons: IColumn = [
+  //     { type: "number", path: ["id"], label: 'ID', key: true, },
+  //     { type: "string", path: ["lastName"], label: 'Last name' },
+  //     { type: "string", path: ["firstName"],label: 'First name' },
+  //     { type: "number", path: ["age"], label: 'Age' },
+  //     { type: "boolean", path: ["isArchived"], label: 'Is archived' },
+  //     { type: "number", path: ["train", "number"], label: 'Train number' },
+  //     { type: "string", path: ["train", "name"], label: 'Train name' },
+  //     { type: "number", path: ["train", "id", "honza"], label: 'Train id' },
+  //   ]
+  //
+  //
+  //
+  //   expect(toTree(persons)).toEqual({
+  //     age: {
+  //       label: "Age",
+  //       type: "number"
+  //     },
+  //     firstName: {
+  //       label: "First name",
+  //       type: "string"
+  //     },
+  //     id: {
+  //       key: true,
+  //       label: "ID",
+  //       type: "number"
+  //     },
+  //     isArchived: {
+  //       label: "Is archived",
+  //       type: "boolean"
+  //     },
+  //     lastName: {
+  //       label: "Last name",
+  //       type: "string"
+  //     },
+  //     train: {
+  //       id: {
+  //         honza: {
+  //           label: "Train id",
+  //           type: "number"
+  //         }
+  //       },
+  //       name: {
+  //         label: "Train name",
+  //         type: "string"
+  //       },
+  //       number: {
+  //         label: "Train number",
+  //         type: "number"
+  //       }
+  //     }
+  //   })
+  //
+  // })
 })

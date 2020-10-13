@@ -2,63 +2,10 @@ import { createTestClient } from 'apollo-server-testing';
 import { ApolloServer, gql } from 'apollo-server';
 import { makeSchema, objectType } from '@nexus/schema';
 import { metatable } from '../metatable';
-import { IColumn } from '../interfaces';
-import {
-  Column,
-  createConnection,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { IPaginatorArguments } from 'metafilters/lib/interfaces';
-import { toPaginatedResponse } from 'metafilters';
-import { Nullable } from '../example/interfaces';
-
-@Entity()
-class NameEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
-  @Column({ nullable: true })
-  firstName?: string;
-
-  @Column()
-  lastName?: string;
-}
-
-@Entity()
-class AuthorEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
-  @OneToOne(() => NameEntity)
-  @JoinColumn()
-  name!: string;
-
-  @OneToMany(() => PhotoEntity, (photo) => photo.author, { nullable: true, lazy: true })
-  photos?: Promise<PhotoEntity[]>;
-}
-
-// tslint:disable-next-line:max-classes-per-file
-@Entity()
-class PhotoEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
-  @Column({ type: "int" })
-  number!: number;
-
-  @Column("boolean", { nullable: true })
-  isArchived?: Nullable<boolean>;
-
-  @ManyToOne(() => AuthorEntity, (author) => author.photos, { lazy: true })
-  @JoinColumn()
-  author?: Promise<AuthorEntity>;
-}
-
+import { createConnection } from 'typeorm';
+import { AuthorEntity, NameEntity, PhotoEntity } from '../example/entities';
+import { Author, authorsQuery } from '../example/types';
+import { authors, seed } from '../example/data';
 
 const getConnection = async () =>
   createConnection({
@@ -70,79 +17,18 @@ const getConnection = async () =>
   });
 
 
-const Name = objectType({
-  name: "Name",
-  definition: (t) => {
-    t.int("id");
-    t.string("firstName");
-    t.string("lastName");
-  },
-});
-
-const Author = objectType({
-  name: "Author",
-  definition: (t) => {
-    t.int("id");
-    t.field("name", { type: Name });
-    t.field("photos", { type: Photo, nullable: true, list: true })
-  },
-});
-
-
-const Photo = objectType({
-  name: "Photo",
-  definition: (t) => {
-    t.int("id");
-    t.int("name");
-    t.boolean("isArchived", { nullable: true });
-  },
-});
-
-
-const authors: IColumn[] = [
-  { type: "number", path: ["id"], label: 'ID', key: true, isSortable: true, isFilterable: true },
-  { type: "string", path: ["name", "lastName"], label: 'Last name', isSortable: true, isFilterable: true },
-  { type: "string", path: ["name", "firstName"],label: 'First name', isSortable: true, isFilterable: true },
-  { type: "string", path: ["photos", "name"], label: 'Photo names', isSortable: true, isFilterable: true },
-]
-
-const photos: IColumn[] = [
-  { type: "number", path: ["id"] },
-  { type: "number", path: ["number"], label: 'number', isSortable: true, isFilterable: true },
-  // { path: "authors", value: authors }
-];
-
-const person = metatable(Author, "PersonListPaginated", authors);
-const photo = metatable(Photo, "PhotoListPaginated", photos);
-
 describe('metatable', () => {
   it('works', async () => {
 
+    const database = await getConnection();
+    await seed(database);
 
-      const database = await getConnection();
-
-    const authorsQuery = (type: any, args: any) => ({
-      type,
-      args,
-      nullable: true,
-      resolve: async (parent: AuthorEntity, args: IPaginatorArguments<AuthorEntity>) => {
-        return toPaginatedResponse(database.getRepository(AuthorEntity), args, ["photos", "name"]);
-      },
-    });
-    const photosQuery = (type: any, args: any) => ({
-      type,
-      nullable: true,
-      args,
-      resolve: async (parent: PhotoEntity, args: IPaginatorArguments<PhotoEntity>) => {
-        return toPaginatedResponse(database.getRepository(PhotoEntity), args, ["authors"])
-      },
-    });
+    const author = metatable(Author, "AuthorListPaginated", authors);
 
     const Query = objectType({
       name: "Query",
       definition: (t) => {
-        t.field("authors", authorsQuery(person.type, person.args));
-        t.field("photos", photosQuery(photo.type, photo.args));
+        t.field("authors", authorsQuery(database.getRepository(AuthorEntity), author.type, author.args));
       },
     });
 
@@ -153,69 +39,236 @@ describe('metatable', () => {
       }),
     });
 
-    const { query } = createTestClient(server as any);
+    const { query } = createTestClient(server);
 
-    // await seed(database);
-
-
-      const QUERY = gql`
-        query {
-            authors {
-                columns {
-                    type
-                    key
-                    label
-                    path
-                }
-                nodes {
-                    id
-                    name {
-                        firstName
-                    }
-                    photos {
-                        name
-                    }
-                }
-                count
-            }
-        }
-
+    const QUERY = gql`
+      query {
+          authors {
+              columns {
+                  id {
+                      key
+                      type
+                      label
+                  }
+                  credit {
+                      key
+                      type
+                      label
+                      filterForm {
+                          credit {
+                              type
+                              label
+                          }
+                          submit {
+                              type
+                              label
+                          }
+                      }
+                  }
+                  name {
+                      firstName {
+                          key
+                          type
+                          label
+                          filterForm {
+                              firstName {
+                                  label
+                                  type
+                              }
+                              submit {
+                                  type
+                                  label
+                              }
+                          }
+                      }
+                      lastName {
+                          key
+                          type
+                          label
+                      }
+                  }
+              }
+              nodes {
+                  id
+                  name {
+                      firstName
+                      lastName
+                  }
+                  photos {
+                      title
+                      isPublished
+                  }
+                  credit
+              }
+              count
+          }
+      }
     `;
 
     const response = await query({ query: QUERY, variables: { id: 1 } });
 
-
     expect(response.errors).toEqual(undefined)
     expect(response.data).toEqual({
       authors: {
-        columns: [
-          {
-            label: 'ID',
+        columns: {
+          id: {
             key: true,
-            path: ['id'],
-            type: 'number'
+            type: 'number',
+            label: 'Id'
+          },
+          credit: {
+            key: false,
+            type: 'number',
+            label: 'Credit',
+            filterForm: {
+              credit: {
+                type: 'number',
+                label: 'Filter by authors credit'
+              },
+              submit: {
+                type: 'submit',
+                label: 'Filter!'
+              }
+            }
+          },
+          name: {
+            firstName: {
+              key: false,
+              type: 'string',
+              label: 'FirstName',
+              filterForm: {
+                firstName: {
+                  label: null,
+                  type: 'string'
+                },
+                submit: {
+                  label: 'Fitruj!',
+                  type: 'submit'
+                }
+              }
+            },
+            lastName: {
+              key: false,
+              type: 'string',
+              label: 'LastName'
+            }
+          }
+        },
+        nodes: [
+          {
+            "credit": 5,
+            "id": 1,
+            "name": {
+              "firstName": "Paige",
+              "lastName": "Turner"
+            },
+            "photos": [
+              {
+                "isPublished": true,
+                "title": "a blueberry"
+              },
+              {
+                "isPublished": true,
+                "title": "a car"
+              },
+              {
+                "isPublished": false,
+                "title": "a dinosaur"
+              }
+            ]
           },
           {
-            key: null,
-             label: "Last name",
-             path: ["name", "lastName"],
-             type: "string",
+            "credit": 20,
+            "id": 2,
+            "name": {
+              "firstName": "Anne",
+              "lastName": "Teak"
+            },
+            "photos": []
           },
           {
-            key: null,
-            label: "First name",
-            path: ["name", "firstName"],
-            type: "string",
+            "credit": 3,
+            "id": 3,
+            "name": {
+              "firstName": null,
+              "lastName": "Twishes"
+            },
+            "photos": [
+              {
+                "isPublished": false,
+                "title": "a random thing"
+              }
+            ]
           },
           {
-            key: null,
-            label: "Photo names",
-            path: ["photos", "name"],
-            type: "string",
+            "credit": 5,
+            "id": 4,
+            "name": {
+              "firstName": "Amanda",
+              "lastName": "Hug"
+            },
+            "photos": [
+              {
+                "isPublished": true,
+                "title": "bus"
+              },
+              {
+                "isPublished": true,
+                "title": "car"
+              },
+              {
+                "isPublished": true,
+                "title": "plane"
+              }
+            ]
           },
-          ],
-        nodes: [],
-        count: 0
+          {
+            "credit": 5,
+            "id": 5,
+            "name": {
+              "firstName": "Ben",
+              "lastName": "Dover"
+            },
+            "photos": []
+          },
+          {
+            "credit": 7,
+            "id": 6,
+            "name": {
+              "firstName": null,
+              "lastName": "Dover"
+            },
+            "photos": [
+              {
+                "isPublished": true,
+                "title": "blueberry"
+              },
+              {
+                "isPublished": true,
+                "title": "strawberry"
+              }
+            ]
+          },
+          {
+            "credit": 5,
+            "id": 7,
+            "name": {
+              "firstName": "Willie",
+              "lastName": "Makit"
+            },
+            "photos": []
+          },
+          {
+            "credit": 0,
+            "id": 8,
+            "name": {
+              "firstName": "Skye",
+              "lastName": "Blue"
+            },
+            "photos": []
+          }
+        ],
+        count: 8
       }
     })
   })
