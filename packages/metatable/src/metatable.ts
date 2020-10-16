@@ -150,13 +150,12 @@ const finalColumnDefinition = (name: string, column: IColumnBody) => objectType(
 });
 
 const columnDefinition = (name: string, columns: IColumn) => {
-
   return objectType({
     name,
     definition: (t) => {
       Object.entries(columns).forEach(([key, column]) => {
         if (isColumnBody(column)) {
-          t.field(key, { type: finalColumnDefinition(camelize([key, name]), column), resolve: () => column });
+          t.field(key, { type: finalColumnDefinition(camelize([key, name]), column) });
         } else {
           t.field(key, { type: columnDefinition(camelize([key, name]), column)})
         }
@@ -164,6 +163,11 @@ const columnDefinition = (name: string, columns: IColumn) => {
     },
   });
 }
+
+export const getObjectType = (name: string, columns: IColumn) => ({
+  filterObjectType: getFilterObjectType(`${name}PaginationFilter`, columns),
+  columnObjectType: columnDefinition(`${name}Column`, columns)
+})
 
 export const metatable =<TypeName extends string>(type: NexusObjectTypeDef<TypeName>, name: string, columns: IColumn) => {
   return {

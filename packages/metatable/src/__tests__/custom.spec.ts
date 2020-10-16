@@ -1,7 +1,7 @@
 import { createTestClient } from 'apollo-server-testing';
 import { ApolloServer, gql } from 'apollo-server';
-import { makeSchema, objectType } from '@nexus/schema';
-import { metatable } from '../metatable';
+import { arg, intArg, makeSchema, objectType, stringArg } from '@nexus/schema';
+import { getObjectType } from '../metatable';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { toPaginatedResponse, IPaginatorArguments } from 'metafilters';
 import { IForm } from 'metaforms';
@@ -59,37 +59,39 @@ type IContactTable = ITable<{
 }>;
 
 // Specify column structure
-const contacts: IContactTable = {
+const contacts = (t = (i: string) => i): IContactTable => ({
   id: {
     type: 'number',
-    label: 'Id',
+    label: t('Id'),
     key: true,
     filterForm: {
       id: {
         type: 'number',
-        label: 'Filter by Id',
+        label: t('Filter by Id'),
       },
       submit: {
         type: 'submit',
-        label: 'Filter'
+        label: t('Filter')
       }
     }
   },
   firstName: {
     type: 'string',
-    label: 'First name',
+    label: t('First name'),
     filterForm: {
       firstName :{
         type: 'string',
-        label: 'Filter by first name'
+        label: t('Filter by first name')
       },
       submit: {
         type: 'submit',
-        label: 'Filter'
+        label: t('Filter')
       }
     }
   }
-};
+});
+
+const coolTranslateFunction = (t: string) => `Translated ${t}`;
 
 describe('simple metatable usage', () => {
   it('demoes the functionality', async () => {
@@ -105,14 +107,32 @@ describe('simple metatable usage', () => {
     const Query = objectType({
       name: "Query",
       definition: (t) => {
-        const { type, args } = metatable(Contact, "ContactsList", contacts);
+        const { filterObjectType, columnObjectType } = getObjectType('ContactList', contacts())
 
         t.field("contacts", {
-          type,
-          args,
+          type: objectType({
+            name: 'ContactListResponse',
+            definition: (t) => {
+              t.field('node', { type: Contact, list: [true], nullable: true, resolve: (p) => p.nodes });
+              t.field('columns', { type: columnObjectType, nullable: true });
+              t.string('cursor');
+              t.int('count');
+
+              t.string('status');
+              t.string('statusMessage');
+            },
+          }),
+          args: {
+            limit: intArg(),
+            cursor: stringArg(),
+            filters: arg({ type: filterObjectType }),
+          },
           nullable: true,
-          resolve: async (parent: ContactEntity, args: IPaginatorArguments<ContactEntity>) =>
-            toPaginatedResponse(database.getRepository(ContactEntity), args)
+          resolve: async (parent: ContactEntity, args: IPaginatorArguments<ContactEntity>) => {
+
+            const response = await toPaginatedResponse(database.getRepository(ContactEntity), args)
+            return { status: 'SUC', statusMessage: 'OK', columns: contacts(coolTranslateFunction), ...response }
+          }
         });
       },
     });
@@ -161,7 +181,7 @@ describe('simple metatable usage', () => {
                         }
                     }
                 }
-                nodes {
+                node {
                     id
                     firstName
                 }
@@ -177,36 +197,36 @@ describe('simple metatable usage', () => {
           firstName: {
             filterForm: {
               firstName: {
-                label: 'Filter by first name',
-                  type: 'string',
+                label: 'Translated Filter by first name',
+                type: 'string',
               },
               submit: {
-                label: 'Filter',
-                  type: 'submit',
+                label: 'Translated Filter',
+                type: 'submit',
               },
             },
             key: false,
-              label: 'First name',
-              type: 'string',
+            label: 'Translated First name',
+            type: 'string',
           },
           id: {
             filterForm: {
               id: {
-                label: 'Filter by Id',
-                  type: 'number',
+                label: 'Translated Filter by Id',
+                type: 'number',
               },
               submit: {
-                label: 'Filter',
-                  type: 'submit',
+                label: 'Translated Filter',
+                type: 'submit',
               },
             },
             key: true,
-              label: 'Id',
-              type: 'number',
+            label: 'Translated Id',
+            type: 'number',
           },
         },
         count: 6,
-          nodes: [
+          node: [
           {
             firstName: 'Paul',
             id: 1,
