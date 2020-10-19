@@ -1,6 +1,6 @@
 {
   "name": "metatable",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "private": false,
   "description": "meta table",
   "main": "lib/index",
