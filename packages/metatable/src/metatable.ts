@@ -138,6 +138,7 @@ const finalColumnDefinition = (name: string, column: IColumnBody) => objectType(
         t.string('type');
         t.string('label');
         t.boolean('key', { resolve: (body: IColumnBody) => body.key || false });
+        t.boolean('isOmitted', { resolve: (body: IColumnBody) => body.isOmitted || false });
         if (column.filterForm) {
           t.field('filterForm', { type: filterForm(name, column.filterForm), nullable: true });
         }

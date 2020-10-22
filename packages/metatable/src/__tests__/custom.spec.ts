@@ -63,6 +63,7 @@ const contacts = (t = (i: string) => i): IContactTable => ({
   id: {
     type: 'number',
     label: t('Id'),
+    isOmitted: true,
     key: true,
     filterForm: {
       id: {
@@ -154,6 +155,7 @@ describe('simple metatable usage', () => {
                         key
                         type
                         label
+                        isOmitted
                         filterForm {
                             id {
                                 type
@@ -169,6 +171,7 @@ describe('simple metatable usage', () => {
                         key
                         type
                         label
+                        isOmitted
                         filterForm {
                             firstName {
                                 type
@@ -206,6 +209,7 @@ describe('simple metatable usage', () => {
               },
             },
             key: false,
+            isOmitted: false,
             label: 'Translated First name',
             type: 'string',
           },
@@ -221,6 +225,7 @@ describe('simple metatable usage', () => {
               },
             },
             key: true,
+            isOmitted: true,
             label: 'Translated Id',
             type: 'number',
           },

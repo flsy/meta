@@ -4,6 +4,7 @@ export interface IColumnBody<Form extends Field = any> {
   type: string;
   label?: string;
   key?: boolean;
+  isOmitted?: boolean;
   // isSortable?: boolean;
   // isFilterable?: boolean;
   filterForm?: IForm<Form>;
