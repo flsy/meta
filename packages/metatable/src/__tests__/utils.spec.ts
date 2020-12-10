@@ -6,6 +6,7 @@ import {
   toMetaFilters,
   unsetAllSortFormValues,
 } from '../utils';
+import { mockedColumns1 } from './mocks';
 
 const customerIdFilterForm = {
   customer: {
@@ -144,135 +145,13 @@ describe('Metatable utils', () => {
   });
   it('unsets all sort forms', async () => {
     const result = unsetAllSortFormValues(columns);
-    expect(result).toEqual({
-      id: {
-        label: 'id',
-        type: 'number',
-        key: true,
-        isOmitted: true,
-        sortForm: {
-          id: {
-            type: 'sort',
-            value: undefined,
-          },
-        },
-      },
-      name: {
-        label: 'name',
-        type: 'string',
-        key: false,
-        sortForm: {
-          id: {
-            type: 'sort',
-            value: undefined,
-          },
-        },
-      },
-      customer: {
-        id: {
-          label: 'customer id',
-          type: 'string',
-          key: false,
-          filterForm: customerIdFilterForm,
-          sortForm: {
-            name: {
-              type: 'sort',
-            },
-          },
-        },
-      },
-      isDeleted: {
-        label: 'is deleted',
-        type: 'boolean',
-        key: false,
-        isOmitted: true,
-        filterForm: {
-          isDeleted: {
-            type: 'group',
-            fields: {
-              type: {
-                type: 'hidden',
-                value: 'boolean',
-              },
-              value: {
-                type: 'checkbox',
-                value: false,
-              },
-              submit: {
-                type: 'submit',
-                label: 'submit',
-              },
-            }
-          },
-        },
-      },
-    });
+    expect(result).toMatchSnapshot();
   });
   it('sets sort form value', async () => {
-    const result = setSortFormValue(['id'], 'DESC', columns);
-    expect(result).toEqual({
-      id: {
-        label: 'id',
-        type: 'number',
-        key: true,
-        isOmitted: true,
-        sortForm: {
-          id: {
-            type: 'sort',
-            value: 'DESC',
-          },
-        },
-      },
-      name: {
-        label: 'name',
-        type: 'string',
-        key: false,
-        sortForm: {
-          id: {
-            type: 'sort',
-            value: undefined,
-          },
-        },
-      },
-      customer: {
-        id: {
-          label: 'customer id',
-          type: 'string',
-          key: false,
-          filterForm: customerIdFilterForm,
-          sortForm: {
-            name: {
-              type: 'sort',
-              value: undefined
-            },
-          },
-        },
-      },
-      isDeleted: {
-        label: 'is deleted',
-        type: 'boolean',
-        key: false,
-        isOmitted: true,
-        filterForm: {
-          isDeleted: {
-            type: 'group',
-            fields: {
-              type: {
-                type: 'hidden',
-                value: 'boolean',
-              },
-              value: {
-                type: 'checkbox',
-                value: false,
-              },
-              submit: {
-                type: 'submit',
-                label: 'submit',
-              },
-            }
-          },
-        },
-      },
-    });
+    const result1 = setSortFormValue(['id'], 'DESC', columns);
+    expect(result1).toMatchSnapshot('1');
+
+    const result2 = setSortFormValue(['id'], 'DESC', mockedColumns1);
+    expect(result2).toMatchSnapshot('2')
   });
 });

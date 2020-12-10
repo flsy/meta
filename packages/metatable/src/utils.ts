@@ -1,6 +1,6 @@
 import { Column, Columns, OneOrMany } from './interfaces';
 import {
-  defaultTo,
+  defaultTo, has,
   head,
   isNil,
   lensPath,
@@ -54,11 +54,11 @@ export const filterColumnPaths = <TColumns extends Columns<TTypes>, TTypes>(filt
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getSortFormPath = (fields: object): string[] => {
   return Object.entries(fields).reduce((acc, [key, value]) => {
-    if(value.type === 'sort') {
+    if(has('type', value) && prop('type', value) === 'sort') {
       return [...acc, key];
     }
 
-    if(typeof value === 'object') {
+    if(value && typeof value === 'object') {
       return [key, ...getSortFormPath(value)];
     }
 
