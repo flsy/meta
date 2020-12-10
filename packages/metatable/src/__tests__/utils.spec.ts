@@ -1,4 +1,11 @@
-import { filterColumnPaths, getStringFilter, toMetaFilters } from '../utils';
+import {
+  filterColumnPaths,
+  getSortFormPath,
+  getStringFilter,
+  setSortFormValue,
+  toMetaFilters,
+  unsetAllSortFormValues,
+} from '../utils';
 
 const customerIdFilterForm = {
   customer: {
@@ -42,6 +49,12 @@ const columns = {
     label: 'name',
     type: 'string',
     key: false,
+    sortForm: {
+      id: {
+        type: 'sort',
+        value: 'ASC',
+      },
+    },
   },
   customer: {
     id: {
@@ -108,6 +121,158 @@ describe('Metatable utils', () => {
   });
   it('filters column path', async () => {
     const displayedColumnPaths = filterColumnPaths((column) => !column?.isOmitted)(columns);
-    expect(displayedColumnPaths).toMatchObject([['name'], ['customer', 'id']]);
+    expect(displayedColumnPaths).toEqual([['name'], ['customer', 'id']]);
+  });
+  it('gets sort form path', async () => {
+    const displayedColumnPaths = getSortFormPath({
+      customer: {
+        type: 'group',
+        fields: {
+          login: {
+            type: 'group',
+            fields: {
+              id: {
+                type: 'sort',
+              }
+            }
+          }
+        }
+      },
+      },
+     );
+    expect(displayedColumnPaths).toEqual(['customer', 'fields', 'login', 'fields', 'id']);
+  });
+  it('unsets all sort forms', async () => {
+    const result = unsetAllSortFormValues(columns);
+    expect(result).toEqual({
+      id: {
+        label: 'id',
+        type: 'number',
+        key: true,
+        isOmitted: true,
+        sortForm: {
+          id: {
+            type: 'sort',
+            value: undefined,
+          },
+        },
+      },
+      name: {
+        label: 'name',
+        type: 'string',
+        key: false,
+        sortForm: {
+          id: {
+            type: 'sort',
+            value: undefined,
+          },
+        },
+      },
+      customer: {
+        id: {
+          label: 'customer id',
+          type: 'string',
+          key: false,
+          filterForm: customerIdFilterForm,
+          sortForm: {
+            name: {
+              type: 'sort',
+            },
+          },
+        },
+      },
+      isDeleted: {
+        label: 'is deleted',
+        type: 'boolean',
+        key: false,
+        isOmitted: true,
+        filterForm: {
+          isDeleted: {
+            type: 'group',
+            fields: {
+              type: {
+                type: 'hidden',
+                value: 'boolean',
+              },
+              value: {
+                type: 'checkbox',
+                value: false,
+              },
+              submit: {
+                type: 'submit',
+                label: 'submit',
+              },
+            }
+          },
+        },
+      },
+    });
+  });
+  it('sets sort form value', async () => {
+    const result = setSortFormValue(['id'], 'DESC', columns);
+    expect(result).toEqual({
+      id: {
+        label: 'id',
+        type: 'number',
+        key: true,
+        isOmitted: true,
+        sortForm: {
+          id: {
+            type: 'sort',
+            value: 'DESC',
+          },
+        },
+      },
+      name: {
+        label: 'name',
+        type: 'string',
+        key: false,
+        sortForm: {
+          id: {
+            type: 'sort',
+            value: undefined,
+          },
+        },
+      },
+      customer: {
+        id: {
+          label: 'customer id',
+          type: 'string',
+          key: false,
+          filterForm: customerIdFilterForm,
+          sortForm: {
+            name: {
+              type: 'sort',
+              value: undefined
+            },
+          },
+        },
+      },
+      isDeleted: {
+        label: 'is deleted',
+        type: 'boolean',
+        key: false,
+        isOmitted: true,
+        filterForm: {
+          isDeleted: {
+            type: 'group',
+            fields: {
+              type: {
+                type: 'hidden',
+                value: 'boolean',
+              },
+              value: {
+                type: 'checkbox',
+                value: false,
+              },
+              submit: {
+                type: 'submit',
+                label: 'submit',
+              },
+            }
+          },
+        },
+      },
+    });
   });
 });
