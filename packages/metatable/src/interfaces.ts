@@ -1,17 +1,13 @@
-import { Field, IForm } from 'metaforms';
+import { ReactNode } from 'react';
 
-export interface IColumnBody<Form extends Field = any> {
-  type: string;
-  label?: string;
-  key?: boolean;
-  isOmitted?: boolean;
-  // isSortable?: boolean;
-  // isFilterable?: boolean;
-  filterForm?: IForm<Form>;
-}
+export type Column<TTypes> = { type?: TTypes; label?: string; key?: boolean; isOmitted?: boolean; filterForm?: any; sortForm?: any };
+export type Columns<TTypes> = { [key: string]: Column<TTypes> | Columns<TTypes> };
 
-export type IColumn<Form extends Field = any> = {
-  [name: string]: IColumnBody<Form>| IColumn<Form>
-};
+export type OneOrMany<T> = T | Array<T>;
+export type ITr<Row> = ({ row, children }: { children: ReactNode; row: Row }) => JSX.Element;
+export type IHeadTr = ({ children }: { children: ReactNode }) => JSX.Element;
+export type ITd = ({ value }: { value: OneOrMany<string | number | boolean> }) => JSX.Element;
 
-export type ITable<T extends IColumn<Field>> = T;
+export type ITh<Type> = { (props: { columns: Columns<Type>; columnPath: string[] }): JSX.Element };
+export type ITbody = { (props: { columnPaths: string[][]; children: ReactNode }): JSX.Element };
+export type ITfoot = { (props: { colSpan: number }): JSX.Element };
