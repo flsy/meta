@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Metatable utils sets sort form value 2 1`] = `
+Object {
+  "attachments": Object {
+    "content": Object {
+      "label": "Attachment content",
+      "type": "string",
+      "value": undefined,
+    },
+    "description": Object {
+      "label": "Attachment description",
+      "type": "string",
+      "value": undefined,
+    },
+  },
+  "content": Object {
+    "filterForm": Object {
+      "content": Object {
+        "errorMessage": null,
+        "label": "Kontent",
+        "placeholder": "Obsah",
+        "type": "text",
+        "value": null,
+      },
+      "submit": Object {
+        "label": "Uložit",
+        "type": "submit",
+        "value": undefined,
+      },
+    },
+    "label": "Content",
+    "sortForm": Object {
+      "content": Object {
+        "type": "sort",
+        "value": "ASC",
+      },
+    },
+    "type": "string",
+  },
+  "createdAtFormatted": Object {
+    "label": "CreatedAt",
+    "sortForm": Object {
+      "createdAt": Object {
+        "type": "sort",
+        "value": undefined,
+      },
+    },
+    "type": "timestamp",
+  },
+  "createdBy": Object {
+    "name": Object {
+      "filterForm": Object {
+        "name": Object {
+          "errorMessage": null,
+          "label": "Name",
+          "placeholder": "name placeholder",
+          "type": "text",
+          "value": null,
+        },
+        "submit": Object {
+          "label": "Uložit",
+          "type": "submit",
+          "value": undefined,
+        },
+      },
+      "label": "CreatedBy",
+      "sortForm": Object {
+        "name": Object {
+          "type": "sort",
+        },
+      },
+      "type": "string",
+    },
+  },
+  "id": Object {
+    "key": true,
+    "label": "Id",
+    "sortForm": Object {
+      "id": Object {
+        "type": "sort",
+        "value": "DESC",
+      },
+    },
+    "type": "number",
+  },
+  "isPublished": Object {
+    "label": "Is published",
+    "type": "boolean",
+    "value": undefined,
+  },
+}
+`;
