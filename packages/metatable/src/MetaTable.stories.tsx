@@ -60,6 +60,6 @@ export const Basic = () => {
 };
 
 export default {
-  title: 'Components/MetaTable',
+  title: 'MetaTable',
   decorators: [withKnobs],
 };

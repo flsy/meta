@@ -7,7 +7,7 @@ export interface IMetaTableProps<TColumns, TRow, TTypes> {
   data: TRow[];
   columns: TColumns;
   render?: {
-    Td?: ITd;
+    Td?: ITd<TTypes>;
     Tr?: ITr<TRow>;
     HeadTr?: IHeadTr;
     Th?: ITh<TTypes>;
@@ -24,7 +24,7 @@ const DefaultTh: ITh<any> = ({ columns, columnPath }) => <th>{view(lensPath([...
 const DefaultThead: React.FC = ({ children }) => <thead>{children}</thead>;
 const DefaultTr: ITr<any> = ({ children }) => <tr>{children}</tr>;
 const DefaultHeadTr: IHeadTr = ({ children }) => <tr>{children}</tr>;
-const DefaultTd: ITd = ({ value }) => <td>{renderValue(value)}</td>;
+const DefaultTd: ITd<any> = ({ value }) => <td>{renderValue(value)}</td>;
 
 const MetaTable = <TColumns extends Columns<TTypes>, TRow, TTypes>({ data, render, columns }: IMetaTableProps<TColumns, TRow, TTypes>) => {
   const Td = render?.Td || DefaultTd;
@@ -43,6 +43,7 @@ const MetaTable = <TColumns extends Columns<TTypes>, TRow, TTypes>({ data, rende
   const rowKey = (row: TRow): string => `${view(lensPath(keyColumnPath))(row)}`;
   const colKey = (columnPath: string[]): string => columnPath.join('-');
   const cellKey = (columnPath: string[], row: TRow): string => `${colKey(columnPath)}-${rowKey(row)}`;
+  const cellType = (columnPath: string[]) => view(lensPath([...columnPath, 'type']))(columns);
 
   return (
     <Table>
@@ -57,7 +58,7 @@ const MetaTable = <TColumns extends Columns<TTypes>, TRow, TTypes>({ data, rende
         {data.map((row) => (
           <Tr key={rowKey(row)} row={row}>
             {displayedColumnPaths.map((columnPath) => {
-              return <Td key={cellKey(columnPath, row)} value={getCellValue(columnPath)(row)} />;
+              return <Td key={cellKey(columnPath, row)} value={getCellValue(columnPath)(row)} type={cellType(columnPath)} />;
             })}
           </Tr>
         ))}
