@@ -1,8 +1,7 @@
 import {
   filterColumnPaths,
-  getSortFormPath,
   getStringFilter,
-  setSortFormValue,
+  unsetAllSortFormValues,
   toMetaFilters,
 } from '../utils';
 
@@ -47,7 +46,6 @@ const mockedColumns1 = {
     sortForm: {
       createdAt: {
         type: 'sort',
-        value: 'ASC',
       },
     },
   },
@@ -56,9 +54,15 @@ const mockedColumns1 = {
       type: 'string',
       label: 'CreatedBy',
       sortForm: {
-        name: {
-          type: 'sort',
-        },
+        createdBy: {
+          type: 'group',
+          fields: {
+            name: {
+              type: 'sort',
+              value: 'ASC',
+            },
+          }
+        }
       },
       filterForm: {
         name: {
@@ -204,33 +208,29 @@ describe('Metatable utils', () => {
     const displayedColumnPaths = filterColumnPaths((column) => !column?.isOmitted)(mockedColumns2);
     expect(displayedColumnPaths).toEqual([['name'], ['customer', 'id']]);
   });
-  it('gets sort form path', async () => {
-    const displayedColumnPaths = getSortFormPath({
-      customer: {
-        type: 'group',
-        fields: {
-          login: {
-            type: 'group',
-            fields: {
-              id: {
-                type: 'sort',
-              }
-            }
-          }
+  it('unsetAllSortFormValues simple columns', async () => {
+    const result2 = unsetAllSortFormValues(mockedColumns2);
+
+    expect(result2.id).toEqual({
+      isOmitted: true,
+      key: true,
+      label: "id",
+      sortForm: {
+        id: {
+          type: "sort",
+          value: undefined
         }
       },
-      },
-     );
-    expect(displayedColumnPaths).toEqual(['customer', 'fields', 'login', 'fields', 'id']);
-  });
-  it('sets sort form value', async () => {
-    const result2 = setSortFormValue(['id'], 'DESC', mockedColumns2);
+      type: "number"
+    })
+
     expect(result2.name).toEqual({
       key: false,
       label: "name",
       sortForm: {
         id: {
-          type: "sort"
+          type: "sort",
+          value: undefined
         }
       },
       type: "string"
@@ -279,19 +279,6 @@ describe('Metatable utils', () => {
       }
     )
 
-    expect(result2.id).toEqual({
-      isOmitted: true,
-      key: true,
-      label: "id",
-      sortForm: {
-        id: {
-          type: "sort",
-          value: "DESC"
-        }
-      },
-      type: "number"
-    })
-
     expect(result2.isDeleted).toEqual(
       {
         filterForm: {
@@ -319,11 +306,50 @@ describe('Metatable utils', () => {
         type: "boolean"
       }
     )
+  });
+  it('unsetAllSortFormValues nested columns', async () => {
+    const result2 = unsetAllSortFormValues(mockedColumns1);
 
-    const result3 = setSortFormValue(['createdAtFormatted'], 'DESC', mockedColumns1);
-    expect(result3.id.sortForm).toEqual({ id: { value: undefined, type: 'sort' }})
-    expect(result3.createdAtFormatted.sortForm).toEqual({ createdAt:{ value: 'DESC', type: 'sort' }})
-    expect(result3.content.sortForm).toEqual({ content: { value: undefined, type: 'sort' }})
-    expect(result3.isPublished).toEqual({ label: "Is published", type: 'boolean' })
+    expect(result2.id).toEqual({
+      key: true,
+      label: "Id",
+      sortForm: {
+        id: {
+          type: "sort",
+          value: undefined
+        }
+      },
+      type: "number"
+    })
+
+    expect(result2.createdBy).toEqual({
+      name: {
+        filterForm: {
+          name: {
+            errorMessage: null,
+            label: "Name",
+            placeholder: "name placeholder",
+            type: "text",
+            value: null
+          },
+          submit: {
+            label: "Uložit",
+            type: "submit"
+          }
+        },
+        label: "CreatedBy",
+        sortForm: {
+          createdBy: {
+            fields: {
+              name: {
+                type: "sort",
+                value: undefined
+              }
+            }
+          }
+        },
+        type: "string"
+      }
+    })
   });
 });

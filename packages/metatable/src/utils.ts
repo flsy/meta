@@ -52,47 +52,32 @@ export const filterColumnPaths = <TColumns extends Columns<TTypes>, TTypes>(filt
 
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const getSortFormPath = (fields?: object): string[] => {
-  return Object.entries(fields || {}).reduce((acc, [key, value]) => {
-    if(has('type', value) && prop('type', value) === 'sort') {
-      return [...acc, key];
+const setSortFormValue = (sortForm: object): object => {
+  return Object.entries(sortForm).reduce((acc, [key, field]) => {
+    if(has('type', field) && prop('type', field) === 'sort') {
+      return { ...acc, [key]: { ...field, value: undefined } };
     }
 
-    if(value && typeof value === 'object') {
-      return [key, ...getSortFormPath(value)];
+    if(field && typeof field === 'object') {
+      return { ...acc, [key]: setSortFormValue(field) };
     }
 
     return acc;
-  }, [])
+  }, {})
 }
 
-const unsetAllSortFormValues = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): TColumns => {
+export const unsetAllSortFormValues = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): TColumns => {
   return getColumnPaths(columns).reduce((acc, colPath) => {
     const columnSortFormLens = lensPath([...colPath, 'sortForm']);
     const columnSortForm = view(columnSortFormLens, columns);
 
     if(columnSortForm) {
       // eslint-disable-next-line @typescript-eslint/ban-types
-      return set(lensPath([...colPath, 'sortForm', ...getSortFormPath(columnSortForm as object), 'value']), undefined, acc);
+      return set(columnSortFormLens, setSortFormValue(columnSortForm as object), acc);
     }
 
     return acc;
   }, columns)
-}
-
-export const setSortFormValue = <TColumns extends Columns<TTypes>, TTypes, TValue>(columnPath: string[], value: TValue, columns: TColumns): TColumns=> {
-  const columnSortFormLens = lensPath([...columnPath, 'sortForm']);
-  const columnSortForm = view(columnSortFormLens, columns);
-
-  if(columnSortForm) {
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    const sortFormValueLens = lensPath([...columnPath, 'sortForm', ...getSortFormPath(columnSortForm as object), 'value'])
-    return pipe(
-      unsetAllSortFormValues,
-      set(sortFormValueLens, value)
-    )(columns)
-  }
-  return columns;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
