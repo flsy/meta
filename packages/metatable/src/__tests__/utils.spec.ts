@@ -340,6 +340,7 @@ describe('Metatable utils', () => {
         label: "CreatedBy",
         sortForm: {
           createdBy: {
+            type: 'group',
             fields: {
               name: {
                 type: "sort",

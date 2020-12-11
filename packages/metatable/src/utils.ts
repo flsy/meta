@@ -59,7 +59,7 @@ const setSortFormValue = (sortForm: object): object => {
     }
 
     if(field && typeof field === 'object') {
-      return { ...acc, [key]: setSortFormValue(field) };
+      return { ...acc, [key]: { ...field, ...setSortFormValue(field) } };
     }
 
     return acc;
