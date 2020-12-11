@@ -16,6 +16,11 @@ import { getFormData } from 'metaforms';
 
 export const getCellValue = <TRow>(bits: string[]) => (object: TRow): OneOrMany<any> => {
   const [property, ...rest] = bits;
+
+  if(!property) {
+    return object;
+  }
+
   const value = prop<string, any>(property)(object);
   if (Array.isArray(value)) {
     return value.map((v) => getCellValue(rest)(v));
