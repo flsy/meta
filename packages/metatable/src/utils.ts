@@ -31,14 +31,6 @@ export const getCellValue = <TRow>(bits: string[]) => (object: TRow): OneOrMany<
   return value;
 };
 
-export const renderValue = (value: OneOrMany<string | number | boolean>): string => {
-  if (Array.isArray(value)) {
-    return value.join(', ');
-  }
-
-  return value.toString();
-};
-
 export const isColumn = <TTypes>(column: Column<TTypes> | Columns<TTypes>): column is Column<TTypes> => typeof column.type === 'string';
 export const getColumnPaths = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns, parentKey: string[] = []): string[][] =>
   Object.entries(columns).reduce((acc, [name, column]) => {

@@ -1,12 +1,8 @@
 module.exports = {
     transform: {
-        '.+\\.tsx?$': 'ts-jest',
+        '.+\\.ts$': 'ts-jest',
     },
-    testRegex: '\\.spec\\.tsx?$',
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    testRegex: '\\.spec\\.ts$',
+    moduleFileExtensions: ['ts', 'js', 'json', 'node'],
     rootDir: 'src',
-    snapshotSerializers: [
-        "enzyme-to-json/serializer"
-    ],
-    setupFilesAfterEnv: ['./setupTests.ts'],
 };
