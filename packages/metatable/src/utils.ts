@@ -142,7 +142,7 @@ const setNestedForm = (path: string[], form: object) => {
 
 type StringFilterValue = Array<{ operator: 'EQ' | 'LIKE', value: string }>;
 type Options = { submitLabel?: string, label?: string };
-export const getStringFilter = (path: string[], value: StringFilterValue, options?: Options) =>
+export const getStringFilter = (path: string[], value?: StringFilterValue, options?: Options) =>
   setNestedForm(path, {
     type: {
       type: 'hidden',
