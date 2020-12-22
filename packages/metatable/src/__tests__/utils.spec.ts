@@ -2,7 +2,7 @@ import {
   filterColumnPaths,
   getStringFilter,
   unsetAllSortFormValues,
-  toMetaFilters,
+  toMetaFilters, getFilterFormValue,
 } from '../utils';
 
 const customerIdFilterForm = {
@@ -17,7 +17,7 @@ const customerIdFilterForm = {
             value: 'string',
           },
           filters: {
-            type: 'string-filter',
+            type: 'text',
             value: [{ operator: 'EQ', value: "CUST_ID" }]
           },
           submit: {
@@ -64,19 +64,7 @@ const mockedColumns1 = {
           }
         }
       },
-      filterForm: {
-        name: {
-          label: 'Name',
-          type: 'text',
-          value: null,
-          placeholder: 'name placeholder',
-          errorMessage: null,
-        },
-        submit: {
-          type: 'submit',
-          label: 'Uložit',
-        },
-      },
+      filterForm: getStringFilter(['name'], [{ value: 'hey', operator: 'EQ'}])
     },
   },
   attachments: {
@@ -253,7 +241,7 @@ describe('Metatable utils', () => {
               id: {
                 fields: {
                   filters: {
-                    type: "string-filter",
+                    type: "text",
                     value: [
                       {
                         "operator": "EQ",
@@ -326,15 +314,26 @@ describe('Metatable utils', () => {
       name: {
         filterForm: {
           name: {
-            errorMessage: null,
-            label: "Name",
-            placeholder: "name placeholder",
-            type: "text",
-            value: null
-          },
-          submit: {
-            label: "Uložit",
-            type: "submit"
+            fields: {
+              filters: {
+                type: "text",
+                value: [
+                  {
+                    operator: "EQ",
+                    value: "hey"
+                  }
+                ]
+              },
+              submit: {
+                label: "submit",
+                type: "submit"
+              },
+              type: {
+                type: "hidden",
+                value: "string"
+              }
+            },
+            type: "group"
           }
         },
         label: "CreatedBy",
@@ -353,4 +352,23 @@ describe('Metatable utils', () => {
       }
     })
   });
+  describe("getFilterFormValue", () => {
+    it('gets filter form value', async () => {
+      const value = getFilterFormValue(mockedColumns1.createdBy.name.filterForm);
+      expect(value).toEqual([{"operator": "EQ", "value": "hey"}]);
+    });
+    it('gets nested filter form value', async () => {
+      const value = getFilterFormValue(getStringFilter(['user', 'info', 'username'], [{ value: 'joe', operator: 'LIKE'}]));
+      expect(value).toEqual([{"operator": "LIKE", "value": "joe"}]);
+    });
+    it('gets filter form value if filter form is undefined', async () => {
+      const value = getFilterFormValue(undefined);
+      expect(value).toEqual(undefined);
+    });
+    it('gets filter form value if value is undefined', async () => {
+      const value = getFilterFormValue(getStringFilter(['name'], undefined));
+      expect(value).toEqual(undefined);
+    });
+  })
+
 });

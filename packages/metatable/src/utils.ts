@@ -5,7 +5,7 @@ import {
   isNil,
   lensPath,
   mergeRight,
-  not,
+  not, path,
   pipe,
   prop,
   set,
@@ -78,6 +78,27 @@ export const unsetAllSortFormValues = <TColumns extends Columns<TTypes>, TTypes>
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
+export const getFilterFormValue = (filterForm?: object): object => {
+  return Object.values(filterForm || {}).reduce((acc, field) => {
+    const filterType = path(['type', 'value'], field);
+
+    if(filterType === 'string' || filterType === 'number') {
+      return path(['filters', 'value'], field);
+    }
+
+    if(filterType === 'boolean') {
+      return prop('value', field);
+    }
+
+    if(field && typeof field === 'object') {
+      return getFilterFormValue(field);
+    }
+
+    return acc;
+  }, undefined)
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
 export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): { filters: object; sort: object } => {
   return getColumnPaths(columns).reduce((acc, columnPath) => {
     const columnFilterForm = view(lensPath([...columnPath, 'filterForm']), columns);
@@ -120,18 +141,20 @@ const setNestedForm = (path: string[], form: object) => {
 
 
 type StringFilterValue = Array<{ operator: 'EQ' | 'LIKE', value: string }>;
-export const getStringFilter = (path: string[], value: StringFilterValue) =>
+type Options = { submitLabel?: string, label?: string };
+export const getStringFilter = (path: string[], value: StringFilterValue, options?: Options) =>
   setNestedForm(path, {
     type: {
       type: 'hidden',
       value: 'string',
     },
     filters: {
-      type: 'string-filter',
+      type: 'text',
+      label: options?.label,
       value
     },
     submit: {
       type: 'submit',
-      label: 'submit',
+      label: options?.submitLabel || 'submit',
     },
   })
