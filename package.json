@@ -18,6 +18,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces run build"
+    "build": "yarn workspaces run build",
+    "test": "yarn workspaces run test"
   }
 }
