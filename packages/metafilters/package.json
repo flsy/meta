@@ -9,7 +9,7 @@
   ],
   "license": "ISC",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf ./lib && tsc -b",
     "test": "jest",
     "prepare": "yarn build",
     "prepublishOnly": "yarn test",

@@ -1,15 +1,6 @@
-import { FilterType, IBooleanInput, INumberInput, IStringInput } from '../interfaces';
+import { Filters, IBooleanInput, INumberInput, IStringInput, Sort } from 'core';
 
 export type IColumn = { [key: string]: { type: string; key?: boolean } };
-
-export type SortOrder = 'ASC' | 'DESC';
-export type Sort = {
-  [key: string]: SortOrder | undefined;
-};
-
-type Filters = {
-  [key: string]: FilterType | undefined;
-};
 
 interface IArgs {
   limit?: number;

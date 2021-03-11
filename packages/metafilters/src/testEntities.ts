@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToOne, JoinColumn, OneToMany, ManyToOne } from 'typeorm';
-import { Nullable } from './interfaces';
+import { Nullable } from 'core';
 
 @Entity()
 export class PersonEntity {

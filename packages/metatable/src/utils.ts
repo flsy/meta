@@ -1,6 +1,7 @@
 import { Column, Columns, OneOrMany } from './interfaces';
 import { defaultTo, has, head, isNil, lensPath, mergeRight, not, path, pipe, prop, set, view, when } from 'ramda';
 import { getFormData } from 'metaforms';
+import { Filters, Sort } from 'core';
 
 export const getCellValue = <TRow>(bits: string[]) => (object: TRow): OneOrMany<any> => {
   const [property, ...rest] = bits;
@@ -95,8 +96,7 @@ export const getFilterFormValue = (filterForm?: object): object => {
   }, undefined);
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): { filters: object; sort: object } => {
+export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): { filters: Filters; sort: Sort } => {
   return getColumnPaths(columns).reduce(
     (acc, columnPath) => {
       const columnFilterForm = view(lensPath([...columnPath, 'filterForm']), columns);

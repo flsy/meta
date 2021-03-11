@@ -1,5 +1,6 @@
-import { Optional, Sort, ValueOf } from '../interfaces';
+import { Sort } from '../interfaces';
 import { firstKey } from '../helpers';
+import { Optional, ValueOf } from 'core';
 
 export const encodeCursor = <Entity>(entity: Entity, sort?: Sort<Entity>): string => {
   const key = sort ? firstKey(sort) : 'id';

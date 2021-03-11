@@ -1,7 +1,8 @@
-import { IPaginatorArguments, Optional } from '../interfaces';
+import { IPaginatorArguments } from '../interfaces';
 import { decodeCursor } from '../paginate/paginate';
 import { Condition, mapToCondition } from '../mapping';
 import { firstKeyValue, firstValue } from '../helpers';
+import { Optional } from 'core';
 
 const getPaginateLimiter = <Entity>(entity: string, args?: IPaginatorArguments<Entity>): Optional<Condition> => {
   if (!args?.cursor) {

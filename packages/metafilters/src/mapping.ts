@@ -1,4 +1,4 @@
-import { FilterType, IBooleanInput, INumberInput, IStringInput, IStringsInput, Optional } from './interfaces';
+import { FilterType, IBooleanInput, INumberInput, IStringInput, IStringsInput, Optional } from 'core';
 import { SelectQueryBuilder } from 'typeorm';
 import { firstKeyValue } from './helpers';
 
