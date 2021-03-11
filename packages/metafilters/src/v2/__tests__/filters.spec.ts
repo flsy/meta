@@ -1,12 +1,14 @@
-import { exampleColumn, seed } from "../testData";
-import metafilters from "../index";
-import { all, close, get } from "../sqliteUtils";
+import { exampleColumn, seed } from '../testData';
+import metafilters from '../index';
+import { all, close, get } from '../sqliteUtils';
 
-describe("filters", () => {
-  describe("string filters", () => {
-    it("filter by string EQ", async () => {
+describe('filters', () => {
+  describe('string filters', () => {
+    it('filter by string EQ', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, "person-dash", { filters: { firstName: { type: "string", filters: [{ value: "Beta", operator: "EQ" }] } } });
+      const response = await metafilters(exampleColumn, 'person-dash', {
+        filters: { firstName: { type: 'string', filters: [{ value: 'Beta', operator: 'EQ' }] } },
+      });
 
       const count = await get(db, response.count);
       const nodes = await all(db, response.nodes);
@@ -19,12 +21,14 @@ describe("filters", () => {
 
       expect(count).toEqual({ count: 1 });
       expect(nodes.length).toEqual(1);
-      expect(nodes).toMatchObject([{ firstName: "Beta", lastName: "Woods" }]);
+      expect(nodes).toMatchObject([{ firstName: 'Beta', lastName: 'Woods' }]);
     });
 
-    it("filter by string default LIKE", async () => {
+    it('filter by string default LIKE', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, "person-dash", { filters: { firstName: { type: "string", filters: [{ value: "a" }] } } });
+      const response = await metafilters(exampleColumn, 'person-dash', {
+        filters: { firstName: { type: 'string', filters: [{ value: 'a' }] } },
+      });
 
       const count = await get(db, response.count);
       const nodes = await all(db, response.nodes);
@@ -37,12 +41,14 @@ describe("filters", () => {
 
       expect(count).toEqual({ count: 3 });
       expect(nodes.length).toEqual(3);
-      expect(nodes).toMatchObject([{ firstName: "Alpha" }, { firstName: "Beta" }, { firstName: "Carol" }]);
+      expect(nodes).toMatchObject([{ firstName: 'Alpha' }, { firstName: 'Beta' }, { firstName: 'Carol' }]);
     });
 
-    it("filter by string with null value", async () => {
+    it('filter by string with null value', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, "person-dash", { filters: { firstName: { type: "string", filters: [{ value: null }] } } });
+      const response = await metafilters(exampleColumn, 'person-dash', {
+        filters: { firstName: { type: 'string', filters: [{ value: null }] } },
+      });
 
       const count = await get(db, response.count);
       const nodes = await all(db, response.nodes);
@@ -58,10 +64,11 @@ describe("filters", () => {
       expect(nodes).toMatchObject([]);
     });
 
-    it("handles undefined filters", async () => {
+    it('handles undefined filters', async () => {
       const db = await seed();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const response = await metafilters(exampleColumn, "person-dash", { filters: { name: { type: "string", filters: undefined } } });
+      const response = await metafilters(exampleColumn, 'person-dash', { filters: { name: { type: 'string', filters: undefined } } });
 
       const count = await get(db, response.count);
       const nodes = await all(db, response.nodes);
@@ -77,23 +84,23 @@ describe("filters", () => {
     });
   });
 
-  describe("filters combined", () => {
-    it("filter", async () => {
+  describe('filters combined', () => {
+    it('filter', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, "person-dash", {
+      const response = await metafilters(exampleColumn, 'person-dash', {
         filters: {
-          firstName: { type: "string", filters: [{ value: "a" }, { value: "a" }] },
+          firstName: { type: 'string', filters: [{ value: 'a' }, { value: 'a' }] },
           age: {
-            type: "number",
+            type: 'number',
             filters: [
-              { value: 2, operator: "GT" },
-              { value: 30, operator: "LE" },
+              { value: 2, operator: 'GT' },
+              { value: 30, operator: 'LE' },
             ],
           },
-          isValid: { type: "boolean", value: true },
+          isValid: { type: 'boolean', value: true },
         },
         sort: {
-          age: "ASC",
+          age: 'ASC',
         },
         limit: 7,
       });
@@ -103,14 +110,15 @@ describe("filters", () => {
       await close(db);
 
       expect(response).toMatchObject({
-        count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" like "%a%" AND "firstName" like "%a%" AND "age" > 2 AND "age" <= 30 AND "isValid" = true;',
+        count:
+          'SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" like "%a%" AND "firstName" like "%a%" AND "age" > 2 AND "age" <= 30 AND "isValid" = true;',
         nodes:
           'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" like "%a%" AND "firstName" like "%a%" AND "age" > 2 AND "age" <= 30 AND "isValid" = true ORDER BY "age" ASC LIMIT 7;',
       });
 
       expect(count).toEqual({ count: 2 });
       expect(nodes.length).toEqual(2);
-      expect(nodes).toMatchObject([{ firstName: "Carol" }, { firstName: "Beta" }]);
+      expect(nodes).toMatchObject([{ firstName: 'Carol' }, { firstName: 'Beta' }]);
     });
   });
 });

@@ -1,8 +1,8 @@
-import { FilterType, IBooleanInput, INumberInput, IStringInput } from "../interfaces";
+import { FilterType, IBooleanInput, INumberInput, IStringInput } from '../interfaces';
 
 export type IColumn = { [key: string]: { type: string; key?: boolean } };
 
-export type SortOrder = "ASC" | "DESC";
+export type SortOrder = 'ASC' | 'DESC';
 export type Sort = {
   [key: string]: SortOrder | undefined;
 };
@@ -23,26 +23,26 @@ const escape = (s: string) => `"${s}"`;
 const numberFilter = (name: string, filter: INumberInput): string[] =>
   (filter.filters || []).map(({ operator, value }) => {
     switch (operator) {
-      case "GT":
-        return [escape(name), ">", value].join(" ");
-      case "LT":
-        return [escape(name), "<", value].join(" ");
-      case "GE":
-        return [escape(name), ">=", value].join(" ");
-      case "LE":
-        return [escape(name), "<=", value].join(" ");
-      case "NE": {
+      case 'GT':
+        return [escape(name), '>', value].join(' ');
+      case 'LT':
+        return [escape(name), '<', value].join(' ');
+      case 'GE':
+        return [escape(name), '>=', value].join(' ');
+      case 'LE':
+        return [escape(name), '<=', value].join(' ');
+      case 'NE': {
         if (value === null) {
-          return [escape(name), "is not null"].join(" ");
+          return [escape(name), 'is not null'].join(' ');
         }
-        return [escape(name), "!=", value].join(" ");
+        return [escape(name), '!=', value].join(' ');
       }
-      case "EQ":
+      case 'EQ':
       default:
         if (value === null) {
-          return [escape(name), "is null"].join(" ");
+          return [escape(name), 'is null'].join(' ');
         }
-        return [escape(name), "=", value].join(" ");
+        return [escape(name), '=', value].join(' ');
     }
   });
 
@@ -52,7 +52,7 @@ const stringFilter = (name: string, filter: IStringInput): string[] =>
       return `${escape(name)} is null`;
     }
 
-    if (operator === "EQ") {
+    if (operator === 'EQ') {
       return `${escape(name)} = "${value}"`;
     }
 
@@ -63,17 +63,17 @@ const booleanFilter = (name: string, filter: IBooleanInput): string => {
   if (filter.value === null) {
     return `${escape(name)} is null`;
   }
-  return [escape(name), "=", filter.value].join(" ");
+  return [escape(name), '=', filter.value].join(' ');
 };
 
 const whereFilters = (filters: Filters): string[] => {
   return Object.entries(filters).reduce<string[]>((all, [name, filter]) => {
     switch (filter?.type) {
-      case "string":
+      case 'string':
         return [...all, ...stringFilter(name, filter)];
-      case "number":
+      case 'number':
         return [...all, ...numberFilter(name, filter)];
-      case "boolean":
+      case 'boolean':
         return [...all, booleanFilter(name, filter)];
       default:
         return all;
@@ -88,14 +88,14 @@ const getSortKey = (sort?: Sort): string => {
     }
 
     return acc;
-  }, "");
+  }, '');
 };
 
 const metafilters = <Columns extends IColumn>(columns: Columns, tableName: string, args?: IArgs) => {
   const sortKey = getSortKey(args?.sort);
   const names = Object.keys(columns).map(escape);
 
-  const chunks = [`SELECT ${names.join(", ")}`, `FROM ${escape(tableName)}`];
+  const chunks = [`SELECT ${names.join(', ')}`, `FROM ${escape(tableName)}`];
   const countChunks = [`SELECT COUNT(*) as count`, `FROM ${escape(tableName)}`];
   let wheres: string[] = [];
 
@@ -104,7 +104,7 @@ const metafilters = <Columns extends IColumn>(columns: Columns, tableName: strin
   }
 
   if (wheres.length) {
-    const whereSQL = `WHERE ${wheres.join(" AND ")}`;
+    const whereSQL = `WHERE ${wheres.join(' AND ')}`;
     chunks.push(whereSQL);
     countChunks.push(whereSQL);
   }
@@ -122,8 +122,8 @@ const metafilters = <Columns extends IColumn>(columns: Columns, tableName: strin
   }
 
   return {
-    count: `${countChunks.join(" ")};`,
-    nodes: `${chunks.join(" ")};`,
+    count: `${countChunks.join(' ')};`,
+    nodes: `${chunks.join(' ')};`,
   };
 };
 

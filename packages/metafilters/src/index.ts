@@ -1,12 +1,12 @@
-import { Repository } from "typeorm";
-import { IPaginatorArguments, SortOrder, SortOrderNested } from "./interfaces";
-import { getAllFilters, getFilters } from "./filters/filters";
-import { encodeCursor } from "./paginate/paginate";
-import { mapToSql, sanitize } from "./mapping";
-import { firstKeyValue, isFinalSortOrder, tail } from "./helpers";
+import { Repository } from 'typeorm';
+import { IPaginatorArguments, SortOrder, SortOrderNested } from './interfaces';
+import { getAllFilters, getFilters } from './filters/filters';
+import { encodeCursor } from './paginate/paginate';
+import { mapToSql, sanitize } from './mapping';
+import { firstKeyValue, isFinalSortOrder, tail } from './helpers';
 
-export * from "./interfaces";
-export { default as metafilters2 } from "./v2/index";
+export * from './interfaces';
+export { default as metafilters2 } from './v2/index';
 
 /**
  *
@@ -18,9 +18,9 @@ export { default as metafilters2 } from "./v2/index";
 const metafilters = async <Entity>(
   repository: Repository<Entity>,
   args?: IPaginatorArguments<Entity>,
-  relations?: string[]
+  relations?: string[],
 ): Promise<{ count: number; nodes: Entity[]; cursor?: string }> => {
-  const entity = "entity";
+  const entity = 'entity';
 
   const nodesBuilder = repository.createQueryBuilder(entity);
   const countBuilder = repository.createQueryBuilder(entity);

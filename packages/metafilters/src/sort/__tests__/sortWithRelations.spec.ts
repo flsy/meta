@@ -1,10 +1,10 @@
-import "reflect-metadata";
-import { Connection } from "typeorm";
-import { PersonEntity, TrainEntity } from "../../testEntities";
-import metafilters from "../../index";
-import { getConnection } from "../../testHelpers";
+import 'reflect-metadata';
+import { Connection } from 'typeorm';
+import { PersonEntity, TrainEntity } from '../../testEntities';
+import metafilters from '../../index';
+import { getConnection } from '../../testHelpers';
 
-describe("sort on related entity", () => {
+describe('sort on related entity', () => {
   let connection: Connection;
   beforeEach(async () => {
     connection = await getConnection();
@@ -14,22 +14,22 @@ describe("sort on related entity", () => {
     await connection.close();
   });
 
-  it("sorts on related entity", async () => {
+  it('sorts on related entity', async () => {
     const person1 = new PersonEntity();
-    person1.firstName = "Molly";
-    person1.lastName = "Homesoon";
+    person1.firstName = 'Molly';
+    person1.lastName = 'Homesoon';
     person1.age = 30;
     await connection.manager.save(person1);
 
     const person2 = new PersonEntity();
-    person2.firstName = "Oscar";
-    person2.lastName = "Nommanee";
+    person2.firstName = 'Oscar';
+    person2.lastName = 'Nommanee';
     person2.age = 35;
     await connection.manager.save(person2);
 
     const person3 = new PersonEntity();
-    person3.firstName = "Greg";
-    person3.lastName = "Arias";
+    person3.firstName = 'Greg';
+    person3.lastName = 'Arias';
     person3.age = 40;
     await connection.manager.save(person3);
 
@@ -43,10 +43,10 @@ describe("sort on related entity", () => {
     const result = await metafilters<TrainEntity>(
       trainRepository,
       {
-        filters: { persons: { firstName: { type: "string", filters: [{ operator: "LIKE", value: "o" }] } } },
-        sort: { persons: { age: "DESC" } },
+        filters: { persons: { firstName: { type: 'string', filters: [{ operator: 'LIKE', value: 'o' }] } } },
+        sort: { persons: { age: 'DESC' } },
       },
-      ["persons"]
+      ['persons'],
     );
 
     expect(result.count).toEqual(1);
@@ -57,16 +57,16 @@ describe("sort on related entity", () => {
         persons: [
           {
             age: 35,
-            firstName: "Oscar",
+            firstName: 'Oscar',
             id: 2,
             isArchived: null,
-            lastName: "Nommanee",
+            lastName: 'Nommanee',
           },
           {
-            firstName: "Molly",
+            firstName: 'Molly',
             id: 1,
             isArchived: null,
-            lastName: "Homesoon",
+            lastName: 'Homesoon',
             age: 30,
           },
         ],

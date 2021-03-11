@@ -1,11 +1,11 @@
-import metafilters from "../index";
-import { all, close, get } from "../sqliteUtils";
-import { exampleColumn, seed } from "../testData";
+import metafilters from '../index';
+import { all, close, get } from '../sqliteUtils';
+import { exampleColumn, seed } from '../testData';
 
-describe("sort", () => {
-  it("return records sorted by string DESC", async () => {
+describe('sort', () => {
+  it('return records sorted by string DESC', async () => {
     const db = await seed();
-    const response = await metafilters(exampleColumn, "person-dash", { sort: { firstName: "DESC" } });
+    const response = await metafilters(exampleColumn, 'person-dash', { sort: { firstName: 'DESC' } });
 
     const count = await get(db, response.count);
     const nodes = await all(db, response.nodes);
@@ -17,11 +17,11 @@ describe("sort", () => {
     });
 
     expect(count).toEqual({ count: 4 });
-    expect(nodes).toMatchObject([{ firstName: "Joe" }, { firstName: "Carol" }, { firstName: "Beta" }, { firstName: "Alpha" }]);
+    expect(nodes).toMatchObject([{ firstName: 'Joe' }, { firstName: 'Carol' }, { firstName: 'Beta' }, { firstName: 'Alpha' }]);
   });
-  it("handles undefined sort", async () => {
+  it('handles undefined sort', async () => {
     const db = await seed();
-    const response = await metafilters(exampleColumn, "person-dash", { sort: { id: undefined, lastName: undefined } });
+    const response = await metafilters(exampleColumn, 'person-dash', { sort: { id: undefined, lastName: undefined } });
 
     const count = await get(db, response.count);
     await close(db);

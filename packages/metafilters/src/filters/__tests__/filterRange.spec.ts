@@ -1,10 +1,10 @@
-import { Connection } from "typeorm";
-import { TrainEntity } from "../../testEntities";
-import metafilters, { Sort } from "../../index";
-import { getConnection } from "../../testHelpers";
-import { Filter } from "../../interfaces";
+import { Connection } from 'typeorm';
+import { TrainEntity } from '../../testEntities';
+import metafilters, { Sort } from '../../index';
+import { getConnection } from '../../testHelpers';
+import { Filter } from '../../interfaces';
 
-describe("filter number", () => {
+describe('filter number', () => {
   let connection: Connection;
   beforeEach(async () => {
     connection = await getConnection();
@@ -31,18 +31,18 @@ describe("filter number", () => {
     return metafilters(repository, { filters, sort });
   };
 
-  it("filter on number range", async () => {
+  it('filter on number range', async () => {
     const result = await query(
       {
         number: {
-          type: "number",
+          type: 'number',
           filters: [
-            { operator: "GE", value: 5 },
-            { operator: "LT", value: 8 },
+            { operator: 'GE', value: 5 },
+            { operator: 'LT', value: 8 },
           ],
         },
       },
-      { number: "DESC" }
+      { number: 'DESC' },
     );
     expect(result.count).toEqual(3);
     expect(result.nodes[0].number).toEqual(7);

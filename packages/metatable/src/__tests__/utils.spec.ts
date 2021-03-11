@@ -1,9 +1,4 @@
-import {
-  filterColumnPaths,
-  getStringFilter,
-  unsetAllSortFormValues,
-  toMetaFilters, getFilterFormValue,
-} from '../utils';
+import { filterColumnPaths, getStringFilter, unsetAllSortFormValues, toMetaFilters, getFilterFormValue } from '../utils';
 
 const customerIdFilterForm = {
   customer: {
@@ -18,17 +13,17 @@ const customerIdFilterForm = {
           },
           filters: {
             type: 'text',
-            value: [{ operator: 'EQ', value: "CUST_ID" }]
+            value: [{ operator: 'EQ', value: 'CUST_ID' }],
           },
           submit: {
             type: 'submit',
             label: 'submit',
           },
-        }
-      }
-    }
-  }
-}
+        },
+      },
+    },
+  },
+};
 const mockedColumns1 = {
   id: {
     type: 'number',
@@ -61,10 +56,10 @@ const mockedColumns1 = {
               type: 'sort',
               value: 'ASC',
             },
-          }
-        }
+          },
+        },
       },
-      filterForm: getStringFilter(['name'], [{ value: 'hey', operator: 'EQ'}])
+      filterForm: getStringFilter(['name'], [{ value: 'hey', operator: 'EQ' }]),
     },
   },
   attachments: {
@@ -163,7 +158,7 @@ const mockedColumns2 = {
             type: 'submit',
             label: 'submit',
           },
-        }
+        },
       },
     },
   },
@@ -179,7 +174,7 @@ const col2toMetafilterOutput = {
     customer: {
       id: {
         type: 'string',
-        filters: [{ operator: "EQ", value: 'CUST_ID' }],
+        filters: [{ operator: 'EQ', value: 'CUST_ID' }],
       },
     },
   },
@@ -190,7 +185,7 @@ describe('Metatable utils', () => {
     expect(toMetaFilters(mockedColumns2)).toMatchObject(col2toMetafilterOutput);
   });
   it('gets string filter', async () => {
-    expect(getStringFilter(['customer', 'id'], [{ operator: "EQ", value: 'CUST_ID' }])).toMatchObject(customerIdFilterForm);
+    expect(getStringFilter(['customer', 'id'], [{ operator: 'EQ', value: 'CUST_ID' }])).toMatchObject(customerIdFilterForm);
   });
   it('filters column path', async () => {
     const displayedColumnPaths = filterColumnPaths((column) => !column?.isOmitted)(mockedColumns2);
@@ -202,113 +197,109 @@ describe('Metatable utils', () => {
     expect(result2.id).toEqual({
       isOmitted: true,
       key: true,
-      label: "id",
+      label: 'id',
       sortForm: {
         id: {
-          type: "sort",
-          value: undefined
-        }
+          type: 'sort',
+          value: undefined,
+        },
       },
-      type: "number"
-    })
+      type: 'number',
+    });
 
     expect(result2.name).toEqual({
       key: false,
-      label: "name",
+      label: 'name',
       sortForm: {
         id: {
-          type: "sort",
-          value: undefined
-        }
+          type: 'sort',
+          value: undefined,
+        },
       },
-      type: "string"
-    })
+      type: 'string',
+    });
 
-    expect(result2.customer.id).toEqual(
-      {
-        key: false,
-        label: "customer id",
-        sortForm: {
-          name: {
-            type: "sort",
-            value: undefined,
-          }
+    expect(result2.customer.id).toEqual({
+      key: false,
+      label: 'customer id',
+      sortForm: {
+        name: {
+          type: 'sort',
+          value: undefined,
         },
-        type: "string",
-        filterForm: {
-          customer: {
-            fields: {
-              id: {
-                fields: {
-                  filters: {
-                    type: "text",
-                    value: [
-                      {
-                        "operator": "EQ",
-                        "value": "CUST_ID"
-                      }
-                    ]
-                  },
-                  submit: {
-                    label: "submit",
-                    type: "submit"
-                  },
-                  type: {
-                    type: "hidden",
-                    value: "string"
-                  }
+      },
+      type: 'string',
+      filterForm: {
+        customer: {
+          fields: {
+            id: {
+              fields: {
+                filters: {
+                  type: 'text',
+                  value: [
+                    {
+                      operator: 'EQ',
+                      value: 'CUST_ID',
+                    },
+                  ],
                 },
-                type: "group"
-              }
+                submit: {
+                  label: 'submit',
+                  type: 'submit',
+                },
+                type: {
+                  type: 'hidden',
+                  value: 'string',
+                },
+              },
+              type: 'group',
             },
-            type: "group"
-          }
+          },
+          type: 'group',
         },
-      }
-    )
+      },
+    });
 
-    expect(result2.isDeleted).toEqual(
-      {
-        filterForm: {
-          isDeleted: {
-            fields: {
-              submit: {
-                label: "submit",
-                type: "submit"
-              },
-              type: {
-                type: "hidden",
-                value: "boolean"
-              },
-              value: {
-                type: "checkbox",
-                value: false
-              }
+    expect(result2.isDeleted).toEqual({
+      filterForm: {
+        isDeleted: {
+          fields: {
+            submit: {
+              label: 'submit',
+              type: 'submit',
             },
-            type: "group"
-          }
+            type: {
+              type: 'hidden',
+              value: 'boolean',
+            },
+            value: {
+              type: 'checkbox',
+              value: false,
+            },
+          },
+          type: 'group',
         },
-        isOmitted: true,
-        key: false,
-        label: "is deleted",
-        type: "boolean"
-      }
-    )
+      },
+      isOmitted: true,
+      key: false,
+      label: 'is deleted',
+      type: 'boolean',
+    });
   });
   it('unsetAllSortFormValues nested columns', async () => {
     const result2 = unsetAllSortFormValues(mockedColumns1);
 
     expect(result2.id).toEqual({
       key: true,
-      label: "Id",
+      label: 'Id',
       sortForm: {
         id: {
-          type: "sort",
-          value: undefined
-        }
+          type: 'sort',
+          value: undefined,
+        },
       },
-      type: "number"
-    })
+      type: 'number',
+    });
 
     expect(result2.createdBy).toEqual({
       name: {
@@ -316,50 +307,50 @@ describe('Metatable utils', () => {
           name: {
             fields: {
               filters: {
-                type: "text",
+                type: 'text',
                 value: [
                   {
-                    operator: "EQ",
-                    value: "hey"
-                  }
-                ]
+                    operator: 'EQ',
+                    value: 'hey',
+                  },
+                ],
               },
               submit: {
-                label: "submit",
-                type: "submit"
+                label: 'submit',
+                type: 'submit',
               },
               type: {
-                type: "hidden",
-                value: "string"
-              }
+                type: 'hidden',
+                value: 'string',
+              },
             },
-            type: "group"
-          }
+            type: 'group',
+          },
         },
-        label: "CreatedBy",
+        label: 'CreatedBy',
         sortForm: {
           createdBy: {
             type: 'group',
             fields: {
               name: {
-                type: "sort",
-                value: undefined
-              }
-            }
-          }
+                type: 'sort',
+                value: undefined,
+              },
+            },
+          },
         },
-        type: "string"
-      }
-    })
+        type: 'string',
+      },
+    });
   });
-  describe("getFilterFormValue", () => {
+  describe('getFilterFormValue', () => {
     it('gets filter form value', async () => {
       const value = getFilterFormValue(mockedColumns1.createdBy.name.filterForm);
-      expect(value).toEqual([{"operator": "EQ", "value": "hey"}]);
+      expect(value).toEqual([{ operator: 'EQ', value: 'hey' }]);
     });
     it('gets nested filter form value', async () => {
-      const value = getFilterFormValue(getStringFilter(['user', 'info', 'username'], [{ value: 'joe', operator: 'LIKE'}]));
-      expect(value).toEqual([{"operator": "LIKE", "value": "joe"}]);
+      const value = getFilterFormValue(getStringFilter(['user', 'info', 'username'], [{ value: 'joe', operator: 'LIKE' }]));
+      expect(value).toEqual([{ operator: 'LIKE', value: 'joe' }]);
     });
     it('gets filter form value if filter form is undefined', async () => {
       const value = getFilterFormValue(undefined);
@@ -369,6 +360,5 @@ describe('Metatable utils', () => {
       const value = getFilterFormValue(getStringFilter(['name'], undefined));
       expect(value).toEqual(undefined);
     });
-  })
-
+  });
 });

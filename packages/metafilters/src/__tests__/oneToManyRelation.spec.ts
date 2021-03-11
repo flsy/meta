@@ -1,9 +1,9 @@
-import { Connection } from "typeorm";
-import { getConnection } from "../testHelpers";
-import { PersonEntity, TrainEntity } from "../testEntities";
-import metafilters from "../index";
+import { Connection } from 'typeorm';
+import { getConnection } from '../testHelpers';
+import { PersonEntity, TrainEntity } from '../testEntities';
+import metafilters from '../index';
 
-describe("oneToManyRelation", () => {
+describe('oneToManyRelation', () => {
   let connection: Connection;
   beforeEach(async () => {
     connection = await getConnection();
@@ -13,20 +13,20 @@ describe("oneToManyRelation", () => {
     await connection.close();
   });
 
-  it("filters on related entity", async () => {
+  it('filters on related entity', async () => {
     const person1 = new PersonEntity();
-    person1.firstName = "Molly";
-    person1.lastName = "Homesoon";
+    person1.firstName = 'Molly';
+    person1.lastName = 'Homesoon';
     await connection.manager.save(person1);
 
     const person2 = new PersonEntity();
-    person2.firstName = "Oscar";
-    person2.lastName = "Nommanee";
+    person2.firstName = 'Oscar';
+    person2.lastName = 'Nommanee';
     await connection.manager.save(person2);
 
     const person3 = new PersonEntity();
-    person3.firstName = "Greg";
-    person3.lastName = "Arias";
+    person3.firstName = 'Greg';
+    person3.lastName = 'Arias';
     await connection.manager.save(person3);
 
     const train = new TrainEntity();
@@ -43,9 +43,9 @@ describe("oneToManyRelation", () => {
     const result = await metafilters<TrainEntity>(
       trainRepository,
       {
-        filters: { persons: { firstName: { type: "string", filters: [{ operator: "LIKE", value: "o" }] } } },
+        filters: { persons: { firstName: { type: 'string', filters: [{ operator: 'LIKE', value: 'o' }] } } },
       },
-      ["persons"]
+      ['persons'],
     );
 
     expect(result.count).toEqual(1);
@@ -56,35 +56,35 @@ describe("oneToManyRelation", () => {
         persons: [
           {
             age: null,
-            firstName: "Molly",
+            firstName: 'Molly',
             id: 1,
             isArchived: null,
-            lastName: "Homesoon",
+            lastName: 'Homesoon',
           },
           {
             age: null,
-            firstName: "Oscar",
+            firstName: 'Oscar',
             id: 2,
             isArchived: null,
-            lastName: "Nommanee",
+            lastName: 'Nommanee',
           },
         ],
       },
     ]);
   });
 
-  it("creates 3 trains and 3 peoples and returns only 2 trains", async () => {
+  it('creates 3 trains and 3 peoples and returns only 2 trains', async () => {
     const person1 = new PersonEntity();
-    person1.firstName = "Molly";
-    person1.lastName = "Homesoon";
+    person1.firstName = 'Molly';
+    person1.lastName = 'Homesoon';
 
     const person2 = new PersonEntity();
-    person2.firstName = "Oscar";
-    person2.lastName = "Nommanee";
+    person2.firstName = 'Oscar';
+    person2.lastName = 'Nommanee';
 
     const person3 = new PersonEntity();
-    person3.firstName = "Greg";
-    person3.lastName = "Arias";
+    person3.firstName = 'Greg';
+    person3.lastName = 'Arias';
 
     await connection.manager.save([person1, person2, person3]);
 
@@ -103,7 +103,7 @@ describe("oneToManyRelation", () => {
 
     const trainRepository = connection.getRepository(TrainEntity);
 
-    const result1 = await metafilters<TrainEntity>(trainRepository, { limit: 2 }, ["persons"]);
+    const result1 = await metafilters<TrainEntity>(trainRepository, { limit: 2 }, ['persons']);
 
     expect(result1.nodes).toEqual([
       {
@@ -112,24 +112,24 @@ describe("oneToManyRelation", () => {
         persons: [
           {
             age: null,
-            firstName: "Molly",
+            firstName: 'Molly',
             id: 1,
             isArchived: null,
-            lastName: "Homesoon",
+            lastName: 'Homesoon',
           },
           {
             age: null,
-            firstName: "Oscar",
+            firstName: 'Oscar',
             id: 2,
             isArchived: null,
-            lastName: "Nommanee",
+            lastName: 'Nommanee',
           },
           {
             age: null,
-            firstName: "Greg",
+            firstName: 'Greg',
             id: 3,
             isArchived: null,
-            lastName: "Arias",
+            lastName: 'Arias',
           },
         ],
       },
@@ -139,18 +139,18 @@ describe("oneToManyRelation", () => {
         persons: [
           {
             age: null,
-            firstName: "Oscar",
+            firstName: 'Oscar',
             id: 2,
             isArchived: null,
-            lastName: "Nommanee",
+            lastName: 'Nommanee',
           },
         ],
       },
     ]);
     expect(result1.count).toEqual(3);
-    expect(result1.cursor).toEqual("%7B%22id%22:2%7D");
+    expect(result1.cursor).toEqual('%7B%22id%22:2%7D');
 
-    const result2 = await metafilters<TrainEntity>(trainRepository, { limit: 2, cursor: result1.cursor }, ["persons"]);
+    const result2 = await metafilters<TrainEntity>(trainRepository, { limit: 2, cursor: result1.cursor }, ['persons']);
 
     expect(result2.count).toEqual(3);
     expect(result2.cursor).toEqual(undefined);

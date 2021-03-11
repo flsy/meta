@@ -1,10 +1,10 @@
-import { Connection } from "typeorm";
-import { getConnection } from "../testHelpers";
-import { PersonEntity, ProfileEntity } from "../testEntities";
-import metafilters from "../index";
-import { encodeCursor } from "../paginate/paginate";
+import { Connection } from 'typeorm';
+import { getConnection } from '../testHelpers';
+import { PersonEntity, ProfileEntity } from '../testEntities';
+import metafilters from '../index';
+import { encodeCursor } from '../paginate/paginate';
 
-describe("oneToOneRelation", () => {
+describe('oneToOneRelation', () => {
   let connection: Connection;
   beforeEach(async () => {
     connection = await getConnection();
@@ -14,24 +14,24 @@ describe("oneToOneRelation", () => {
     await connection.close();
   });
 
-  it("filters on related entity", async () => {
+  it('filters on related entity', async () => {
     const person1 = new PersonEntity();
-    person1.firstName = "Molly";
-    person1.lastName = "Homesoon";
+    person1.firstName = 'Molly';
+    person1.lastName = 'Homesoon';
     await connection.manager.save(person1);
 
     const profile1 = new ProfileEntity();
-    profile1.username = "molly";
+    profile1.username = 'molly';
     profile1.person = Promise.resolve(person1);
     await connection.manager.save(profile1);
 
     const person2 = new PersonEntity();
-    person2.firstName = "Oscar";
-    person2.lastName = "Nommanee";
+    person2.firstName = 'Oscar';
+    person2.lastName = 'Nommanee';
     await connection.manager.save(person2);
 
     const profile2 = new ProfileEntity();
-    profile2.username = "oscar";
+    profile2.username = 'oscar';
     profile2.person = Promise.resolve(person2);
     await connection.manager.save(profile2);
 
@@ -40,20 +40,20 @@ describe("oneToOneRelation", () => {
     const result = await metafilters<ProfileEntity>(
       profileRepository,
       {
-        filters: { person: { firstName: { type: "string", filters: [{ operator: "LIKE", value: "moll" }] } } },
+        filters: { person: { firstName: { type: 'string', filters: [{ operator: 'LIKE', value: 'moll' }] } } },
       },
-      ["person"]
+      ['person'],
     );
 
     expect(result.count).toEqual(1);
     expect(result.nodes).toMatchObject([
       {
         id: 1,
-        username: "molly",
+        username: 'molly',
         person: {
           id: 1,
-          firstName: "Molly",
-          lastName: "Homesoon",
+          firstName: 'Molly',
+          lastName: 'Homesoon',
           age: null,
           isArchived: null,
         },
@@ -61,143 +61,145 @@ describe("oneToOneRelation", () => {
     ]);
   });
 
-  it("creates 3 profiles trains and 3 peoples and returns only 2 profiles", async () => {
+  it('creates 3 profiles trains and 3 peoples and returns only 2 profiles', async () => {
     const person1 = new PersonEntity();
-    person1.firstName = "Molly";
-    person1.lastName = "Homesoon";
+    person1.firstName = 'Molly';
+    person1.lastName = 'Homesoon';
 
     const person2 = new PersonEntity();
-    person2.firstName = "Oscar";
-    person2.lastName = "Nommanee";
+    person2.firstName = 'Oscar';
+    person2.lastName = 'Nommanee';
 
     const person3 = new PersonEntity();
-    person3.firstName = "Greg";
-    person3.lastName = "Arias";
+    person3.firstName = 'Greg';
+    person3.lastName = 'Arias';
 
     await connection.manager.save([person1, person2, person3]);
 
     const profile1 = new ProfileEntity();
-    profile1.username = "molly";
+    profile1.username = 'molly';
     profile1.person = Promise.resolve(person1);
 
     const profile2 = new ProfileEntity();
-    profile2.username = "oscar";
+    profile2.username = 'oscar';
     profile2.person = Promise.resolve(person2);
 
     const profile3 = new ProfileEntity();
-    profile3.username = "greg";
+    profile3.username = 'greg';
     profile3.person = Promise.resolve(person3);
 
     await connection.manager.save([profile1, profile2, profile3]);
 
     const profileRepository = connection.getRepository(ProfileEntity);
 
-    const result1 = await metafilters<ProfileEntity>(profileRepository, { limit: 2 }, ["person"]);
+    const result1 = await metafilters<ProfileEntity>(profileRepository, { limit: 2 }, ['person']);
 
     expect(result1.count).toEqual(3);
     expect(result1.nodes).toMatchObject([
       {
         id: 1,
-        username: "molly",
+        username: 'molly',
         person: {
           age: null,
-          firstName: "Molly",
+          firstName: 'Molly',
           id: 1,
           isArchived: null,
-          lastName: "Homesoon",
+          lastName: 'Homesoon',
         },
       },
       {
         id: 2,
-        username: "oscar",
+        username: 'oscar',
         person: {
           age: null,
-          firstName: "Oscar",
+          firstName: 'Oscar',
           id: 2,
           isArchived: null,
-          lastName: "Nommanee",
+          lastName: 'Nommanee',
         },
       },
     ]);
-    expect(result1.cursor).toEqual("%7B%22id%22:2%7D");
+    expect(result1.cursor).toEqual('%7B%22id%22:2%7D');
 
-    const result2 = await metafilters<ProfileEntity>(profileRepository, { limit: 2, cursor: result1.cursor }, ["person"]);
+    const result2 = await metafilters<ProfileEntity>(profileRepository, { limit: 2, cursor: result1.cursor }, ['person']);
 
     expect(result2.count).toEqual(3);
     expect(result2.cursor).toEqual(undefined);
     expect(result2.nodes).toEqual([
       {
         id: 3,
-        username: "greg",
+        username: 'greg',
         person: {
           age: null,
-          firstName: "Greg",
+          firstName: 'Greg',
           id: 3,
           isArchived: null,
-          lastName: "Arias",
+          lastName: 'Arias',
         },
       },
     ]);
   });
 
-  it("creates 5 profiles and 5 peoples and filter and paginate them by one", async () => {
+  it('creates 5 profiles and 5 peoples and filter and paginate them by one', async () => {
     const person1 = new PersonEntity();
-    person1.firstName = "Molly";
-    person1.lastName = "Homesoon";
+    person1.firstName = 'Molly';
+    person1.lastName = 'Homesoon';
 
     const person2 = new PersonEntity();
-    person2.firstName = "Oscar";
-    person2.lastName = "Arias";
+    person2.firstName = 'Oscar';
+    person2.lastName = 'Arias';
 
     const person3 = new PersonEntity();
-    person3.firstName = "Greg";
-    person3.lastName = "Arias";
+    person3.firstName = 'Greg';
+    person3.lastName = 'Arias';
 
     const person4 = new PersonEntity();
-    person4.firstName = "Beta";
-    person4.lastName = "Arias";
+    person4.firstName = 'Beta';
+    person4.lastName = 'Arias';
 
     const person5 = new PersonEntity();
-    person5.firstName = "Gamma";
-    person5.lastName = "Arias";
+    person5.firstName = 'Gamma';
+    person5.lastName = 'Arias';
 
     const person6 = new PersonEntity();
-    person6.firstName = "Delta";
-    person6.lastName = "Arias";
+    person6.firstName = 'Delta';
+    person6.lastName = 'Arias';
 
     await connection.manager.save([person1, person2, person3, person4, person5, person6]);
 
     const profile1 = new ProfileEntity();
-    profile1.username = "molly";
+    profile1.username = 'molly';
     profile1.person = Promise.resolve(person1);
 
     const profile2 = new ProfileEntity();
-    profile2.username = "oscar";
+    profile2.username = 'oscar';
     profile2.person = Promise.resolve(person2);
 
     const profile3 = new ProfileEntity();
-    profile3.username = "greg";
+    profile3.username = 'greg';
     profile3.person = Promise.resolve(person3);
 
     const profile4 = new ProfileEntity();
-    profile4.username = "beta";
+    profile4.username = 'beta';
     profile4.person = Promise.resolve(person4);
 
     const profile5 = new ProfileEntity();
-    profile5.username = "gamma";
+    profile5.username = 'gamma';
     profile5.person = Promise.resolve(person5);
 
     const profile6 = new ProfileEntity();
-    profile6.username = "delta";
+    profile6.username = 'delta';
     profile6.person = Promise.resolve(person6);
 
     await connection.manager.save([profile1, profile2, profile3, profile4, profile5, profile6]);
 
     const profileRepository = connection.getRepository(ProfileEntity);
 
-    const result1 = await metafilters<ProfileEntity>(profileRepository, { limit: 2, filters: { person: { lastName: { type: "string", filters: [{ value: "Arias" }] } } } }, [
-      "person",
-    ]);
+    const result1 = await metafilters<ProfileEntity>(
+      profileRepository,
+      { limit: 2, filters: { person: { lastName: { type: 'string', filters: [{ value: 'Arias' }] } } } },
+      ['person'],
+    );
 
     expect(result1.count).toEqual(5);
     expect(result1.nodes).toMatchObject([
@@ -217,8 +219,8 @@ describe("oneToOneRelation", () => {
 
     const result2 = await metafilters<ProfileEntity>(
       profileRepository,
-      { limit: 2, filters: { person: { lastName: { type: "string", filters: [{ value: "Arias" }] } } }, cursor: result1.cursor },
-      ["person"]
+      { limit: 2, filters: { person: { lastName: { type: 'string', filters: [{ value: 'Arias' }] } } }, cursor: result1.cursor },
+      ['person'],
     );
 
     expect(result2.count).toEqual(5);
@@ -238,8 +240,8 @@ describe("oneToOneRelation", () => {
 
     const result3 = await metafilters<ProfileEntity>(
       profileRepository,
-      { limit: 2, filters: { person: { lastName: { type: "string", filters: [{ value: "Arias" }] } } }, cursor: result2.cursor },
-      ["person"]
+      { limit: 2, filters: { person: { lastName: { type: 'string', filters: [{ value: 'Arias' }] } } }, cursor: result2.cursor },
+      ['person'],
     );
 
     expect(result3.count).toEqual(5);

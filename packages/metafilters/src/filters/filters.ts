@@ -1,7 +1,7 @@
-import { IPaginatorArguments, Optional } from "../interfaces";
-import { decodeCursor } from "../paginate/paginate";
-import { Condition, mapToCondition } from "../mapping";
-import { firstKeyValue, firstValue } from "../helpers";
+import { IPaginatorArguments, Optional } from '../interfaces';
+import { decodeCursor } from '../paginate/paginate';
+import { Condition, mapToCondition } from '../mapping';
+import { firstKeyValue, firstValue } from '../helpers';
 
 const getPaginateLimiter = <Entity>(entity: string, args?: IPaginatorArguments<Entity>): Optional<Condition> => {
   if (!args?.cursor) {
@@ -17,11 +17,11 @@ const getPaginateLimiter = <Entity>(entity: string, args?: IPaginatorArguments<E
 
   if (args?.sort) {
     const sortValue = firstValue(args.sort);
-    if (sortValue === "DESC") {
+    if (sortValue === 'DESC') {
       return {
         name: cursorKey,
         entity,
-        filters: [{ operator: "<", value: cursorValue }],
+        filters: [{ operator: '<', value: cursorValue }],
       };
     }
   }
@@ -29,7 +29,7 @@ const getPaginateLimiter = <Entity>(entity: string, args?: IPaginatorArguments<E
   return {
     name: cursorKey,
     entity,
-    filters: [{ operator: ">", value: cursorValue }],
+    filters: [{ operator: '>', value: cursorValue }],
   };
 };
 

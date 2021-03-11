@@ -1,11 +1,11 @@
-import "reflect-metadata";
-import { createConnection, Repository } from "typeorm";
-import { CoachEntity, PersonEntity, ProfileEntity, TrainEntity } from "./testEntities";
+import 'reflect-metadata';
+import { createConnection, Repository } from 'typeorm';
+import { CoachEntity, PersonEntity, ProfileEntity, TrainEntity } from './testEntities';
 
 export const getConnection = async () =>
   createConnection({
-    type: "sqlite",
-    database: ":memory:",
+    type: 'sqlite',
+    database: ':memory:',
     entities: [PersonEntity, TrainEntity, ProfileEntity, CoachEntity],
     synchronize: true,
     // logging: true,
@@ -20,5 +20,5 @@ export const createPersons = async (repository: Repository<PersonEntity>, person
       person.isArchived = option.isArchived;
       person.age = option.age;
       return person;
-    })
+    }),
   );

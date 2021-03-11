@@ -1,5 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToOne, JoinColumn, OneToMany, ManyToOne } from "typeorm";
-import { Nullable } from "./interfaces";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, OneToOne, JoinColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Nullable } from './interfaces';
 
 @Entity()
 export class PersonEntity {
@@ -12,10 +12,10 @@ export class PersonEntity {
   @Column()
   lastName?: string;
 
-  @Column("int", { nullable: true })
+  @Column('int', { nullable: true })
   age?: Nullable<number>;
 
-  @Column("boolean", { nullable: true })
+  @Column('boolean', { nullable: true })
   isArchived?: Nullable<boolean>;
 
   @ManyToMany(() => TrainEntity, (train) => train.persons, { nullable: true, lazy: true })
@@ -28,7 +28,7 @@ export class CoachEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   color?: string;
 
   @ManyToOne(() => TrainEntity, (train) => train.coaches, { nullable: true, lazy: true })
@@ -41,7 +41,7 @@ export class TrainEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: "int" })
+  @Column({ type: 'int' })
   number!: number;
 
   @OneToMany(() => CoachEntity, (coach) => coach.train, { nullable: true, lazy: true })

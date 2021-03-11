@@ -1,4 +1,4 @@
-import { Database, verbose } from "sqlite3";
+import { Database, verbose } from 'sqlite3';
 
 const sqlite = verbose();
 

@@ -1,10 +1,10 @@
-import { Connection } from "typeorm";
-import { getConnection } from "../testHelpers";
-import { PersonEntity, TrainEntity } from "../testEntities";
-import metafilters from "../index";
-import { encodeCursor } from "../paginate/paginate";
+import { Connection } from 'typeorm';
+import { getConnection } from '../testHelpers';
+import { PersonEntity, TrainEntity } from '../testEntities';
+import metafilters from '../index';
+import { encodeCursor } from '../paginate/paginate';
 
-describe("test", () => {
+describe('test', () => {
   let connection: Connection;
   beforeEach(async () => {
     connection = await getConnection();
@@ -14,15 +14,15 @@ describe("test", () => {
     await connection.close();
   });
 
-  it("filters on related entity", async () => {
+  it('filters on related entity', async () => {
     const person1 = new PersonEntity();
-    person1.firstName = "Molly";
-    person1.lastName = "Homesoon";
+    person1.firstName = 'Molly';
+    person1.lastName = 'Homesoon';
     await connection.manager.save(person1);
 
     const person2 = new PersonEntity();
-    person2.firstName = "Oscar";
-    person2.lastName = "Nommanee";
+    person2.firstName = 'Oscar';
+    person2.lastName = 'Nommanee';
     await connection.manager.save(person2);
 
     const t1 = new TrainEntity();
@@ -46,9 +46,9 @@ describe("test", () => {
       repo,
       {
         limit: 1,
-        filters: { persons: { id: { type: "number", filters: [{ value: 1 }] } } },
+        filters: { persons: { id: { type: 'number', filters: [{ value: 1 }] } } },
       },
-      ["persons"]
+      ['persons'],
     );
 
     expect(r1.cursor).toEqual(encodeCursor({ id: 1 }));
@@ -64,10 +64,10 @@ describe("test", () => {
       repo,
       {
         limit: 1,
-        filters: { persons: { id: { type: "number", filters: [{ value: 1 }] } } },
+        filters: { persons: { id: { type: 'number', filters: [{ value: 1 }] } } },
         cursor: r1.cursor,
       },
-      ["persons"]
+      ['persons'],
     );
     expect(r2.cursor).toEqual(encodeCursor({ id: 2 }));
     expect(r2.count).toEqual(3);
@@ -82,10 +82,10 @@ describe("test", () => {
       repo,
       {
         limit: 1,
-        filters: { persons: { id: { type: "number", filters: [{ value: 1 }] } } },
+        filters: { persons: { id: { type: 'number', filters: [{ value: 1 }] } } },
         cursor: r2.cursor,
       },
-      ["persons"]
+      ['persons'],
     );
     expect(r3.cursor).toEqual(undefined);
     expect(r3.count).toEqual(3);
