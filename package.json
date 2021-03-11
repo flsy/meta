@@ -1,0 +1,23 @@
+{
+  "name": "meta",
+  "version": "0.0.0",
+  "description": "Monorepo for all meta libs",
+  "main": "index.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flsy/meta.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flsy/meta/issues"
+  },
+  "homepage": "https://github.com/flsy/meta#readme",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build"
+  }
+}
