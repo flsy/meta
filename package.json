@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "build": "yarn workspaces run build",
+    "lint": "echo todo",
     "test": "yarn workspaces run test"
   }
 }
