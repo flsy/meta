@@ -18,7 +18,8 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspaces run build",
+    "build": "lerna run build",
+    "release": "lerna publish",
     "lint": "eslint '*/**/*.{js,ts,tsx}'",
     "test": "yarn workspaces run test"
   },
@@ -28,6 +29,7 @@
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "lerna": "^4.0.0",
     "prettier": "^2.2.1",
     "typescript": "^4.2.3"
   }

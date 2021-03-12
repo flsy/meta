@@ -1,11 +1,11 @@
-# `metafilters`
+# `metatable`
 
 > TODO: description
 
 ## Usage
 
 ```
-const metafilters = require('metafilters');
+const metatable = require('metatable');
 
 // TODO: DEMONSTRATE API
 ```

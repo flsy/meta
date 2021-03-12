@@ -1,17 +1,31 @@
 {
   "name": "@falsy/metacore",
   "version": "0.0.1",
-  "description": "",
+  "description": "> TODO: description",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "tsc",
     "lint": "echo todo",
     "test": "echo todo"
   },
-  "author": "",
+  "author": "Honza Smid <jansmidhonza@gmail.com>",
   "license": "ISC",
+  "homepage": "https://github.com/flsy/meta/tree/main/packages/metacore#readme",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flsy/meta.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flsy/meta/issues"
+  },
   "devDependencies": {
     "typescript": "^4.2.3"
   }
