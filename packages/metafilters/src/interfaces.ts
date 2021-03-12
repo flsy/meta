@@ -1,4 +1,4 @@
-import { FilterType } from 'core';
+import { FilterType } from '@falsy/metacore';
 
 type UnArray<T> = T extends Array<infer U> ? U : T;
 type Await<T> = T extends Promise<infer U> ? U : T;

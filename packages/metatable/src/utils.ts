@@ -1,7 +1,7 @@
 import { Column, Columns, OneOrMany } from './interfaces';
 import { defaultTo, has, head, isNil, lensPath, mergeRight, not, path, pipe, prop, set, view, when } from 'ramda';
 import { getFormData } from 'metaforms';
-import { Filters, Sort } from 'core';
+import { Filters, Sort } from '@falsy/metacore';
 
 export const getCellValue = <TRow>(bits: string[]) => (object: TRow): OneOrMany<any> => {
   const [property, ...rest] = bits;

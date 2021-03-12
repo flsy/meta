@@ -1,4 +1,4 @@
-import { Filters, IBooleanInput, INumberInput, IStringInput, Sort } from 'core';
+import { Filters, IBooleanInput, INumberInput, IStringInput, Sort } from '@falsy/metacore';
 
 export type IColumn = { [key: string]: { type: string; key?: boolean } };
 

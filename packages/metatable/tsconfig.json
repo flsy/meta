@@ -21,7 +21,7 @@
   ],
   "references": [
     {
-      "path": "../core"
+      "path": "../metacore"
     }
   ]
 }

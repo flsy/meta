@@ -1,4 +1,4 @@
-import { FilterType, IBooleanInput, INumberInput, IStringInput, IStringsInput, Optional } from 'core';
+import { FilterType, IBooleanInput, INumberInput, IStringInput, IStringsInput, Optional } from '@falsy/metacore';
 import { SelectQueryBuilder } from 'typeorm';
 import { firstKeyValue } from './helpers';
 
