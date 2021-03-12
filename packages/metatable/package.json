@@ -1,6 +1,6 @@
 {
   "name": "metatable",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "private": false,
   "description": "meta table",
   "main": "lib/index",
@@ -34,7 +34,12 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "testRegex": "\\.spec\\.ts$",
-    "moduleFileExtensions": ["ts", "js", "json", "node"],
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json",
+      "node"
+    ],
     "rootDir": "src"
   }
 }
