@@ -25,7 +25,10 @@ describe('notpattern', () => {
 
   it('should return the correct error when multiple rules are given', () => {
     const message = 'Sorry, your password must include spaces';
-    const multipleValidations: Validation[] = [notpattern('invalid password', '[pP][aA][sS][sS][wW][oO][rR][dD]'), notpattern(message, '^\\S*$')];
+    const multipleValidations: Validation[] = [
+      notpattern('invalid password', '[pP][aA][sS][sS][wW][oO][rR][dD]'),
+      notpattern(message, '^\\S*$'),
+    ];
 
     const errorMessage = validateField({}, { value: 'hellothere', validation: multipleValidations });
     expect(errorMessage).toEqual(multipleValidations[1].message);

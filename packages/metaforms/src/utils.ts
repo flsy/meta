@@ -5,11 +5,13 @@ import { validateField } from './validate/validate';
 
 const isNotEmpty = (value: any) => value !== null || value !== undefined;
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 const has = <T extends object>(property: keyof T, o?: T): boolean => !!(o && o[property]);
 
 export const isRequired = (validationRules: Validation[] = []): boolean => !!find(propEq('type', 'required'), validationRules);
 
-const fieldNameWithError = <T extends Field>(form: T): Optional<string> => Object.keys(form).find((name) => has('errorMessage', form[name]));
+const fieldNameWithError = <T extends Field>(form: T): Optional<string> =>
+  Object.keys(form).find((name) => has('errorMessage', form[name]));
 const fieldNameWithoutValue = <T extends Field>(form: T): Optional<string> => Object.keys(form).find((name) => !has('value', form[name]));
 
 /**
@@ -65,10 +67,15 @@ const updateFunction = <D extends Field>(name: keyof D | string[], fn: (field: F
     return { ...all, [key]: field };
   }, {} as any);
 
-export const setFieldOptions = <Option>(name: string | string[], options: Option[]) => updateFunction(name, (field) => ({ ...field, options }));
+export const setFieldOptions = <Option>(name: string | string[], options: Option[]) =>
+  updateFunction(name, (field) => ({ ...field, options }));
 export const setFieldValue = <Value>(name: string | string[], value: Value) => updateFunction(name, (field) => ({ ...field, value }));
 
-export const addFieldIntoGroup = <T extends { [name: string]: { type: string; fields?: T } }, F extends { type: string }>(path: string, newFieldName: string, newField: F) => (form: T): T => {
+export const addFieldIntoGroup = <T extends { [name: string]: { type: string; fields?: T } }, F extends { type: string }>(
+  path: string,
+  newFieldName: string,
+  newField: F,
+) => (form: T): T => {
   return Object.entries(form).reduce((all, [key, field]) => {
     if (field.fields) {
       if (key === path) {
@@ -106,6 +113,7 @@ export const validateForm = <T extends Field>(form: T): T =>
   }, {} as T);
 
 export const update = <T extends Field, Value>(path: string | string[], value: Value, form: T) => setFieldValue(path, value)(form);
-export const validate = <T extends Field>(name: string | string[], form: T) => updateFunction(name, (field) => ({ ...field, errorMessage: validateField(getFormData(form), field) }))(form);
+export const validate = <T extends Field>(name: string | string[], form: T) =>
+  updateFunction(name, (field) => ({ ...field, errorMessage: validateField(getFormData(form), field) }))(form);
 export const updateAndValidate = <T extends Field, Value>(path: string | string[], value: Value, form: T) =>
   updateFunction(path, (field) => ({ ...field, value, errorMessage: validateField(getFormData(form), { ...field, value }) }))(form);

@@ -1,4 +1,18 @@
-import { InList, IsNumber, Max, MaxLength, Min, MinLength, MustBeEqual, MustMatch, MustMatchCaseInsensitive, MustNotContain, NotPattern, Pattern, Required } from './interfaces';
+import {
+  InList,
+  IsNumber,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
+  MustBeEqual,
+  MustMatch,
+  MustMatchCaseInsensitive,
+  MustNotContain,
+  NotPattern,
+  Pattern,
+  Required,
+} from './interfaces';
 import { Field, FieldBody, FormData, Optional } from '../interfaces';
 
 const isString = (value: any): value is string => typeof value === 'string';
@@ -18,7 +32,8 @@ const parseNumber = (value: any): Optional<number> => {
   return undefined;
 };
 
-const isEmpty = <Value extends unknown>(value: Value, rule: Required): Optional<string> => (value === null || value === undefined || value === '' ? rule.message : undefined);
+const isEmpty = <Value extends unknown>(value: Value, rule: Required): Optional<string> =>
+  value === null || value === undefined || value === '' ? rule.message : undefined;
 
 const getErrorIfDoesNotMatchRegEx = <Value>(value: Value, rule: Pattern): Optional<string> => {
   if (isString(value) && value.length > 0) {
@@ -54,13 +69,16 @@ const isGreaterThanMax = <Value>(value: Value, rule: Max): Optional<string> => {
 
 const validateIsNumber = <Value>(value: Value, rule: IsNumber): Optional<string> => (value && !isNumber(value) ? rule.message : undefined);
 
-const isNotEqualToExpectedValue = <Value extends any>(value: Value, rule: MustBeEqual): Optional<string> => (value !== rule.value ? rule.message : undefined);
+const isNotEqualToExpectedValue = <Value extends any>(value: Value, rule: MustBeEqual): Optional<string> =>
+  value !== rule.value ? rule.message : undefined;
 
 const isInList = (value: any, rule: InList): Optional<string> => (!rule.value.includes(value) ? rule.message : undefined);
 
-const isGreaterThanMaxLength = <Value>(value: Value, rule: MaxLength): Optional<string> => (isString(value) && value.length > rule.value ? rule.message : undefined);
+const isGreaterThanMaxLength = <Value>(value: Value, rule: MaxLength): Optional<string> =>
+  isString(value) && value.length > rule.value ? rule.message : undefined;
 
-const isLessThanMinLength = <Value>(value: Value, rule: MinLength): Optional<string> => (isString(value) && value.length < rule.value ? rule.message : undefined);
+const isLessThanMinLength = <Value>(value: Value, rule: MinLength): Optional<string> =>
+  isString(value) && value.length < rule.value ? rule.message : undefined;
 
 const mustMatch = <Value, Form extends Field>(value: Value, rule: MustMatch, formData: FormData<Form>): Optional<string> => {
   if (!formData[rule.value] || formData[rule.value] === (value as any)) {
@@ -79,7 +97,11 @@ const mustNotContain = <Value, Form extends Field>(value: Value, rule: MustNotCo
 
 const equalIgnoreCase = (a?: string, b?: string) => a && b && a.toLowerCase() === b.toLowerCase();
 
-const mustMatchCaseInsensitive = <Value, Form extends Field>(value: Value, rule: MustMatchCaseInsensitive, formData: FormData<Form>): Optional<string> => {
+const mustMatchCaseInsensitive = <Value, Form extends Field>(
+  value: Value,
+  rule: MustMatchCaseInsensitive,
+  formData: FormData<Form>,
+): Optional<string> => {
   const target = formData[rule.value];
   return isString(value) && isString(target) && !equalIgnoreCase(target, value) ? rule.message : undefined;
 };

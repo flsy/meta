@@ -74,4 +74,17 @@ export interface MustMatchCaseInsensitive {
   message: string;
 }
 
-export type Validation = InList | MustBeEqual | Required | MinLength | MaxLength | Pattern | NotPattern | MustNotContain | MustMatch | MustMatchCaseInsensitive | Min | Max | IsNumber;
+export type Validation =
+  | InList
+  | MustBeEqual
+  | Required
+  | MinLength
+  | MaxLength
+  | Pattern
+  | NotPattern
+  | MustNotContain
+  | MustMatch
+  | MustMatchCaseInsensitive
+  | Min
+  | Max
+  | IsNumber;

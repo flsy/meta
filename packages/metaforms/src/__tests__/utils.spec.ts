@@ -6,6 +6,7 @@ describe('utils', () => {
     it('should return correct value', () => {
       expect(isRequired([])).toEqual(false);
       expect(isRequired([required('is required')])).toEqual(true);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       expect(isRequired([{ type: 'blablabal' }])).toEqual(false);
     });

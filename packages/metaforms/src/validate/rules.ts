@@ -1,4 +1,18 @@
-import { InList, IsNumber, Max, MaxLength, Min, MinLength, MustBeEqual, MustMatch, MustMatchCaseInsensitive, MustNotContain, NotPattern, Pattern, Required } from './interfaces';
+import {
+  InList,
+  IsNumber,
+  Max,
+  MaxLength,
+  Min,
+  MinLength,
+  MustBeEqual,
+  MustMatch,
+  MustMatchCaseInsensitive,
+  MustNotContain,
+  NotPattern,
+  Pattern,
+  Required,
+} from './interfaces';
 
 export const required = (message: string): Required => ({
   type: 'required',

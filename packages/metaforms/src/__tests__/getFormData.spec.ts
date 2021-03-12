@@ -4,7 +4,11 @@ import { BooleanField, GroupField, NumberField, SubmitField, TextField } from '.
 
 describe('getFormData', () => {
   it('returns form data', () => {
-    type MyForm = IForm<{ name: TextField; detailed: GroupField<{ age: NumberField; agree: BooleanField; emptyGroup: GroupField<{ update?: NumberField }> }>; submit: SubmitField }>;
+    type MyForm = IForm<{
+      name: TextField;
+      detailed: GroupField<{ age: NumberField; agree: BooleanField; emptyGroup: GroupField<{ update?: NumberField }> }>;
+      submit: SubmitField;
+    }>;
 
     const form1: MyForm = {
       name: {
@@ -52,7 +56,11 @@ describe('getFormData', () => {
       value: number[];
     }
 
-    type MyForm = IForm<{ myCustom: NumberValuesField; myGroup: GroupField<{ myCustomNested: NumberValuesField; inGroup: TextField }>; submit: SubmitField }>;
+    type MyForm = IForm<{
+      myCustom: NumberValuesField;
+      myGroup: GroupField<{ myCustomNested: NumberValuesField; inGroup: TextField }>;
+      submit: SubmitField;
+    }>;
 
     const form1: MyForm = {
       myCustom: {

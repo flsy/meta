@@ -3519,7 +3519,7 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-fputils@^1.0.12:
+fputils@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/fputils/-/fputils-1.1.4.tgz#64b93f956fe9dbfee591d5e320e4e16173904f0c"
   integrity sha512-yQuFDwSe4bCA52u+yLaGt8unDFnYwVoEOfvjJzT3gNR6hzd1p5ODMlzkOeVOCMPWoKempZnxAymkOWPMHUELvA==
@@ -5292,13 +5292,6 @@ merge2@^1.3.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
-
-metaforms@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/metaforms/-/metaforms-1.0.3.tgz#75079b063712b8496f69e98de264d55212c00eb6"
-  integrity sha512-bfsc/41t8+5qNHYxW4OlqQdrSlZg0nUgrBJAOpYjYTuQx4/tUjN/lbe7kvdJwvg+8fovO4pDg236XHTm/yCBsQ==
-  dependencies:
-    fputils "^1.0.12"
 
 micromatch@^3.1.4:
   version "3.1.10"

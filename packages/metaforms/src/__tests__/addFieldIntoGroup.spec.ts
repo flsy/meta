@@ -7,11 +7,13 @@ const field1: TextField = {
   value: 'hello',
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 const groupfield: GroupField<{}> = {
   type: 'group',
   fields: {},
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 const form: IForm<{ field1: TextField; myGroup: GroupField<{}> }> = {
   myGroup: groupfield,
   field1,
@@ -44,6 +46,7 @@ describe('addGroup', () => {
 
   it('add a group into nested fields', () => {
     const field: TextField = { type: 'text', value: 'my' };
+    // eslint-disable-next-line @typescript-eslint/ban-types
     const form1: IForm<{ myGroup: GroupField<{ nestedGroup: GroupField<{}> }> }> = {
       myGroup: {
         type: 'group',
