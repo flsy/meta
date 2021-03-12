@@ -35,18 +35,8 @@
     "typescript": "^4.2.3"
   },
   "jest": {
-    "transform": {
-      ".+\\.(t|j)sx?$": "ts-jest"
-    },
-    "rootDir": "src",
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "rootDir": "src"
   }
 }

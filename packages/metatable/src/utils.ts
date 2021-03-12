@@ -1,7 +1,7 @@
 import { Column, Columns, OneOrMany } from './interfaces';
 import { defaultTo, has, head, isNil, lensPath, mergeRight, not, path, pipe, prop, set, view, when } from 'ramda';
 import { getFormData } from 'metaforms';
-import { Filters, Sort } from '@falsy/metacore';
+import { Filters, IStringInput, Sort } from '@falsy/metacore';
 
 export const getCellValue = <TRow>(bits: string[]) => (object: TRow): OneOrMany<any> => {
   const [property, ...rest] = bits;
@@ -131,9 +131,8 @@ const setNestedForm = (path: string[], form: object) => {
   return set(lensPath(pathWFields), form, o);
 };
 
-type StringFilterValue = Array<{ operator: 'EQ' | 'LIKE'; value: string }>;
 type Options = { submitLabel?: string; label?: string };
-export const getStringFilter = (path: string[], value?: StringFilterValue, options?: Options) =>
+export const getStringFilter = (path: string[], value?: IStringInput['filters'], options?: Options) =>
   setNestedForm(path, {
     type: {
       type: 'hidden',

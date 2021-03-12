@@ -46,13 +46,6 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "testRegex": "\\.spec\\.ts$",
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json",
-      "node"
-    ],
     "rootDir": "src"
   }
 }
