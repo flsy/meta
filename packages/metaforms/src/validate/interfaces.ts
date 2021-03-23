@@ -77,6 +77,7 @@ export interface MustMatchCaseInsensitive {
 export interface ArrayValidation {
   type: 'array';
   value: Validation[][];
+  message: undefined;
 }
 
 export type Validation =

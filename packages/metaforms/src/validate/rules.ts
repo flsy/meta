@@ -94,5 +94,6 @@ export const inList = (message: string, value: string[]): InList => ({
 
 export const array = (...value: Validation[][]): ArrayValidation => ({
   type: 'array',
+  message: undefined,
   value,
 });
