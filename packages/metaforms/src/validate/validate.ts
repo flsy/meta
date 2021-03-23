@@ -1,4 +1,5 @@
 import {
+  ArrayValidation,
   InList,
   IsNumber,
   Max,
@@ -12,6 +13,7 @@ import {
   NotPattern,
   Pattern,
   Required,
+  Validation,
 } from './interfaces';
 import { Field, FieldBody, FormData, Optional } from '../interfaces';
 
@@ -106,58 +108,67 @@ const mustMatchCaseInsensitive = <Value, Form extends Field>(
   return isString(value) && isString(target) && !equalIgnoreCase(target, value) ? rule.message : undefined;
 };
 
+const validate = <T extends Field>(fieldValue: unknown, rule: Validation, formData: FormData<T>): Optional<string> => {
+  switch (rule.type) {
+    case 'required':
+      return isEmpty(fieldValue, rule);
+
+    case 'minlength':
+      return isLessThanMinLength(fieldValue, rule);
+
+    case 'maxlength':
+      return isGreaterThanMaxLength(fieldValue, rule);
+
+    case 'mustbeequal':
+      return isNotEqualToExpectedValue(fieldValue, rule);
+
+    case 'inlist':
+      return isInList(fieldValue, rule);
+
+    case 'pattern':
+      return getErrorIfDoesNotMatchRegEx(fieldValue, rule);
+
+    case 'notpattern':
+      return getErrorIfMatchesRegEx(fieldValue, rule);
+
+    case 'mustmatch':
+      return mustMatch(fieldValue, rule, formData);
+
+    case 'mustmatchcaseinsensitive':
+      return mustMatchCaseInsensitive(fieldValue, rule, formData);
+
+    case 'mustnotcontain':
+      return mustNotContain(fieldValue, rule, formData);
+
+    case 'min':
+      return isLessThanMin(fieldValue, rule);
+
+    case 'max':
+      return isGreaterThanMax(fieldValue, rule);
+
+    case 'isNumber':
+      return validateIsNumber(fieldValue, rule);
+
+    case 'array':
+      return rule.value.reduce<Optional<string>>((acc, curr, index) => {
+        if (acc) {
+          return acc;
+        }
+
+        const errorMessages = curr.map((r) => validate((fieldValue as unknown[])[index], r, formData)).filter((error) => error);
+        return errorMessages.length > 0 ? errorMessages[0] : acc;
+      }, undefined);
+
+    default:
+      return undefined;
+  }
+};
+
 export const validateField = <T extends Field>(formData: FormData<T>, field: Partial<FieldBody>): Optional<string> => {
   if (!field) {
     return undefined;
   }
 
-  const errorMessages = (field.validation || [])
-    .map((rule) => {
-      switch (rule.type) {
-        case 'required':
-          return isEmpty(field.value, rule);
-
-        case 'minlength':
-          return isLessThanMinLength(field.value, rule);
-
-        case 'maxlength':
-          return isGreaterThanMaxLength(field.value, rule);
-
-        case 'mustbeequal':
-          return isNotEqualToExpectedValue(field.value, rule);
-
-        case 'inlist':
-          return isInList(field.value, rule);
-
-        case 'pattern':
-          return getErrorIfDoesNotMatchRegEx(field.value, rule);
-
-        case 'notpattern':
-          return getErrorIfMatchesRegEx(field.value, rule);
-
-        case 'mustmatch':
-          return mustMatch(field.value, rule, formData);
-
-        case 'mustmatchcaseinsensitive':
-          return mustMatchCaseInsensitive(field.value, rule, formData);
-
-        case 'mustnotcontain':
-          return mustNotContain(field.value, rule, formData);
-
-        case 'min':
-          return isLessThanMin(field.value, rule);
-
-        case 'max':
-          return isGreaterThanMax(field.value, rule);
-
-        case 'isNumber':
-          return validateIsNumber(field.value, rule);
-
-        default:
-          return undefined;
-      }
-    })
-    .filter((error) => error && error !== null);
-
+  const errorMessages = (field.validation || []).map((rule) => validate(field.value, rule, formData)).filter((error) => error);
   return errorMessages.length > 0 ? errorMessages[0] : undefined;
 };

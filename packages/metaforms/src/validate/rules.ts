@@ -1,4 +1,5 @@
 import {
+  ArrayValidation,
   InList,
   IsNumber,
   Max,
@@ -12,6 +13,7 @@ import {
   NotPattern,
   Pattern,
   Required,
+  Validation,
 } from './interfaces';
 
 export const required = (message: string): Required => ({
@@ -87,5 +89,10 @@ export const mustbeequal = (message: string, value: number | string | boolean): 
 export const inList = (message: string, value: string[]): InList => ({
   type: 'inlist',
   message,
+  value,
+});
+
+export const array = (...value: Validation[][]): ArrayValidation => ({
+  type: 'array',
   value,
 });

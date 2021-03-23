@@ -74,7 +74,13 @@ export interface MustMatchCaseInsensitive {
   message: string;
 }
 
+export interface ArrayValidation {
+  type: 'array';
+  value: Validation[][];
+}
+
 export type Validation =
+  | ArrayValidation
   | InList
   | MustBeEqual
   | Required
