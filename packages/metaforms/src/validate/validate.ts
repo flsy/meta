@@ -155,7 +155,9 @@ const validate = <T extends Field>(fieldValue: unknown, rule: Validation, formDa
           return acc;
         }
 
-        const errorMessages = curr.map((r) => validate((fieldValue as unknown[])[index], r, formData)).filter((error) => error);
+        const errorMessages = curr
+          .map((r) => validate(fieldValue ? (fieldValue as unknown[])[index] : undefined, r, formData))
+          .filter((error) => error);
         return errorMessages.length > 0 ? errorMessages[0] : acc;
       }, undefined);
 

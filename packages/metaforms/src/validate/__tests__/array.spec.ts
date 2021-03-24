@@ -10,6 +10,11 @@ describe('array', () => {
     ),
   ];
 
+  it('should return an error message when field value is undefined', () => {
+    const errorMessage = validateField({}, { type: 'text', value: undefined, validation });
+    expect(errorMessage).toEqual('This is required');
+  });
+
   it('should return an error message when the first array value is empty', () => {
     const errorMessage = validateField({}, { type: 'text', value: [], validation });
     expect(errorMessage).toEqual('This is required');
