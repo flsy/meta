@@ -1,7 +1,7 @@
 import { array, isNumber, required } from '../rules';
 import { validateField } from '../validate';
 
-describe('array', () => {
+describe('array validation', () => {
   const validation = [
     array(
       [required('This is required'), isNumber("This doesn't look like a number")],
