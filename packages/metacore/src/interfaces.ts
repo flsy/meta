@@ -4,19 +4,29 @@ export type ValueOf<T> = T[keyof T];
 
 export type SortOrder = 'ASC' | 'DESC';
 export type Sort = {
-  [key: string]: SortOrder | undefined;
+  [key: string]: Optional<SortOrder>;
 };
+
+/**
+ * Build-in or User-defined SQL function name
+ */
+type CustomFunction = Nullable<string>;
 
 export interface IBooleanInput {
   type: 'boolean';
   value: Nullable<boolean>;
+  customFunction?: CustomFunction;
 }
 
 export interface IStringInput {
   type: 'string';
   filters: {
     value: Nullable<string>;
-    operator?: Nullable<'EQ' | 'LIKE'>; // defaults to LIKE
+    /**
+     * Defaults to LIKE
+     */
+    operator?: Nullable<'EQ' | 'LIKE'>;
+    customFunction?: CustomFunction;
   }[];
 }
 
@@ -30,7 +40,11 @@ export interface INumberInput {
   type: 'number';
   filters: {
     value: Nullable<number>;
-    operator?: 'GT' | 'LT' | 'GE' | 'LE' | 'EQ' | 'NE'; // defaults to EQ
+    /**
+     *  Defaults to EQ
+     */
+    operator?: 'GT' | 'LT' | 'GE' | 'LE' | 'EQ' | 'NE';
+    customFunction?: CustomFunction;
   }[];
 }
 
@@ -39,6 +53,7 @@ export interface IStringsInput {
   filters: {
     value: Nullable<Array<Nullable<string>>>;
     operator?: Nullable<'EQ'>;
+    customFunction?: CustomFunction;
   }[];
 }
 

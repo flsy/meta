@@ -82,6 +82,26 @@ describe('filters', () => {
       expect(count).toEqual({ count: 4 });
       expect(nodes.length).toEqual(4);
     });
+
+    it('filter by string with user defined function', async () => {
+      const db = await seed();
+      const response = await metafilters(exampleColumn, 'person-dash', {
+        filters: { firstName: { type: 'string', filters: [{ value: 'beta', operator: 'EQ', customFunction: 'lower' }] } },
+      });
+
+      const count = await get(db, response.count);
+      const nodes = await all(db, response.nodes);
+      await close(db);
+
+      expect(response).toMatchObject({
+        count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE lower("firstName") = "beta";',
+        nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE lower("firstName") = "beta";',
+      });
+
+      expect(count).toEqual({ count: 1 });
+      expect(nodes.length).toEqual(1);
+      expect(nodes).toMatchObject([{ firstName: 'Beta' }]);
+    });
   });
 
   describe('filters combined', () => {
