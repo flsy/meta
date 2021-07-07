@@ -1,4 +1,5 @@
-import { Filters, IBooleanInput, INumberInput, IStringInput, Sort } from '@falsy/metacore';
+import { Filters, IBooleanInput, INumberInput, IStringInput, Nullable, Sort } from '@falsy/metacore';
+import { pipe } from 'fputils';
 
 export type IColumn = { [key: string]: { type: string; key?: boolean } };
 
@@ -10,51 +11,57 @@ interface IArgs {
 }
 
 const escape = (s: string) => `"${s}"`;
+const useCustomFunction = (fn?: Nullable<string>) => (s: string): string => (fn ? `${fn}(${s})` : s);
+const prepareColumnName = (columnName: string, customFunctionName?: Nullable<string>) =>
+  pipe(columnName, escape, useCustomFunction(customFunctionName));
 
 const numberFilter = (name: string, filter: INumberInput): string[] =>
-  (filter.filters || []).map(({ operator, value }) => {
+  (filter.filters || []).map(({ operator, value, customFunction }) => {
+    const columnName = prepareColumnName(name, customFunction);
     switch (operator) {
       case 'GT':
-        return [escape(name), '>', value].join(' ');
+        return [columnName, '>', value].join(' ');
       case 'LT':
-        return [escape(name), '<', value].join(' ');
+        return [columnName, '<', value].join(' ');
       case 'GE':
-        return [escape(name), '>=', value].join(' ');
+        return [columnName, '>=', value].join(' ');
       case 'LE':
-        return [escape(name), '<=', value].join(' ');
+        return [columnName, '<=', value].join(' ');
       case 'NE': {
         if (value === null) {
-          return [escape(name), 'is not null'].join(' ');
+          return [columnName, 'is not null'].join(' ');
         }
-        return [escape(name), '!=', value].join(' ');
+        return [columnName, '!=', value].join(' ');
       }
       case 'EQ':
       default:
         if (value === null) {
-          return [escape(name), 'is null'].join(' ');
+          return [columnName, 'is null'].join(' ');
         }
-        return [escape(name), '=', value].join(' ');
+        return [columnName, '=', value].join(' ');
     }
   });
 
 const stringFilter = (name: string, filter: IStringInput): string[] =>
-  (filter.filters || []).map(({ value, operator }) => {
+  (filter.filters || []).map(({ value, operator, customFunction }) => {
+    const columnName = prepareColumnName(name, customFunction);
     if (value === null) {
-      return `${escape(name)} is null`;
+      return `${columnName} is null`;
     }
 
     if (operator === 'EQ') {
-      return `${escape(name)} = "${value}"`;
+      return `${columnName} = "${value}"`;
     }
 
-    return `${escape(name)} like "%${value}%"`;
+    return `${columnName} like "%${value}%"`;
   });
 
 const booleanFilter = (name: string, filter: IBooleanInput): string => {
+  const columnName = prepareColumnName(name, filter.customFunction);
   if (filter.value === null) {
-    return `${escape(name)} is null`;
+    return `${columnName} is null`;
   }
-  return [escape(name), '=', filter.value].join(' ');
+  return [columnName, '=', filter.value].join(' ');
 };
 
 const whereFilters = (filters: Filters): string[] => {

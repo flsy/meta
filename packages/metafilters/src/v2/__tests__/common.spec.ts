@@ -2,7 +2,7 @@ import metafilters from '../index';
 import { all, close } from '../sqliteUtils';
 import { exampleColumn, seed } from '../testData';
 
-describe('comon code', () => {
+describe('common code', () => {
   it('map records to table column names', async () => {
     const db = await seed();
     const response = await metafilters(exampleColumn, 'person-dash');
