@@ -61,7 +61,7 @@ const stringFilter = (name: string, filter: IStringInput): string[] =>
         return `${columnName} > '${value}'`;
       case 'NE': {
         if (value === null) {
-          return `${columnName} is null`;
+          return `${columnName} is not null`;
         }
         return `${columnName} != '${value}'`;
       }
