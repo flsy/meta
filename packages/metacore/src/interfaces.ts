@@ -12,6 +12,16 @@ export type Sort = {
  */
 type CustomFunction = Nullable<string>;
 
+/**
+ * EQ - Equal to
+ * NE - Not equal to
+ * GT - Greater than
+ * GE - Greater than or equal to
+ * LT - Less than
+ * LE - Less than or equal to
+ */
+type Operator = Nullable<'EQ' | 'LIKE' | 'GT' | 'LT' | 'GE' | 'LE' | 'NE'>;
+
 export interface IBooleanInput {
   type: 'boolean';
   value: Nullable<boolean>;
@@ -25,17 +35,11 @@ export interface IStringInput {
     /**
      * Defaults to LIKE
      */
-    operator?: Nullable<'EQ' | 'LIKE'>;
+    operator?: Operator;
     customFunction?: CustomFunction;
   }[];
 }
 
-// EQ - Equal to
-// NE - Not equal to
-// GT - Greater than
-// GE - Greater than or equal to
-// LT - Less than
-// LE - Less than or equal to
 export interface INumberInput {
   type: 'number';
   filters: {
@@ -43,7 +47,7 @@ export interface INumberInput {
     /**
      *  Defaults to EQ
      */
-    operator?: 'GT' | 'LT' | 'GE' | 'LE' | 'EQ' | 'NE';
+    operator?: Operator;
     customFunction?: CustomFunction;
   }[];
 }

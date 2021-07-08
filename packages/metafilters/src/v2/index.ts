@@ -27,6 +27,8 @@ const numberFilter = (name: string, filter: INumberInput): string[] =>
         return [columnName, '>=', value].join(' ');
       case 'LE':
         return [columnName, '<=', value].join(' ');
+      case 'LIKE':
+        return [columnName, 'like', `'%${value}%'`].join(' ');
       case 'NE': {
         if (value === null) {
           return [columnName, 'is not null'].join(' ');
@@ -45,15 +47,32 @@ const numberFilter = (name: string, filter: INumberInput): string[] =>
 const stringFilter = (name: string, filter: IStringInput): string[] =>
   (filter.filters || []).map(({ value, operator, customFunction }) => {
     const columnName = prepareColumnName(name, customFunction);
-    if (value === null) {
-      return `${columnName} is null`;
-    }
 
-    if (operator === 'EQ') {
-      return `${columnName} = "${value}"`;
+    switch (operator) {
+      case 'EQ':
+        return `${columnName} = '${value}'`;
+      case 'GE':
+        return `${columnName} >= '${value}'`;
+      case 'LE':
+        return `${columnName} <= '${value}'`;
+      case 'LT':
+        return `${columnName} < '${value}'`;
+      case 'GT':
+        return `${columnName} > '${value}'`;
+      case 'NE': {
+        if (value === null) {
+          return `${columnName} is not null`;
+        }
+        return `${columnName} != '${value}'`;
+      }
+      case 'LIKE':
+      default: {
+        if (value === null) {
+          return `${columnName} is null`;
+        }
+        return `${columnName} like '%${value}%'`;
+      }
     }
-
-    return `${columnName} like "%${value}%"`;
   });
 
 const booleanFilter = (name: string, filter: IBooleanInput): string => {
