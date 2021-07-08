@@ -15,13 +15,67 @@ describe('filters', () => {
       await close(db);
 
       expect(response).toMatchObject({
-        count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" = "Beta";',
-        nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" = "Beta";',
+        count: `SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" = 'Beta';`,
+        nodes: `SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" = 'Beta';`,
       });
 
       expect(count).toEqual({ count: 1 });
       expect(nodes.length).toEqual(1);
       expect(nodes).toMatchObject([{ firstName: 'Beta', lastName: 'Woods' }]);
+    });
+
+    it('filter string by GE and LE operators', async () => {
+      const db = await seed();
+      const filters = metafilters(exampleColumn, 'person-dash', {
+        filters: {
+          firstName: {
+            type: 'string',
+            filters: [
+              { value: 'B', operator: 'GE' },
+              { value: 'C', operator: 'LE' },
+            ],
+          },
+        },
+      });
+
+      expect(filters).toEqual({
+        count: `SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" >= 'B' AND "firstName" <= 'C';`,
+        nodes: `SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" >= 'B' AND "firstName" <= 'C';`,
+      });
+
+      const count = await get(db, filters.count);
+      const nodes = await all(db, filters.nodes);
+      await db.close();
+
+      expect(count).toEqual({ count: 1 });
+      expect(nodes).toEqual([
+        {
+          age: 30,
+          firstName: 'Beta',
+          id: 3,
+          isValid: 1,
+          lastName: 'Woods',
+        },
+      ]);
+    });
+
+    it('filter string by NE operator', async () => {
+      const db = await seed();
+      const filters = metafilters(exampleColumn, 'person-dash', {
+        filters: { lastName: { type: 'string', filters: [{ operator: 'NE', value: 'Forest' }] } },
+      });
+
+      expect(filters).toEqual({
+        count: `SELECT COUNT(*) as count FROM "person-dash" WHERE "lastName" != 'Forest';`,
+        nodes: `SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "lastName" != 'Forest';`,
+      });
+
+      const count = await get(db, filters.count);
+      const nodes = await all(db, filters.nodes);
+      await db.close();
+
+      expect(count).toEqual({ count: 3 });
+      expect(nodes).toMatchObject([{ lastName: 'Tree' }, { lastName: 'Woods' }, { lastName: 'RainForest' }]);
     });
 
     it('filter by string default LIKE', async () => {
@@ -35,8 +89,8 @@ describe('filters', () => {
       await close(db);
 
       expect(response).toMatchObject({
-        count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" like "%a%";',
-        nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" like "%a%";',
+        count: `SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" like '%a%';`,
+        nodes: `SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" like '%a%';`,
       });
 
       expect(count).toEqual({ count: 3 });
@@ -94,8 +148,8 @@ describe('filters', () => {
       await close(db);
 
       expect(response).toMatchObject({
-        count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE lower("firstName") = "beta";',
-        nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE lower("firstName") = "beta";',
+        count: `SELECT COUNT(*) as count FROM "person-dash" WHERE lower("firstName") = 'beta';`,
+        nodes: `SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE lower("firstName") = 'beta';`,
       });
 
       expect(count).toEqual({ count: 1 });
@@ -130,15 +184,39 @@ describe('filters', () => {
       await close(db);
 
       expect(response).toMatchObject({
-        count:
-          'SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" like "%a%" AND "firstName" like "%a%" AND "age" > 2 AND "age" <= 30 AND "isValid" = true;',
-        nodes:
-          'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" like "%a%" AND "firstName" like "%a%" AND "age" > 2 AND "age" <= 30 AND "isValid" = true ORDER BY "age" ASC LIMIT 7;',
+        count: `SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" like '%a%' AND "firstName" like '%a%' AND "age" > 2 AND "age" <= 30 AND "isValid" = true;`,
+        nodes: `SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" like '%a%' AND "firstName" like '%a%' AND "age" > 2 AND "age" <= 30 AND "isValid" = true ORDER BY "age" ASC LIMIT 7;`,
       });
 
       expect(count).toEqual({ count: 2 });
       expect(nodes.length).toEqual(2);
       expect(nodes).toMatchObject([{ firstName: 'Carol' }, { firstName: 'Beta' }]);
+    });
+  });
+
+  describe('number filter', () => {
+    it('filter number by like operator', async () => {
+      const db = await seed();
+      const response = metafilters(exampleColumn, 'person-dash', {
+        filters: {
+          age: {
+            type: 'number',
+            filters: [{ value: 2, operator: 'LIKE' }],
+          },
+        },
+      });
+
+      expect(response).toEqual({
+        count: `SELECT COUNT(*) as count FROM "person-dash" WHERE "age" like '%2%';`,
+        nodes: `SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "age" like '%2%';`,
+      });
+
+      const count = await get(db, response.count);
+      const nodes = await all(db, response.nodes);
+      await db.close();
+
+      expect(count).toEqual({ count: 2 });
+      expect(nodes).toMatchObject([{ age: 52 }, { age: 2 }]);
     });
   });
 });
