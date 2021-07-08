@@ -1,6 +1,6 @@
 {
   "name": "metafilters",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "MetaFilters - library for dealing with filters",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -31,7 +31,7 @@
     "verify": "yarn test && yarn build"
   },
   "dependencies": {
-    "@falsy/metacore": "^0.0.4",
+    "@falsy/metacore": "^0.0.5",
     "fputils": "^1.2.4",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.29",
