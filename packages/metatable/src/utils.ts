@@ -1,7 +1,6 @@
-import { Column, Columns, IMetaFiltersArgs, OneOrMany, IStringInput, FieldBody, FilterType } from '@falsy/metacore';
+import { Column, Columns, IMetaFiltersArgs, OneOrMany, IStringInput, FieldBody, IBooleanInput, INumberInput } from '@falsy/metacore';
 import { defaultTo, has, head, isNil, lensPath, mergeRight, not, path, pipe, prop, set, view, when } from 'ramda';
 import { Field, getFormData } from 'metaforms';
-import { IBooleanInput, INumberInput } from '@falsy/metacore/src/metafilters/interfaces';
 
 export const getCellValue = <TRow>(bits: string[]) => (object: TRow): OneOrMany<any> => {
   const [property, ...rest] = bits;
