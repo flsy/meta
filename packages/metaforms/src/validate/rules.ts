@@ -14,7 +14,7 @@ import {
   Pattern,
   Required,
   Validation,
-} from './interfaces';
+} from '@falsy/metacore';
 
 export const required = (message: string): Required => ({
   type: 'required',

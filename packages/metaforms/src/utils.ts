@@ -1,6 +1,5 @@
 import { find, isArray, Optional, propEq } from 'fputils';
-import { Validation } from './validate/interfaces';
-import { Field, FieldBody, FormData } from './interfaces';
+import { Validation, Field, FieldBody, FormData } from '@falsy/metacore';
 import { validateField } from './validate/validate';
 
 const isNotEmpty = (value: any) => value !== null || value !== undefined;

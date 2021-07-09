@@ -1,4 +1,4 @@
-export * from './interfaces';
+export * from '@falsy/metacore';
 export {
   getCellValue,
   getColumnPaths,

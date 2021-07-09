@@ -1,5 +1,4 @@
 import {
-  ArrayValidation,
   InList,
   IsNumber,
   Max,
@@ -14,8 +13,11 @@ import {
   Pattern,
   Required,
   Validation,
-} from './interfaces';
-import { Field, FieldBody, FormData, Optional } from '../interfaces';
+  Field,
+  FieldBody,
+  FormData,
+  Optional,
+} from '@falsy/metacore';
 
 const isString = (value: any): value is string => typeof value === 'string';
 const isNumber = (value: any): value is number => typeof value === 'number';

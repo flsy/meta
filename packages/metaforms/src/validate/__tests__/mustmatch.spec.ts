@@ -1,6 +1,6 @@
 import { mustmatch } from '../rules';
 import { validateField } from '../validate';
-import { IForm } from '../../interfaces';
+import { IForm } from '@falsy/metacore';
 import { TextField } from '../../testInterfaces';
 
 describe('mustmatch', () => {
