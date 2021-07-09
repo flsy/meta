@@ -1,4 +1,4 @@
-import { IForm } from '../interfaces';
+import { IForm } from '@falsy/metacore';
 import { setFieldOptions } from '../utils';
 
 interface Option {

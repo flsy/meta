@@ -1,5 +1,5 @@
 import { setFieldValue } from '../utils';
-import { IForm } from '../interfaces';
+import { IForm } from '@falsy/metacore';
 import { GroupField, NumberField, TextField } from '../testInterfaces';
 
 describe('setFieldValue', () => {

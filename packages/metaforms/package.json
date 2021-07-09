@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/flsy/metaforms#readme",
   "dependencies": {
+    "@falsy/metacore": "^0.0.5",
     "fputils": "^1.2.4"
   },
   "devDependencies": {

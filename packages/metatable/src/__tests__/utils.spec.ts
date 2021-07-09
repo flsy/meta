@@ -1,6 +1,7 @@
 import { filterColumnPaths, getStringFilter, unsetAllSortFormValues, toMetaFilters, getFilterFormValue } from '../utils';
+import { Columns, Field } from '@falsy/metacore';
 
-const customerIdFilterForm = {
+const customerIdFilterForm: Field = {
   customer: {
     type: 'group',
     fields: {
@@ -24,7 +25,7 @@ const customerIdFilterForm = {
     },
   },
 };
-const mockedColumns1 = {
+const mockedColumns1: Columns<'number' | 'timestamp' | 'string' | 'boolean'> = {
   id: {
     type: 'number',
     label: 'Id',
@@ -100,7 +101,7 @@ const mockedColumns1 = {
     },
   },
 };
-const mockedColumns2 = {
+const mockedColumns2: Columns<'number' | 'string' | 'boolean'> = {
   id: {
     label: 'id',
     type: 'number',
@@ -219,7 +220,7 @@ describe('Metatable utils', () => {
       type: 'string',
     });
 
-    expect(result2.customer.id).toEqual({
+    expect(result2.customer['id']).toEqual({
       key: false,
       label: 'customer id',
       sortForm: {
@@ -345,7 +346,7 @@ describe('Metatable utils', () => {
   });
   describe('getFilterFormValue', () => {
     it('gets filter form value', async () => {
-      const value = getFilterFormValue(mockedColumns1.createdBy.name.filterForm);
+      const value = getFilterFormValue(mockedColumns1.createdBy['name'].filterForm);
       expect(value).toEqual([{ operator: 'EQ', value: 'hey' }]);
     });
     it('gets nested filter form value', async () => {

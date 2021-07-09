@@ -1,5 +1,5 @@
 import { getFormData } from '../utils';
-import { IForm } from '../interfaces';
+import { IForm } from '@falsy/metacore';
 import { BooleanField, GroupField, NumberField, SubmitField, TextField } from '../testInterfaces';
 
 describe('getFormData', () => {

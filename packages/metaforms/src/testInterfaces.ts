@@ -1,4 +1,4 @@
-import { FieldBody, Optional } from './interfaces';
+import { FieldBody, Optional } from '@falsy/metacore';
 
 export interface GroupField<T extends { [name: string]: Optional<{ type: string }> }> {
   type: 'group';

@@ -1,7 +1,7 @@
-import { IColumn } from './index';
 import { getDatabase, prepare, run } from './sqliteUtils';
+import { Columns } from '@falsy/metacore';
 
-export const exampleColumn: IColumn = {
+export const exampleColumn: Columns<'number' | 'string' | 'boolean'> = {
   id: {
     key: true,
     type: 'number',

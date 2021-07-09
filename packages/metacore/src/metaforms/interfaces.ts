@@ -1,12 +1,12 @@
-import { Validation } from './validate/interfaces';
-
-export type Optional<T> = T | undefined;
-export type ValueOf<T> = T[keyof T];
+import { Validation } from './validation';
+import { Optional } from '../interfaces';
 
 export interface FieldBody {
   type: string;
   fields?: Field;
   value?: unknown;
+  label?: string;
+  placeholder?: string;
   errorMessage?: string;
   validation?: Validation[];
 }

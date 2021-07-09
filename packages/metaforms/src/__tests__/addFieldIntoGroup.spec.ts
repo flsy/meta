@@ -1,4 +1,4 @@
-import { IForm } from '../interfaces';
+import { IForm } from '@falsy/metacore';
 import { GroupField, TextField } from '../testInterfaces';
 import { addFieldIntoGroup } from '../utils';
 

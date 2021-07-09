@@ -1,4 +1,3 @@
+export * from '@falsy/metacore';
 export * from './utils';
 export * from './validate/rules';
-export * from './validate/interfaces';
-export * from './interfaces';

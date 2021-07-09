@@ -1,4 +1,4 @@
-import { Validation } from '../interfaces';
+import { Validation } from '@falsy/metacore';
 import { max, min } from '../rules';
 import { validateField } from '../validate';
 

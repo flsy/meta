@@ -8,5 +8,10 @@
     "strict": true,
     "lib": ["esnext"]
   },
-  "exclude": ["./src/**/*.spec.ts", "node_modules", "lib"]
+  "exclude": ["./src/**/*.spec.ts", "node_modules", "lib"],
+  "references": [
+    {
+      "path": "../metacore"
+    }
+  ]
 }

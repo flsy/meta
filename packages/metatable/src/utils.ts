@@ -1,7 +1,6 @@
-import { Column, Columns, OneOrMany } from './interfaces';
+import { Column, Columns, IMetaFiltersArgs, OneOrMany, IStringInput, FieldBody, IBooleanInput, INumberInput } from '@falsy/metacore';
 import { defaultTo, has, head, isNil, lensPath, mergeRight, not, path, pipe, prop, set, view, when } from 'ramda';
-import { getFormData } from 'metaforms';
-import { Filters, IStringInput, Sort } from '@falsy/metacore';
+import { Field, getFormData } from 'metaforms';
 
 export const getCellValue = <TRow>(bits: string[]) => (object: TRow): OneOrMany<any> => {
   const [property, ...rest] = bits;
@@ -46,8 +45,7 @@ export const filterColumnPaths = <TColumns extends Columns<TTypes>, TTypes>(filt
     getColumnPaths(columns).filter((colPath) => filter(view(lensPath(colPath), columns))),
   );
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-const setSortFormValue = (sortForm: object): object => {
+const setSortFormValue = (sortForm: Field | FieldBody): Field => {
   return Object.entries(sortForm).reduce((acc, [key, field]) => {
     if (has('type', field) && prop('type', field) === 'sort') {
       return { ...acc, [key]: { ...field, value: undefined } };
@@ -61,22 +59,22 @@ const setSortFormValue = (sortForm: object): object => {
   }, {});
 };
 
-export const unsetAllSortFormValues = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): TColumns => {
+export const unsetAllSortFormValues = <TTypes>(columns: Columns<TTypes>): Columns<TTypes> => {
   return getColumnPaths(columns).reduce((acc, colPath) => {
     const columnSortFormLens = lensPath([...colPath, 'sortForm']);
     const columnSortForm = view(columnSortFormLens, columns);
 
     if (columnSortForm) {
-      // eslint-disable-next-line @typescript-eslint/ban-types
-      return set(columnSortFormLens, setSortFormValue(columnSortForm as object), acc);
+      return set(columnSortFormLens, setSortFormValue(columnSortForm), acc);
     }
 
     return acc;
   }, columns);
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const getFilterFormValue = (filterForm?: object): object => {
+export const getFilterFormValue = (
+  filterForm?: Field | FieldBody,
+): IBooleanInput['value'] | INumberInput['filters'] | IStringInput['filters'] => {
   return Object.values(filterForm || {}).reduce((acc, field) => {
     const filterType = path(['type', 'value'], field);
 
@@ -96,7 +94,7 @@ export const getFilterFormValue = (filterForm?: object): object => {
   }, undefined);
 };
 
-export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): { filters: Filters; sort: Sort } => {
+export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): IMetaFiltersArgs => {
   return getColumnPaths(columns).reduce(
     (acc, columnPath) => {
       const columnFilterForm = view(lensPath([...columnPath, 'filterForm']), columns);
@@ -115,8 +113,7 @@ export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns:
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-const setNestedForm = (path: string[], form: object) => {
+const setNestedForm = (path: string[], form: Field): Field => {
   const pathWFields = path.reduce((acc, p) => [...acc, p, 'fields'], []);
 
   const o = pathWFields.reduce((result, p, i) => {
@@ -132,7 +129,7 @@ const setNestedForm = (path: string[], form: object) => {
 };
 
 type Options = { submitLabel?: string; label?: string };
-export const getStringFilter = (path: string[], value?: IStringInput['filters'], options?: Options) =>
+export const getStringFilter = (path: string[], value?: IStringInput['filters'], options?: Options): Field =>
   setNestedForm(path, {
     type: {
       type: 'hidden',
