@@ -159,15 +159,13 @@ describe('filters', () => {
   });
 
   describe('strings filter', () => {
-    it('should return all when undefined in filter', async () => {
+    it('should return all when empty filter', async () => {
       const db = await seed();
       const response = await metafilters(exampleColumn, 'person-dash', {
         filters: {
           firstName: {
             type: 'strings',
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            filters: undefined,
+            filters: [],
           },
         },
       });
