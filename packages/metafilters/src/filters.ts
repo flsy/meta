@@ -1,4 +1,4 @@
-import { Filters, IBooleanInput, INumberInput, IStringInput } from '@falsy/metacore';
+import { Filters, IBooleanInput, INumberInput, IStringInput, IStringsInput, Nullable, Operator } from '@falsy/metacore';
 import { prepareColumnName } from './tools';
 
 const numberFilter = (name: string, filter: INumberInput): string[] =>
@@ -30,36 +30,48 @@ const numberFilter = (name: string, filter: INumberInput): string[] =>
     }
   });
 
+const stringOperator = (columnName: string, value: Nullable<string>, operator?: Operator) => {
+  switch (operator) {
+    case 'EQ':
+      return `${columnName} = '${value}'`;
+    case 'GE':
+      return `${columnName} >= '${value}'`;
+    case 'LE':
+      return `${columnName} <= '${value}'`;
+    case 'LT':
+      return `${columnName} < '${value}'`;
+    case 'GT':
+      return `${columnName} > '${value}'`;
+    case 'NE': {
+      if (value === null) {
+        return `${columnName} is not null`;
+      }
+      return `${columnName} != '${value}'`;
+    }
+    case 'LIKE':
+    default: {
+      if (value === null) {
+        return `${columnName} is null`;
+      }
+      return `${columnName} like '%${value}%'`;
+    }
+  }
+};
+
 const stringFilter = (name: string, filter: IStringInput): string[] =>
   (filter.filters || []).map(({ value, operator, customFunction }) => {
     const columnName = prepareColumnName(name, customFunction);
-
-    switch (operator) {
-      case 'EQ':
-        return `${columnName} = '${value}'`;
-      case 'GE':
-        return `${columnName} >= '${value}'`;
-      case 'LE':
-        return `${columnName} <= '${value}'`;
-      case 'LT':
-        return `${columnName} < '${value}'`;
-      case 'GT':
-        return `${columnName} > '${value}'`;
-      case 'NE': {
-        if (value === null) {
-          return `${columnName} is not null`;
-        }
-        return `${columnName} != '${value}'`;
-      }
-      case 'LIKE':
-      default: {
-        if (value === null) {
-          return `${columnName} is null`;
-        }
-        return `${columnName} like '%${value}%'`;
-      }
-    }
+    return stringOperator(columnName, value, operator);
   });
+
+const stringsFilter = (name: string, filter: IStringsInput): string[] => {
+  const filters = (filter.filters || []).map(({ customFunction, operator, value }) => {
+    const columnName = prepareColumnName(name, customFunction);
+    return stringOperator(columnName, value, operator);
+  }, []);
+
+  return filters.length ? [filters.join(' OR ')] : [];
+};
 
 const booleanFilter = (name: string, filter: IBooleanInput): string => {
   const columnName = prepareColumnName(name, filter.customFunction);
@@ -74,6 +86,8 @@ export const whereFilters = (filters: Filters): string[] => {
     switch (filter?.type) {
       case 'string':
         return [...all, ...stringFilter(name, filter)];
+      case 'strings':
+        return [...all, ...stringsFilter(name, filter)];
       case 'number':
         return [...all, ...numberFilter(name, filter)];
       case 'boolean':
