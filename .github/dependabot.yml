@@ -9,3 +9,23 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+
+  - package-ecosystem: npm
+    directory: "/packages/metacore/"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: npm
+    directory: "/packages/metafilters"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: npm
+    directory: "/packages/metaforms"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: npm
+    directory: "/packages/metatable"
+    schedule:
+      interval: "daily"
