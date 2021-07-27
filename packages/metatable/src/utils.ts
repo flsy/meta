@@ -2,22 +2,24 @@ import { Column, Columns, IMetaFiltersArgs, OneOrMany, IStringInput, FieldBody, 
 import { defaultTo, has, head, isNil, lensPath, mergeRight, not, path, pipe, prop, set, view, when } from 'ramda';
 import { Field, getFormData } from 'metaforms';
 
-export const getCellValue = <TRow>(bits: string[]) => (object: TRow): OneOrMany<any> => {
-  const [property, ...rest] = bits;
+export const getCellValue =
+  <TRow>(bits: string[]) =>
+  (object: TRow): OneOrMany<any> => {
+    const [property, ...rest] = bits;
 
-  if (!property) {
-    return object;
-  }
+    if (!property) {
+      return object;
+    }
 
-  const value = prop<string, any>(property)(object);
-  if (Array.isArray(value)) {
-    return value.map((v) => getCellValue(rest)(v));
-  }
-  if (value && head(rest)) {
-    return getCellValue(rest)(value);
-  }
-  return value;
-};
+    const value = prop<string, any>(property)(object);
+    if (Array.isArray(value)) {
+      return value.map((v) => getCellValue(rest)(v));
+    }
+    if (value && head(rest)) {
+      return getCellValue(rest)(value);
+    }
+    return value;
+  };
 
 export const isColumn = <TTypes>(column: Column<TTypes> | Columns<TTypes>): column is Column<TTypes> => typeof column.type === 'string';
 export const getColumnPaths = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns, parentKey: string[] = []): string[][] =>
@@ -29,21 +31,21 @@ export const getColumnPaths = <TColumns extends Columns<TTypes>, TTypes>(columns
     return [...acc, ...getColumnPaths(column, [...parentKey, name])];
   }, []);
 
-export const findColumnPath = <TColumns extends Columns<TTypes>, TTypes>(find: (column: Column<TTypes>) => boolean) => (
-  columns: TColumns,
-): string[] =>
-  defaultTo(
-    [],
-    getColumnPaths(columns).find((colPath) => find(view(lensPath(colPath))(columns))),
-  );
+export const findColumnPath =
+  <TColumns extends Columns<TTypes>, TTypes>(find: (column: Column<TTypes>) => boolean) =>
+  (columns: TColumns): string[] =>
+    defaultTo(
+      [],
+      getColumnPaths(columns).find((colPath) => find(view(lensPath(colPath))(columns))),
+    );
 
-export const filterColumnPaths = <TColumns extends Columns<TTypes>, TTypes>(filter: (column: Column<TTypes>) => boolean) => (
-  columns: TColumns,
-): string[][] =>
-  defaultTo(
-    [],
-    getColumnPaths(columns).filter((colPath) => filter(view(lensPath(colPath), columns))),
-  );
+export const filterColumnPaths =
+  <TColumns extends Columns<TTypes>, TTypes>(filter: (column: Column<TTypes>) => boolean) =>
+  (columns: TColumns): string[][] =>
+    defaultTo(
+      [],
+      getColumnPaths(columns).filter((colPath) => filter(view(lensPath(colPath), columns))),
+    );
 
 const setSortFormValue = (sortForm: Field | FieldBody): Field => {
   return Object.entries(sortForm).reduce((acc, [key, field]) => {
@@ -72,9 +74,7 @@ export const unsetAllSortFormValues = <TTypes>(columns: Columns<TTypes>): Column
   }, columns);
 };
 
-export const getFilterFormValue = (
-  filterForm?: Field | FieldBody,
-): IBooleanInput['value'] | INumberInput['filters'] | IStringInput['filters'] => {
+export const getFilterFormValue = (filterForm?: Field | FieldBody): IBooleanInput['value'] | INumberInput['filters'] | IStringInput['filters'] => {
   return Object.values(filterForm || {}).reduce((acc, field) => {
     const filterType = path(['type', 'value'], field);
 

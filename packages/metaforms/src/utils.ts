@@ -9,8 +9,7 @@ const has = <T extends object>(property: keyof T, o?: T): boolean => !!(o && o[p
 
 export const isRequired = (validationRules: Validation[] = []): boolean => !!find(propEq('type', 'required'), validationRules);
 
-const fieldNameWithError = <T extends Field>(form: T): Optional<string> =>
-  Object.keys(form).find((name) => has('errorMessage', form[name]));
+const fieldNameWithError = <T extends Field>(form: T): Optional<string> => Object.keys(form).find((name) => has('errorMessage', form[name]));
 const fieldNameWithoutValue = <T extends Field>(form: T): Optional<string> => Object.keys(form).find((name) => !has('value', form[name]));
 
 /**
@@ -46,45 +45,44 @@ export const getFormData = <T extends Field>(form: T): FormData<T> =>
     return all;
   }, {} as FormData<T>);
 
-const updateFunction = <D extends Field>(name: keyof D | string[], fn: (field: FieldBody) => FieldBody) => (form: D): D =>
-  Object.entries(form).reduce<D>((all, [key, field]) => {
-    if (!field) {
-      return all;
-    }
-    if (isArray(name)) {
-      if (name.length === 1 && key === name[0]) {
+const updateFunction =
+  <D extends Field>(name: keyof D | string[], fn: (field: FieldBody) => FieldBody) =>
+  (form: D): D =>
+    Object.entries(form).reduce<D>((all, [key, field]) => {
+      if (!field) {
+        return all;
+      }
+      if (isArray(name)) {
+        if (name.length === 1 && key === name[0]) {
+          return { ...all, [key]: { ...field, ...fn(field) } };
+        }
+        if (name.length > 1 && key === name[0] && field.fields) {
+          const [, ...rest] = name;
+          return { ...all, [key]: { ...field, fields: updateFunction(rest, fn)(field.fields) } };
+        }
+      }
+      if (key === name) {
         return { ...all, [key]: { ...field, ...fn(field) } };
       }
-      if (name.length > 1 && key === name[0] && field.fields) {
-        const [, ...rest] = name;
-        return { ...all, [key]: { ...field, fields: updateFunction(rest, fn)(field.fields) } };
-      }
-    }
-    if (key === name) {
-      return { ...all, [key]: { ...field, ...fn(field) } };
-    }
-    return { ...all, [key]: field };
-  }, {} as any);
+      return { ...all, [key]: field };
+    }, {} as any);
 
-export const setFieldOptions = <Option>(name: string | string[], options: Option[]) =>
-  updateFunction(name, (field) => ({ ...field, options }));
+export const setFieldOptions = <Option>(name: string | string[], options: Option[]) => updateFunction(name, (field) => ({ ...field, options }));
 export const setFieldValue = <Value>(name: string | string[], value: Value) => updateFunction(name, (field) => ({ ...field, value }));
 
-export const addFieldIntoGroup = <T extends { [name: string]: { type: string; fields?: T } }, F extends { type: string }>(
-  path: string,
-  newFieldName: string,
-  newField: F,
-) => (form: T): T => {
-  return Object.entries(form).reduce((all, [key, field]) => {
-    if (field.fields) {
-      if (key === path) {
-        return { ...all, [key]: { ...field, fields: { ...field.fields, [newFieldName]: newField } } };
+export const addFieldIntoGroup =
+  <T extends { [name: string]: { type: string; fields?: T } }, F extends { type: string }>(path: string, newFieldName: string, newField: F) =>
+  (form: T): T => {
+    return Object.entries(form).reduce((all, [key, field]) => {
+      if (field.fields) {
+        if (key === path) {
+          return { ...all, [key]: { ...field, fields: { ...field.fields, [newFieldName]: newField } } };
+        }
+        return { ...all, [key]: { ...field, fields: addFieldIntoGroup(path, newFieldName, newField)(field.fields) } };
       }
-      return { ...all, [key]: { ...field, fields: addFieldIntoGroup(path, newFieldName, newField)(field.fields) } };
-    }
-    return { ...all, [key]: field };
-  }, {} as T);
-};
+      return { ...all, [key]: field };
+    }, {} as T);
+  };
 
 /**
  *
