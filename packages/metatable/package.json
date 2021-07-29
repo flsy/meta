@@ -1,6 +1,6 @@
 {
   "name": "metatable",
-  "version": "2.0.12",
+  "version": "2.0.13",
   "private": false,
   "description": "meta table",
   "main": "lib/index",
@@ -30,8 +30,8 @@
     "url": "https://github.com/flsy/meta/issues"
   },
   "dependencies": {
-    "@falsy/metacore": "^0.0.6",
-    "metaforms": "^1.0.9",
+    "@falsy/metacore": "^0.0.7",
+    "metaforms": "^1.0.10",
     "ramda": "^0.27.1",
     "typescript": "^4.2.3"
   },
