@@ -3549,9 +3549,9 @@ form-data@~2.3.2:
     mime-types "^2.1.12"
 
 fputils@^1.2.4:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/fputils/-/fputils-1.2.5.tgz#e220545ed9afc8d63eef3fa6f92e818db51d3726"
-  integrity sha512-V5twiEr6j/8fIpFSjFTmHVz7idV0gtauR/Ljge//2MbVM/td9eXqMI9qZ1XBUeQnC5zZfRiz/tCbIipNWON19w==
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/fputils/-/fputils-1.2.7.tgz#b337105062ca896e42a2ab60731362a78017e09b"
+  integrity sha512-eSqMhggLaKWwQk6ZQnsRI9cINBNcGnBdHUhEDO739XOZ3wXtK718/zI7VtkAdR8W/c8jUOsiLg0lQx6BUtCmGA==
 
 fs-extra@^9.1.0:
   version "9.1.0"
