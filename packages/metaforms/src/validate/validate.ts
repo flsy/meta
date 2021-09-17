@@ -17,6 +17,7 @@ import {
   FieldBody,
   FormData,
   Optional,
+  IsJson,
 } from '@falsy/metacore';
 
 const isString = (value: any): value is string => typeof value === 'string';
@@ -72,6 +73,19 @@ const isGreaterThanMax = <Value>(value: Value, rule: Max): Optional<string> => {
 };
 
 const validateIsNumber = <Value>(value: Value, rule: IsNumber): Optional<string> => (value && !isNumber(value) ? rule.message : undefined);
+
+const validateIsJson = <Value>(value: Value, rule: IsJson): Optional<string> => {
+  try {
+    if (typeof value === 'string') {
+      JSON.parse(value);
+      return undefined;
+    } else {
+      return rule.message;
+    }
+  } catch (e) {
+    return rule.message;
+  }
+};
 
 const isNotEqualToExpectedValue = <Value extends any>(value: Value, rule: MustBeEqual): Optional<string> =>
   value !== rule.value ? rule.message : undefined;
@@ -150,6 +164,9 @@ const validate = <T extends Field>(fieldValue: unknown, rule: Validation, formDa
 
     case 'isNumber':
       return validateIsNumber(fieldValue, rule);
+
+    case 'isJson':
+      return validateIsJson(fieldValue, rule);
 
     case 'array':
       return rule.value.reduce<Optional<string>>((acc, curr, index) => {

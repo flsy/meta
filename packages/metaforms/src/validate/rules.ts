@@ -1,6 +1,7 @@
 import {
   ArrayValidation,
   InList,
+  IsJson,
   IsNumber,
   Max,
   MaxLength,
@@ -90,6 +91,11 @@ export const inList = (message: string, value: string[]): InList => ({
   type: 'inlist',
   message,
   value,
+});
+
+export const isJson = (message: string): IsJson => ({
+  type: 'isJson',
+  message,
 });
 
 export const array = (...value: Validation[][]): ArrayValidation => ({

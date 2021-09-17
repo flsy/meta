@@ -80,6 +80,11 @@ export interface ArrayValidation {
   message: undefined;
 }
 
+export interface IsJson {
+  type: 'isJson';
+  message: string;
+}
+
 export type Validation =
   | ArrayValidation
   | InList
@@ -94,4 +99,5 @@ export type Validation =
   | MustMatchCaseInsensitive
   | Min
   | Max
-  | IsNumber;
+  | IsNumber
+  | IsJson;
