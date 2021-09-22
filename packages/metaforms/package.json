@@ -1,6 +1,6 @@
 {
   "name": "metaforms",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "metaforms - the heavy stuff",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/flsy/metaforms#readme",
   "dependencies": {
-    "@falsy/metacore": "^0.0.9",
+    "@falsy/metacore": "^0.0.10",
     "fputils": "^1.2.4"
   },
   "devDependencies": {
