@@ -1,7 +1,5 @@
 # `metacore`
 
-> TODO: description
-
 ## Usage
 
 ```
