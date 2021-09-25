@@ -154,12 +154,11 @@ describe('utils', () => {
           type: 'required',
           message: 'It is required',
         },
-      ])(form)
-
+      ])(form);
 
       expect(validateForm(updatedForm).my.errorMessage).toEqual('It is required');
     });
-  })
+  });
 
   describe('update', () => {
     it('updates a structure', () => {
