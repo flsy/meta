@@ -1,4 +1,4 @@
-import { hasError, isRequired, setFieldValue, update, validate, validateForm } from '../utils';
+import { hasError, isRequired, setFieldValidation, setFieldValue, update, validate, validateForm } from '../utils';
 import { IForm, required, Validation } from '..';
 
 describe('utils', () => {
@@ -136,6 +136,30 @@ describe('utils', () => {
       });
     });
   });
+
+  describe('setFieldValidation', () => {
+    it('sets a validation', () => {
+      const form: IForm<any> = {
+        my: {
+          type: 'text',
+        },
+        yourField: {
+          type: 'text',
+        },
+      };
+      expect(validateForm(form).my.errorMessage).toEqual(undefined);
+
+      const updatedForm: IForm<any> = setFieldValidation('my', [
+        {
+          type: 'required',
+          message: 'It is required',
+        },
+      ])(form)
+
+
+      expect(validateForm(updatedForm).my.errorMessage).toEqual('It is required');
+    });
+  })
 
   describe('update', () => {
     it('updates a structure', () => {

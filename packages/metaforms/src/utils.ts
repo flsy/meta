@@ -72,6 +72,9 @@ export const setFieldOptions = <Option>(name: string | string[], options: Option
   updateFunction(name, (field) => ({ ...field, options }));
 export const setFieldValue = <Value>(name: string | string[], value: Value) => updateFunction(name, (field) => ({ ...field, value }));
 
+export const setFieldValidation = <Value>(name: string | string[], validation?: Validation[]) =>
+  updateFunction(name, (field) => ({ ...field, validation }));
+
 export const addFieldIntoGroup =
   <T extends { [name: string]: { type: string; fields?: T } }, F extends { type: string }>(
     path: string,
