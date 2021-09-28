@@ -1,5 +1,7 @@
 {
   "packages": [
+    "packages/metacore",
+    "packages/metaforms",
     "packages/*"
   ],
   "version": "independent",
