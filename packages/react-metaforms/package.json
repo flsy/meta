@@ -1,0 +1,70 @@
+{
+  "name": "react-metaforms",
+  "version": "3.0.9",
+  "main": "lib/export",
+  "typings": "lib/export",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flsy/react-metaforms.git"
+  },
+  "keywords": [
+    "react",
+    "forms"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flsy/react-metaforms/issues"
+  },
+  "homepage": "https://flsy.github.io/react-metaforms",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": " jest",
+    "build": "rm -rf ./lib && tsc -b",
+    "prepare": "yarn build",
+    "start": "start-storybook -p 9009",
+    "prepublishOnly": "yarn build",
+    "predeploy": "build-storybook",
+    "deploy": "NODE_DEBUG=gh-pages gh-pages -d storybook-static"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "dependencies": {
+    "metaforms": "latest",
+    "react": "^16.*"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@storybook/addon-actions": "^6.1.9",
+    "@storybook/addon-links": "^6.3.6",
+    "@storybook/addons": "^6.3.7",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/react": "^6.2.8",
+    "@types/enzyme": "^3.10.9",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.2",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "babel-loader": "^8.2.2",
+    "babel-preset-react-app": "^10.0.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "gh-pages": "^3.2.3",
+    "jest": "^26.6.3",
+    "react-dom": "^16.14.0",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.3.5"
+  },
+  "jest": {
+    "rootDir": "src",
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.js"
+    ]
+  }
+}
