@@ -15,10 +15,14 @@
   },
   "homepage": "https://github.com/flsy/meta#readme",
   "workspaces": [
-    "packages/*"
+    "packages/metacore",
+    "packages/metaforms",
+    "packages/metatable",
+    "packages/metafilters",
+    "packages/react-metaforms"
   ],
   "scripts": {
-    "build": "lerna run build",
+    "build": "yarn workspaces run build",
     "release": "lerna publish",
     "lint": "eslint '*/**/*.{js,ts,tsx}'",
     "test": "yarn workspaces run test"
@@ -29,6 +33,7 @@
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.21.5",
     "lerna": "^4.0.0",
     "prettier": "^2.3.2",
     "typescript": "^4.2.3"
