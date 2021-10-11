@@ -1,13 +1,7 @@
 import { Validation } from 'metaforms';
 
-export { default } from './components/Form';
+export { default } from './Form';
 export * from './interfaces';
-export * from 'metaforms';
-
-export interface GroupFieldProps<Fields> {
-  legend?: string;
-  fields?: Fields;
-}
 
 export interface FieldProps<Value> {
   name: string;

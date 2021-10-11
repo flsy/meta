@@ -1,66 +1,90 @@
-import Form from '../export';
+import Form from '../export'
 import React from 'react';
-import { action } from '@storybook/addon-actions';
-import { getFormData, IForm } from 'metaforms';
-import { storiesOf } from '@storybook/react';
-import { CheckboxField, SelectField, SubmitField, TextField } from './interfaces';
-import { Checkbox, Input, Select, Submit } from './components';
+import { isRequired } from 'metaforms'
+import { MetaField } from '../Form'
 
-type MyForm = IForm<{ name: TextField; groups: SelectField; sendNewsLetter: CheckboxField; submit: SubmitField }>;
-
-export const myForm: MyForm = {
-  name: {
-    label: 'Name',
-    type: 'text',
-    value: 'banana',
+const initialFields: MetaField[] = [
+  {
+    name: "user.name",
+    label: "Username",
+    type: "text",
+    validation: [
+      { type: "required", message: "Please enter your email address" },
+      { type: "pattern", message: "Sorry, we do not recognise that email address", value: "^.*@.*\\..*$" }
+    ],
+    value: "Joe",
   },
-  groups: {
-    type: 'select',
-    options: [{ value: 'first' }, { value: 'second', label: 'Second' }],
+  {
+    name: "user.password",
+    label: "Password",
+    type: "text",
+    validation: []
   },
-  sendNewsLetter: {
-    type: 'checkbox',
-    value: false,
+  {
+    name: "role",
+    label: "Role",
+    type: "text",
+    validation: [],
+    value: "admin"
   },
-  submit: {
-    label: 'Submit',
-    type: 'submit',
-  },
-};
+  {
+    name: "submit",
+    label: "Submit",
+    type: "submit"
+  }
+]
 
-interface IProps {
-  form: MyForm;
-}
+const Label = (props: { fieldId: string; label: string; isRequired: boolean; children?: React.ReactChildren }) => (
+  <label htmlFor={props.fieldId}>
+    {props.label}
+    {props.isRequired && '*'}
+    {props.children}
+  </label>
+);
 
-const FormStory = ({ form }: IProps) => {
-  const [fields, onFieldsChange] = React.useState(form);
+const Submit = ({ label, name }: any) => (
+  <button name={name} type="submit">
+    {label || 'Submit'}
+  </button>
+);
 
-  const handleFieldChange = (state: IProps['form']) => {
-    action('onFieldsChange')(getFormData(state));
-    onFieldsChange(state);
-  };
-
+const Input = React.forwardRef((props: any, ref: React.Ref<HTMLInputElement>) => {
   return (
-    <Form<MyForm>
-      form={fields}
-      onFormChange={handleFieldChange}
-      onSubmit={({ formData }) => action('submit')(formData)}
-      components={({ name, component, ref, actions }) => {
-        switch (component.type) {
-          case 'checkbox':
-            return <Checkbox ref={ref} name={name} {...component} {...actions} />;
-          case 'select':
-            return <Select ref={ref} name={name} {...component} {...actions} />;
+    <div>
+      {props.label && <Label fieldId={props.name} label={props.label} isRequired={isRequired(props.validation)} />}
+      <input
+        ref={ref}
+        name={props.name}
+        value={props.value}
+        onChange={props.onChange}
+        onBlur={props.onBlur}
+      />
+      {/*{props.errorMessage ? <div>{props.errorMessage}</div> : null}*/}
+    </div>
+  );
+});
+
+
+export const Basic = () => {
+  return (
+    <Form
+      onSubmit={console.log}
+      fields={initialFields}
+      components={({ field, ref, input }) => {
+        switch (field.type) {
           case 'text':
-            return <Input ref={ref} name={name} {...component} {...actions} />;
+            return <Input ref={ref} name={field.name} label={field.label} onChange={input.onChange} onBlur={input.onBlur}   />;
           case 'submit':
-            return <Submit name={name} {...component} {...actions} />;
+            return <Submit name={field.name} />;
           default:
-            return;
+            return <></>;
         }
       }}
     />
   );
 };
 
-storiesOf('Form', module).add('example', () => <FormStory form={myForm} />);
+export default {
+  title: 'Form',
+};
+

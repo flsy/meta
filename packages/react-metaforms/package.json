@@ -33,6 +33,7 @@
     "react-dom": "*"
   },
   "dependencies": {
+    "formik": "^2.2.9",
     "metaforms": "latest",
     "react": "^16.*"
   },

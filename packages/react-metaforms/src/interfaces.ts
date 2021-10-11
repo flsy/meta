@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Field, Optional, ValueOf, FormData } from 'metaforms';
+import { Optional, ValueOf } from 'metaforms';
 
 type AllKeys<T> = {
   [K in keyof T]: T[K] extends { fields: any } ? AllKeys<T[K]['fields']> : K;
@@ -24,10 +24,3 @@ export type ComponentProps<T> = {
 };
 
 export type Components<T> = (props: ComponentProps<T>) => Optional<React.ReactNode>;
-
-export type FormProps<T extends Field> = {
-  onFormChange: (form: T) => void;
-  form: T;
-  components: Components<T>;
-  onSubmit: (submitted: { form: T; formData: FormData<T> }) => void;
-};
