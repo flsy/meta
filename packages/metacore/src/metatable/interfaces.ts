@@ -1,5 +1,5 @@
-import { Field } from '../metaforms/interfaces';
+import { MetaField } from '../metaforms/interfaces';
 
-export type Column<TTypes> = { type?: TTypes; label?: string; key?: boolean; isOmitted?: boolean; filterForm?: Field; sortForm?: Field };
+export type Column<TTypes> = { type?: TTypes; label?: string; key?: boolean; isOmitted?: boolean; filterForm?: MetaField[]; sortForm?: MetaField[] };
 export type Columns<TTypes> = { [key: string]: Column<TTypes> | Columns<TTypes> };
 export type OneOrMany<T> = T | Array<T>;

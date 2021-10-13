@@ -29,13 +29,13 @@
     "deploy": "NODE_DEBUG=gh-pages gh-pages -d storybook-static"
   },
   "peerDependencies": {
+    "@falsy/metacore": "*",
+    "metaforms": "*",
     "react": "*",
     "react-dom": "*"
   },
   "dependencies": {
     "formik": "^2.2.9",
-    "metaforms": "latest",
-    "ramda": "^0.27.1",
     "react": "^16.*"
   },
   "devDependencies": {
@@ -49,7 +49,6 @@
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.2",
-    "@types/ramda": "^0.27.45",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
     "babel-loader": "^8.2.2",

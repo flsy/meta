@@ -13,12 +13,11 @@ import {
   Pattern,
   Required,
   Validation,
-  Field,
-  FieldBody,
-  FormData,
   Optional,
   IsJson,
-} from '@falsy/metacore';
+  MetaFieldValue,
+  MetaFormValues,
+} from '@falsy/metacore'
 
 const isString = (value: any): value is string => typeof value === 'string';
 const isNumber = (value: any): value is number => typeof value === 'number';
@@ -76,7 +75,7 @@ const validateIsNumber = <Value>(value: Value, rule: IsNumber): Optional<string>
 
 const validateIsJson = <Value>(value: Value, rule: IsJson): Optional<string> => {
   try {
-    if (typeof value === 'string') {
+    if (isString(value)) {
       JSON.parse(value);
       return undefined;
     } else {
@@ -98,7 +97,7 @@ const isGreaterThanMaxLength = <Value>(value: Value, rule: MaxLength): Optional<
 const isLessThanMinLength = <Value>(value: Value, rule: MinLength): Optional<string> =>
   isString(value) && value.length < rule.value ? rule.message : undefined;
 
-const mustMatch = <Value, Form extends Field>(value: Value, rule: MustMatch, formData: FormData<Form>): Optional<string> => {
+const mustMatch = (value: MetaFieldValue, rule: MustMatch, formData: MetaFormValues): Optional<string> => {
   if (!formData[rule.value] || formData[rule.value] === (value as any)) {
     return;
   }
@@ -106,7 +105,7 @@ const mustMatch = <Value, Form extends Field>(value: Value, rule: MustMatch, for
   return rule.message;
 };
 
-const mustNotContain = <Value, Form extends Field>(value: Value, rule: MustNotContain, formData: FormData<Form>): Optional<string> => {
+const mustNotContain = (value: MetaFieldValue, rule: MustNotContain, formData: MetaFormValues): Optional<any> => {
   const data = formData[rule.value];
   if (data && isString(data) && isString(value)) {
     return value.toLowerCase().includes(data.toLowerCase()) ? rule.message : undefined;
@@ -115,16 +114,16 @@ const mustNotContain = <Value, Form extends Field>(value: Value, rule: MustNotCo
 
 const equalIgnoreCase = (a?: string, b?: string) => a && b && a.toLowerCase() === b.toLowerCase();
 
-const mustMatchCaseInsensitive = <Value, Form extends Field>(
-  value: Value,
+const mustMatchCaseInsensitive = (
+  value: MetaFieldValue,
   rule: MustMatchCaseInsensitive,
-  formData: FormData<Form>,
+  formData: MetaFormValues,
 ): Optional<string> => {
   const target = formData[rule.value];
   return isString(value) && isString(target) && !equalIgnoreCase(target, value) ? rule.message : undefined;
 };
 
-const validate = <T extends Field>(fieldValue: unknown, rule: Validation, formData: FormData<T>): Optional<string> => {
+const validate = (fieldValue: unknown, rule: Validation, formData: any): Optional<string> => {
   switch (rule.type) {
     case 'required':
       return isEmpty(fieldValue, rule);
@@ -185,11 +184,11 @@ const validate = <T extends Field>(fieldValue: unknown, rule: Validation, formDa
   }
 };
 
-export const validateField = <T extends Field>(formData: FormData<T>, field: Partial<FieldBody>): Optional<string> => {
+export const validateField = (formData: MetaFormValues, field: MetaFieldValue): Optional<string> => {
   if (!field) {
     return undefined;
   }
 
-  const errorMessages = (field.validation || []).map((rule) => validate(field.value, rule, formData)).filter((error) => error);
+  const errorMessages = (field.validation || []).map((rule: any) => validate(field.value, rule, formData)).filter((error:any) => error);
   return errorMessages.length > 0 ? errorMessages[0] : undefined;
 };
