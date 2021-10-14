@@ -2,7 +2,7 @@ import { find, isRight, Left, Maybe, propEq, Right } from 'fputils'
 import { MetaFieldValue, Validation } from '@falsy/metacore'
 import { validateField } from './validate/validate';
 import { MetaFormErrorMessages, MetaField, MetaFormValues } from '@falsy/metacore'
-import { lensPath, set, view, Lens } from 'ramda'
+import { lensPath, set, view, Lens, curry } from 'ramda'
 
 export const isRequired = (validationRules: Validation[] = []): boolean => !!find(propEq('type', 'required'), validationRules);
 
@@ -28,14 +28,14 @@ export const setFieldValidation = (fieldName: string, value: Validation[], field
   return lens
 }
 
-export const setFieldValue = (fieldName: string, value: MetaFieldValue, fields: MetaField[]): Maybe<MetaField[]> => {
+export const setFieldValue = curry((fieldName: string, value: MetaFieldValue, fields: MetaField[]): Maybe<MetaField[]> => {
   const lens = fieldPropertyLens(fieldName, 'value', fields);
   if(isRight(lens)) {
     return Right(set(lens.value, value, fields))
   }
 
   return lens
-}
+})
 
 export const setValues = (values: any, fields: MetaField[]) =>
   fields.map(f => {
