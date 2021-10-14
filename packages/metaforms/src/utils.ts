@@ -9,7 +9,7 @@ export const isRequired = (validationRules: Validation[] = []): boolean => !!fin
 export const hasError = (fields: MetaField[]): boolean =>
   Object.keys(getErrorMessages(fields)).length > 0
 
-export const fieldPropertyLens = (fieldName: string, property: keyof MetaField, fields: MetaField[]): Maybe<Lens<any, any>> => {
+export const fieldPropertyLens = curry((fieldName: string, property: keyof MetaField, fields: MetaField[]): Maybe<Lens<any, any>> => {
   const index = fields.findIndex((field) => field.name === fieldName);
 
   if(index >= 0) {
@@ -17,7 +17,7 @@ export const fieldPropertyLens = (fieldName: string, property: keyof MetaField, 
   }
 
   return Left(new Error('Field not found'))
-}
+})
 
 export const setFieldValidation = (fieldName: string, value: Validation[], fields: MetaField[]): Maybe<MetaField[]> => {
   const lens = fieldPropertyLens(fieldName, 'validation', fields);

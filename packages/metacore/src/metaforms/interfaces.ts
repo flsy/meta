@@ -13,4 +13,5 @@ export interface MetaField {
   value?: MetaFieldValue;
   validation?: Validation[];
   errorMessage?: MetaFieldErrorMessage;
+  options?: any;
 }
