@@ -1,5 +1,4 @@
 import { setFieldValue } from '../utils';
-import { isLeft } from 'fputils'
 
 describe('setFieldValue', () => {
   it('set the value on simple path', () => {
@@ -10,7 +9,7 @@ describe('setFieldValue', () => {
       },
     ]
 
-    expect(setFieldValue('name', 'Joe')(form).value).toEqual([{
+    expect(setFieldValue('name', 'Joe')(form)).toEqual([{
       name: 'name',
       type: 'text',
       value: 'Joe',
@@ -24,7 +23,7 @@ describe('setFieldValue', () => {
       },
     ]
 
-    expect(setFieldValue('name.first', 'Joe')(form).value).toEqual([{
+    expect(setFieldValue('name.first', 'Joe')(form)).toEqual([{
         type: 'text',
         value: 'Joe',
         name: 'name.first',
@@ -45,14 +44,9 @@ describe('setFieldValue', () => {
     ]
 
     const res1 = setFieldValue('name', 'Joe')(form);
+    const res2 = setFieldValue('age', 32)(res1);
 
-    if(isLeft(res1)) {
-      fail('Err!');
-    }
-
-    const res2 = setFieldValue('age', 32)(res1.value);
-
-    expect(res1.value).toEqual([
+    expect(res1).toEqual([
       {
         name: 'name',
         type: 'text',
@@ -64,7 +58,7 @@ describe('setFieldValue', () => {
       },
     ]);
 
-    expect(res2.value).toEqual([{
+    expect(res2).toEqual([{
         name: 'name',
         type: 'text',
         value: 'Joe',

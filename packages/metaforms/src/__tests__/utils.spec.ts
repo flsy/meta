@@ -84,11 +84,7 @@ describe('utils', () => {
 
       const formWValue = setFieldValue('fieldone', 'randomvalue', form);
 
-      if(isLeft(formWValue)) {
-        fail(formWValue.value);
-      }
-
-      expect(formWValue.value).toEqual([
+      expect(formWValue).toEqual([
         {
           name: 'fieldone',
           label: 'fieldone',
@@ -129,11 +125,7 @@ describe('utils', () => {
         },
       ], form);
 
-      if(isLeft(formWValidation)) {
-        fail(formWValidation.value);
-      }
-
-      expect(formWValidation.value).toEqual([
+      expect(formWValidation).toEqual([
         {
           name: 'fieldone',
           label: 'fieldone',
@@ -152,7 +144,7 @@ describe('utils', () => {
         },
       ]);
 
-      const validatedFormWValidation = validateForm(formWValidation.value);
+      const validatedFormWValidation = validateForm(formWValidation);
       expect(getErrorMessages(validatedFormWValidation)).toEqual({
         fieldone: "It is required",
       });

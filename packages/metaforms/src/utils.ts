@@ -5,37 +5,49 @@ import { MetaFormErrorMessages, MetaField, MetaFormValues } from '@falsy/metacor
 import { lensPath, set, view, Lens, curry } from 'ramda'
 
 export const isRequired = (validationRules: Validation[] = []): boolean => !!find(propEq('type', 'required'), validationRules);
+export const hasError = (fields: MetaField[]): boolean => Object.keys(getErrorMessages(fields)).length > 0
 
-export const hasError = (fields: MetaField[]): boolean =>
-  Object.keys(getErrorMessages(fields)).length > 0
+export const fieldPropertyLens = curry((property: keyof MetaField, fieldName: string, fields: MetaField[]): Maybe<Lens<any, any>> => {
+  try {
+    const index = fields.findIndex((field) => field.name === fieldName);
 
-export const fieldPropertyLens = curry((fieldName: string, property: keyof MetaField, fields: MetaField[]): Maybe<Lens<any, any>> => {
-  const index = fields.findIndex((field) => field.name === fieldName);
+    if(index >= 0) {
+      return Right(lensPath([index, property]))
+    }
 
-  if(index >= 0) {
-    return Right(lensPath([index, property]))
+    return Left(new Error('Field not found'))
+  } catch (e) {
+    return Left(e);
   }
-
-  return Left(new Error('Field not found'))
 })
 
-export const setFieldValidation = (fieldName: string, value: Validation[], fields: MetaField[]): Maybe<MetaField[]> => {
-  const lens = fieldPropertyLens(fieldName, 'validation', fields);
+export const setFieldProperty = curry((property: keyof MetaField, fieldName: string, value: any, fields: MetaField[]): MetaField[] => {
+  const optionsLens = fieldPropertyLens(property);
+  const lens = optionsLens(fieldName, fields);
   if(isRight(lens)) {
-    return Right(set(lens.value, value, fields))
+    return set(lens.value, value, fields)
   }
 
-  return lens
-}
-
-export const setFieldValue = curry((fieldName: string, value: MetaFieldValue, fields: MetaField[]): Maybe<MetaField[]> => {
-  const lens = fieldPropertyLens(fieldName, 'value', fields);
-  if(isRight(lens)) {
-    return Right(set(lens.value, value, fields))
-  }
-
-  return lens
+  return fields
 })
+
+export const getFieldProperty = curry((property: keyof MetaField, fieldName: string, fields: MetaField[]): any => {
+  const optionsLens = fieldPropertyLens(property);
+  const lens = optionsLens(fieldName, fields);
+  if(isRight(lens)) {
+    return view(lens.value, fields)
+  }
+
+  return;
+})
+
+export const setFieldValidation = curry((fieldName: string, value: Validation[], fields: MetaField[]): MetaField[] =>
+  setFieldProperty('validation', fieldName, value, fields)
+)
+
+export const setFieldValue = curry((fieldName: string, value: MetaFieldValue, fields: MetaField[]): MetaField[] =>
+  setFieldProperty('value', fieldName, value, fields)
+)
 
 export const setValues = (values: any, fields: MetaField[]) =>
   fields.map(f => {

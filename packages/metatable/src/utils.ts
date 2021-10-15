@@ -1,6 +1,13 @@
-import { Column, Columns, IMetaFiltersArgs, OneOrMany, IStringInput, FieldBody, IBooleanInput, INumberInput } from '@falsy/metacore';
-import { defaultTo, has, head, isNil, lensPath, mergeRight, not, path, pipe, prop, set, view, when } from 'ramda';
-import { Field, getFormData } from 'metaforms';
+import {
+  Column,
+  Columns,
+  IMetaFiltersArgs,
+  OneOrMany,
+  IStringInput,
+  MetaField,
+} from '@falsy/metacore'
+import { defaultTo, head, isNil, lensPath, prop, set, view, when } from 'ramda'
+import { getFieldProperty } from 'metaforms'
 
 export const getCellValue =
   <TRow>(bits: string[]) =>
@@ -47,54 +54,22 @@ export const filterColumnPaths =
       getColumnPaths(columns).filter((colPath) => filter(view(lensPath(colPath), columns))),
     );
 
-const setSortFormValue = (sortForm: Field | FieldBody): Field => {
-  return Object.entries(sortForm).reduce((acc, [key, field]) => {
-    if (has('type', field) && prop('type', field) === 'sort') {
-      return { ...acc, [key]: { ...field, value: undefined } };
-    }
-
-    if (field && typeof field === 'object') {
-      return { ...acc, [key]: { ...field, ...setSortFormValue(field) } };
-    }
-
-    return acc;
-  }, {});
-};
-
 export const unsetAllSortFormValues = <TTypes>(columns: Columns<TTypes>): Columns<TTypes> => {
   return getColumnPaths(columns).reduce((acc, colPath) => {
     const columnSortFormLens = lensPath([...colPath, 'sortForm']);
     const columnSortForm = view(columnSortFormLens, columns);
 
     if (columnSortForm) {
-      return set(columnSortFormLens, setSortFormValue(columnSortForm), acc);
+      return set(columnSortFormLens, columnSortForm.map(field => ({ ...field, value: undefined })), acc);
     }
 
     return acc;
   }, columns);
 };
 
-export const getFilterFormValue = (
-  filterForm?: Field | FieldBody,
-): IBooleanInput['value'] | INumberInput['filters'] | IStringInput['filters'] => {
-  return Object.values(filterForm || {}).reduce((acc, field) => {
-    const filterType = path(['type', 'value'], field);
-
-    if (filterType === 'string' || filterType === 'number') {
-      return path(['filters', 'value'], field);
-    }
-
-    if (filterType === 'boolean') {
-      return prop('value', field);
-    }
-
-    if (field && typeof field === 'object') {
-      return getFilterFormValue(field);
-    }
-
-    return acc;
-  }, undefined);
-};
+export const getColumnFilterTypePath = (columnPath: string[]) => `${columnPath.join('.')}.type`;
+export const getColumnFilterValuePath = (columnPath: string[]) => `${columnPath.join('.')}.value`;
+export const getColumnFilterFiltersPath = (columnPath: string[]) => `${columnPath.join('.')}.filters`;
 
 export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): IMetaFiltersArgs => {
   return getColumnPaths(columns).reduce(
@@ -102,12 +77,25 @@ export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns:
       const columnFilterForm = view(lensPath([...columnPath, 'filterForm']), columns);
       const columnSortForm = view(lensPath([...columnPath, 'sortForm']), columns);
 
-      const filterFormData = when(pipe(isNil, not), getFormData)(columnFilterForm);
+      const getFieldValue = getFieldProperty('value');
 
-      const sortFormData = when(pipe(isNil, not), getFormData)(columnSortForm);
+      const columnFilterType = getFieldValue(getColumnFilterTypePath(columnPath), columnFilterForm);
+      const columnFilterValue = getFieldValue(getColumnFilterValuePath(columnPath), columnFilterForm);
+      const columnsFilterFilters = getFieldValue( getColumnFilterFiltersPath(columnPath), columnFilterForm);
 
-      const filters = mergeRight(acc.filters, filterFormData);
-      const sort = mergeRight(acc.sort, sortFormData);
+      const filters = when(() => columnFilterType,
+        set(lensPath(columnPath), {
+          type: columnFilterType,
+          ...!isNil(columnsFilterFilters) && {filters: columnsFilterFilters },
+          ...!isNil(columnFilterValue) && { value: columnFilterValue },
+        })
+      )(acc.filters);
+
+      const columnSortFormValue = getFieldValue(columnPath.join('.'), columnSortForm);
+
+      const sort = when(() => columnSortFormValue,
+        set(lensPath(columnPath), columnSortFormValue)
+      )(acc.sort);
 
       return { filters, sort };
     },
@@ -115,35 +103,22 @@ export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns:
   );
 };
 
-const setNestedForm = (path: string[], form: Field): Field => {
-  const pathWFields = path.reduce((acc, p) => [...acc, p, 'fields'], []);
-
-  const o = pathWFields.reduce((result, p, i) => {
-    if (p === 'fields') {
-      const currPath = pathWFields.slice(0, i);
-      return set(lensPath(currPath), { type: 'group' }, result);
-    }
-
-    return result;
-  }, {});
-
-  return set(lensPath(pathWFields), form, o);
-};
-
 type Options = { submitLabel?: string; label?: string };
-export const getStringFilter = (path: string[], value?: IStringInput['filters'], options?: Options): Field =>
-  setNestedForm(path, {
-    type: {
+export const getStringFilter = (path: string[], value?: IStringInput['filters'], options?: Options): MetaField[] =>
+  [{
+      name: getColumnFilterTypePath(path),
       type: 'hidden',
       value: 'string',
     },
-    filters: {
+    {
+      name: getColumnFilterFiltersPath(path),
       type: 'text',
       label: options?.label,
       value,
     },
-    submit: {
+    {
+      name: 'submit',
       type: 'submit',
       label: options?.submitLabel || 'submit',
     },
-  });
+  ];

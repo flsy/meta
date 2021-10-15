@@ -13,10 +13,11 @@ const form = [
 describe('fieldPropertyLens', () => {
   it('set options on simple path', () => {
     const options = [{ value: 15, label: 'my label' }];
-    const lens = fieldPropertyLens('field1', 'options')(form);
+
+    const lens = fieldPropertyLens( 'options', 'field1')(form);
 
     if(isLeft(lens)) {
-      return fail(lens.value)
+      fail(lens.value)
     }
 
     expect(set(lens.value, options, form)).toEqual([
