@@ -20,7 +20,7 @@
     "lib"
   ],
   "scripts": {
-    "test": " jest",
+    "test": " jest --passWithNoTests",
     "build": "rm -rf ./lib && tsc -b",
     "prepare": "yarn build",
     "start": "start-storybook -p 9009",
