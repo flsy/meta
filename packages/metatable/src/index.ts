@@ -5,7 +5,6 @@ export {
   findColumnPath,
   filterColumnPaths,
   unsetAllSortFormValues,
-  getFilterFormValue,
   toMetaFilters,
   getStringFilter,
 } from './utils';
