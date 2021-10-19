@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.0](https://github.com/flsy/meta/compare/@falsy/metacore@1.0.0...@falsy/metacore@1.0.0-alpha.0) (2021-10-19)
+
+**Note:** Version bump only for package @falsy/metacore
+
+
+
+
+
 ## [0.0.10](https://github.com/flsy/meta/compare/@falsy/metacore@0.0.9...@falsy/metacore@0.0.10) (2021-09-22)
 
 **Note:** Version bump only for package @falsy/metacore
