@@ -8,7 +8,7 @@ export interface IComponentProps { ref: any, form: FormikContextType<MetaFormVal
 
 export interface IProps {
   fields: MetaField[];
-  onSubmit: (values: MetaFormValues, helpers: FormikHelpers<MetaFormValues>) => void;
+  onSubmit: (p: { values: MetaFormValues, fields: MetaField[] }, helpers: FormikHelpers<MetaFormValues>) => void;
   components: (q: IComponentProps ) => JSX.Element;
 }
 
@@ -36,7 +36,8 @@ export default (props: IProps) => {
         const res = validateForm(setValues(v, props.fields));
         return getErrorMessages(res);
       }}
-      onSubmit={props.onSubmit}
+      onSubmit={(values, formikHelpers) =>
+        props.onSubmit({ values, fields: setValues(values, props.fields) }, formikHelpers)}
     >
       <Form>
         {props.fields.map((field => (<Field key={field.name} field={field} />)))}
