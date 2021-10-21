@@ -4,10 +4,12 @@ import { FieldHelperProps, FieldInputProps, FieldMetaProps } from 'formik/dist/t
 import { getErrorMessages, getValues, setValues, validateForm } from 'metaforms'
 import { MetaField, MetaFormValues, MetaFieldValue } from '@falsy/metacore'
 
-interface IProps {
+export interface IComponentProps { ref: any, form: FormikContextType<MetaFormValues>, field: MetaField, input: FieldInputProps<MetaFieldValue>, meta: FieldMetaProps<MetaFieldValue>, helpers: FieldHelperProps<MetaFieldValue> }
+
+export interface IProps {
   fields: MetaField[];
   onSubmit: (values: MetaFormValues, helpers: FormikHelpers<MetaFormValues>) => void;
-  components: (q: { ref: any, form: FormikContextType<MetaFormValues>, field: MetaField, input: FieldInputProps<MetaFieldValue>, meta: FieldMetaProps<MetaFieldValue>, helpers: FieldHelperProps<MetaFieldValue> } ) => JSX.Element;
+  components: (q: IComponentProps ) => JSX.Element;
 }
 
 export default (props: IProps) => {
