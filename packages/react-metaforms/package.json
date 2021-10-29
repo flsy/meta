@@ -1,6 +1,6 @@
 {
   "name": "react-metaforms",
-  "version": "3.0.9",
+  "version": "4.0.0-alpha.4",
   "main": "lib/export",
   "typings": "lib/export",
   "repository": {
@@ -20,7 +20,7 @@
     "lib"
   ],
   "scripts": {
-    "test": " jest",
+    "test": " jest --passWithNoTests",
     "build": "rm -rf ./lib && tsc -b",
     "prepare": "yarn build",
     "start": "start-storybook -p 9009",
@@ -29,11 +29,13 @@
     "deploy": "NODE_DEBUG=gh-pages gh-pages -d storybook-static"
   },
   "peerDependencies": {
+    "@falsy/metacore": "*",
+    "metaforms": "*",
     "react": "*",
     "react-dom": "*"
   },
   "dependencies": {
-    "metaforms": "latest",
+    "formik": "^2.2.9",
     "react": "^16.*"
   },
   "devDependencies": {

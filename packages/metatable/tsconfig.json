@@ -18,10 +18,5 @@
   "exclude": [
     "node_modules",
     "src/setupTests.ts"
-  ],
-  "references": [
-    {
-      "path": "../metacore"
-    }
   ]
 }

@@ -1,25 +1,24 @@
-import { hasError, isRequired, setFieldValidation, setFieldValue, update, validate, validateForm } from '../utils';
-import { IForm, required, Validation } from '..';
+import { getErrorMessages, hasError, isRequired, setFieldValidation, setFieldValue, validateForm } from '../utils'
+import { required } from '..';
+import { isLeft } from 'fputils'
 
 describe('utils', () => {
   describe('isRequired', () => {
     it('should return correct value', () => {
       expect(isRequired([])).toEqual(false);
       expect(isRequired([required('is required')])).toEqual(true);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      expect(isRequired([{ type: 'blablabal' }])).toEqual(false);
+      expect(isRequired([{ message: 'x', type: 'mustmatch' as const, value: '' }])).toEqual(false);
     });
   });
 
   describe('hasError', () => {
     it('should return if form has error or not', () => {
-      expect(hasError({})).toEqual(false);
-      expect(hasError({ name: { type: 'text', errorMessage: '' } })).toEqual(false);
-      expect(hasError({ name: { type: 'text', errorMessage: undefined } })).toEqual(false);
-      expect(hasError({ name: { type: 'text', errorMessage: 'error' } })).toEqual(true);
+      expect(hasError([])).toEqual(false);
+      expect(hasError([{ name: 'a', label: 'a', type: 'text', errorMessage: '' } ])).toEqual(false);
+      expect(hasError([{ name: 'b ', label: 'b', type: 'text', errorMessage: undefined } ])).toEqual(false);
+      expect(hasError([{ name: 'c', label: 'c', type: 'text', errorMessage: 'error' } ])).toEqual(true);
 
-      const fields = { group1: { type: 'group', fields: { name: { type: 'text', errorMessage: 'yes error' } } } };
+      const fields = [{ name: 'a', label: 'a', type: 'text', errorMessage: 'yes error' } ];
       expect(hasError(fields)).toEqual(true);
     });
   });
@@ -27,265 +26,128 @@ describe('utils', () => {
   describe('validateForm', () => {
     const message = 'This field is required error message';
     it('validates a form', () => {
-      const form: IForm<any> = {
-        myField: {
+      const form = [
+        {
+          name: 'one',
+          label: 'one',
           type: 'text',
           validation: [
             {
-              type: 'required',
+              type: 'required' as const,
               message,
             },
           ],
         },
-        yourField: {
+        {
+          name: 'one',
+          label: 'one',
           type: 'text',
         },
-      };
+      ];
 
-      expect(validateForm(form).myField.errorMessage).toEqual(message);
-      expect(validateForm(form).yourField.errorMessage).toEqual(undefined);
-    });
-
-    it('validates a field with more validations', () => {
-      const fields: IForm<any> = {
-        myField: {
-          name: 'name',
-          value: 'v',
+      expect(validateForm(form)).toEqual([
+        {
+          name: 'one',
+          label: 'one',
+          type: 'text',
           validation: [
             {
-              type: 'required',
-              rules: [{ message: 'is required' }],
-            },
-            {
-              type: 'minlength',
-              value: 3,
-              message: 'min 3 characters',
+              type: 'required' as const,
+              message,
             },
           ],
+          errorMessage: message,
         },
-      };
-
-      expect(validateForm(fields).myField.errorMessage).toEqual('min 3 characters');
+        {
+          name: 'one',
+          label: 'one',
+          type: 'text',
+        },
+      ]);
     });
   });
 
   describe('setFieldValue', () => {
-    it('sets a value on exact field', () => {
-      const fields: IForm<any> = { name: { value: 'a' }, surname: { value: 'b' } };
-
-      expect(setFieldValue('name', 'hey yo!')(fields)!.name!.value).toEqual('hey yo!');
-      expect(fields.surname.value).toEqual('b');
-      expect(setFieldValue('surname', 'b yo!')(fields)!.surname!.value).toEqual('b yo!');
-    });
-
-    it('sets a numeric value', () => {
-      const fields: IForm<any> = { name: {} };
-
-      expect(setFieldValue('name', 12)(fields)!.name!.value).toEqual(12);
-    });
-
-    it('sets a value on nested fields', () => {
-      const fields: IForm<any> = {
-        a: { type: 'text' },
-        b: {
-          type: 'group',
-          fields: {
-            c: { type: 'text' },
-            d: { type: 'text' },
-          },
+    it('sets a field value', () => {
+      const form = [
+        {
+          name: 'fieldone',
+          label: 'fieldone',
+          type: 'text',
         },
-      };
-
-      const updated = setFieldValue(['b', 'c'], 'value C')(fields);
-
-      expect(updated).toEqual({
-        a: { type: 'text' },
-        b: {
-          type: 'group',
-          fields: {
-            c: { type: 'text', value: 'value C' },
-            d: { type: 'text' },
-          },
+        {
+          name: 'fieldtwo',
+          label: 'fieldtwo',
+          type: 'text',
         },
-      });
-    });
+      ];
 
-    it("shouldn't set a value to nested field without groupName", () => {
-      const fields: IForm<any> = {
-        a: { type: 'text' },
-        b: {
-          type: 'group',
-          fields: {
-            c: { type: 'text' },
-            d: { type: 'text' },
-          },
+      const formWValue = setFieldValue('fieldone', 'randomvalue', form);
+
+      expect(formWValue).toEqual([
+        {
+          name: 'fieldone',
+          label: 'fieldone',
+          type: 'text',
+          value: 'randomvalue',
         },
-      };
-
-      const updated = setFieldValue('c', 'value C')(fields);
-
-      expect(updated).toEqual({
-        a: { type: 'text' },
-        b: {
-          type: 'group',
-          fields: {
-            c: { type: 'text' },
-            d: { type: 'text' },
-          },
+        {
+          name: 'fieldtwo',
+          label: 'fieldtwo',
+          type: 'text',
         },
-      });
+      ]);
     });
   });
 
   describe('setFieldValidation', () => {
     it('sets a validation', () => {
-      const form: IForm<any> = {
-        my: {
+      const form = [
+        {
+          name: 'fieldone',
+          label: 'fieldone',
           type: 'text',
         },
-        yourField: {
+        {
+          name: 'fieldtwo',
+          label: 'fieldtwo',
           type: 'text',
         },
-      };
-      expect(validateForm(form).my.errorMessage).toEqual(undefined);
+      ];
 
-      const updatedForm: IForm<any> = setFieldValidation('my', [
+      const validatedForm = validateForm(form);
+      expect(getErrorMessages(validatedForm)).toEqual({});
+
+      const formWValidation = setFieldValidation('fieldone', [
         {
           type: 'required',
           message: 'It is required',
         },
-      ])(form);
+      ], form);
 
-      expect(validateForm(updatedForm).my.errorMessage).toEqual('It is required');
-    });
-  });
-
-  describe('update', () => {
-    it('updates a structure', () => {
-      const name = 'a';
-      const value = 'valueA';
-
-      expect(update(name, value, {})).toEqual({});
-
-      const differentFields: IForm<any> = { b: { type: 'text' } };
-
-      expect(update('a', value, differentFields)).toEqual(differentFields);
-
-      expect(update('a', value, { a: { type: 'text' } })).toEqual({ a: { type: 'text', value } });
-    });
-
-    it('updates a grouped structure', () => {
-      const fields: IForm<any> = {
-        a: { type: 'text' },
-        groupA: {
-          type: 'group',
-          fields: {
-            c: { type: 'text' },
-            d: { type: 'text' },
-          },
-        },
-      };
-
-      const value = 'value X';
-      const expected: IForm<any> = {
-        a: { type: 'text' },
-        groupA: {
-          type: 'group',
-          fields: {
-            c: { type: 'text', value },
-            d: { type: 'text' },
-          },
-        },
-      };
-
-      expect(update(['groupA', 'c'], value, fields)).toEqual(expected);
-    });
-
-    it('updates a nested grouped structure', () => {
-      const fields: IForm<any> = {
-        a: { type: 'text' },
-        groupA: {
-          type: 'group',
-          fields: {
-            c: { type: 'text' },
-            groupD: {
-              type: 'group',
-              fields: {
-                e: { type: 'text' },
-                f: { type: 'text' },
-              },
-            },
-          },
-        },
-      };
-
-      const value = 'value Y';
-      const expected: IForm<any> = {
-        a: { type: 'text' },
-        groupA: {
-          type: 'group',
-          fields: {
-            c: { type: 'text' },
-            groupD: {
-              type: 'group',
-              fields: {
-                e: { type: 'text' },
-                f: { type: 'text', value },
-              },
-            },
-          },
-        },
-      };
-
-      expect(update(['groupA', 'groupD', 'f'], value, fields)).toEqual(expected);
-    });
-  });
-
-  describe('validate', () => {
-    const errorMessage = 'This field is required.';
-    const validation: Validation[] = [
-      {
-        type: 'required',
-        message: errorMessage,
-      },
-    ];
-
-    it('validates a structure', () => {
-      expect(validate('a', {})).toEqual({});
-      expect(validate('a', { b: { type: 'text', validation } })).toEqual({ b: { type: 'text', validation } });
-      expect(validate('b', { b: { type: 'text', validation } })).toEqual({
-        b: {
+      expect(formWValidation).toEqual([
+        {
+          name: 'fieldone',
+          label: 'fieldone',
           type: 'text',
-          validation,
-          errorMessage,
+          validation: [
+            {
+              type: 'required',
+              message: 'It is required',
+            }
+          ]
         },
+        {
+          name: 'fieldtwo',
+          label: 'fieldtwo',
+          type: 'text',
+        },
+      ]);
+
+      const validatedFormWValidation = validateForm(formWValidation);
+      expect(getErrorMessages(validatedFormWValidation)).toEqual({
+        fieldone: "It is required",
       });
-    });
-
-    it('validates a nested structure', () => {
-      const fields: IForm<any> = {
-        a: { type: 'text' },
-        groupA: {
-          type: 'group',
-          fields: {
-            c: { type: 'text' },
-            d: { type: 'text', validation },
-          },
-        },
-      };
-
-      const expected: IForm<any> = {
-        a: { type: 'text' },
-        groupA: {
-          type: 'group',
-          fields: {
-            c: { type: 'text' },
-            d: { type: 'text', validation, errorMessage },
-          },
-        },
-      };
-
-      expect(validate(['groupA', 'd'], fields)).toEqual(expected);
     });
   });
 });
