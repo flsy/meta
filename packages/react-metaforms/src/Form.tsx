@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Form, Formik, FormikContextType, FormikHelpers, useField, useFormikContext } from 'formik'
+import { Form, Formik, FormikContextType, FormikHelpers, FormikProps, useField, useFormikContext } from 'formik'
 import { FieldHelperProps, FieldInputProps, FieldMetaProps } from 'formik/dist/types'
 import { getErrorMessages, getValues, setValues, validateForm } from 'metaforms'
 import { MetaField, MetaFormValues, MetaFieldValue } from '@falsy/metacore'
@@ -10,6 +10,7 @@ export interface IProps {
   fields: MetaField[];
   onSubmit: (p: { values: MetaFormValues, fields: MetaField[] }, helpers: FormikHelpers<MetaFormValues>) => void;
   components: (q: IComponentProps ) => JSX.Element;
+  formikProps?: FormikProps<any>;
 }
 
 export default (props: IProps) => {
@@ -31,6 +32,7 @@ export default (props: IProps) => {
 
   return (
     <Formik
+      {...props.formikProps}
       initialValues={getValues(props.fields)}
       validate={(v) => {
         const res = validateForm(setValues(v, props.fields));
