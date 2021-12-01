@@ -113,7 +113,7 @@ const getButtonGroupItems = (options?: Options) => [
   (options?.resetLabel ? {
     name: 'reset',
     type: 'reset',
-    label: options.resetLabel || 'Reset',
+    label: options.resetLabel,
   } : undefined),
   {
     name: 'submit',
