@@ -103,7 +103,26 @@ export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns:
   );
 };
 
-type Options = { submitLabel?: string; label?: string };
+type Options = { submitLabel?: string; label?: string; resetLabel?: string };
+
+const getColumnFilterActionPath = (columnPath: string[]) => `${columnPath.join('.')}.actions`
+
+const exist = <T>(value: T): boolean => !!value
+
+const getButtonGroupItems = (options?: Options) => [
+  (options?.resetLabel ? {
+    name: 'reset',
+    type: 'reset',
+    label: options.resetLabel || 'Reset',
+  } : undefined),
+  {
+    name: 'submit',
+    type: 'submit',
+    label: options?.submitLabel || 'Submit',
+    primary: true
+  },
+].filter(exist)
+
 export const getStringFilter = (path: string[], value?: IStringInput['filters'], options?: Options): MetaField[] =>
   [{
       name: getColumnFilterTypePath(path),
@@ -117,8 +136,8 @@ export const getStringFilter = (path: string[], value?: IStringInput['filters'],
       value,
     },
     {
-      name: 'submit',
-      type: 'submit',
-      label: options?.submitLabel || 'submit',
-    },
+      name: getColumnFilterActionPath(path),
+      type: 'buttonGroup',
+      items: getButtonGroupItems(options),
+    }
   ];
