@@ -13,9 +13,8 @@ const customerIdFilterForm: MetaField[] = [
     value: [{ operator: 'EQ', value: 'CUST_ID' }],
   },
   {
-    name: 'submit',
-    type: 'submit',
-    label: 'submit',
+    name: "customer.id.actions",
+    type: "buttonGroup"
   },
 ];
 
@@ -49,7 +48,7 @@ const mockedColumns1: Columns<'number' | 'timestamp' | 'string' | 'boolean'> = {
         type: 'sort',
         value: 'ASC',
       }],
-      filterForm: getStringFilter(['name'], [{ value: 'hey', operator: 'EQ' }]),
+      filterForm: getStringFilter(['name'], [{ value: 'hey', operator: 'EQ' }], {resetLabel: 'Reset'}),
     },
   },
   attachments: {
@@ -239,9 +238,8 @@ describe('Metatable utils', () => {
           ]
         },
         {
-          label: "submit",
-          name: "submit",
-          type: "submit"
+          name: "customer.id.actions",
+          type: "buttonGroup"
         }
       ],
     });
@@ -305,9 +303,21 @@ describe('Metatable utils', () => {
             ]
           },
           {
-            label: "submit",
-            name: "submit",
-            type: "submit"
+            items: [
+              {
+                label: "Reset",
+                name: "reset",
+                type: "reset",
+              },
+              {
+                label: "Submit",
+                name: "submit",
+                primary: true,
+                type: "submit"
+              }
+            ],
+            name: "name.actions",
+            type: "buttonGroup"
           }
         ],
         label: 'CreatedBy',
