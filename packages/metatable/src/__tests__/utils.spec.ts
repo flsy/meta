@@ -14,7 +14,12 @@ const customerIdFilterForm: MetaField[] = [
   },
   {
     name: "customer.id.actions",
-    type: "buttonGroup"
+    type: "buttonGroup",
+    items: [{
+      name: 'submit',
+      type: 'submit',
+      label: 'Submit',
+    }]
   },
 ];
 
@@ -238,6 +243,13 @@ describe('Metatable utils', () => {
           ]
         },
         {
+          items: [
+            {
+              label: "Submit",
+              name: "submit",
+              type: "submit"
+            }
+          ],
           name: "customer.id.actions",
           type: "buttonGroup"
         }
