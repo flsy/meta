@@ -5,7 +5,7 @@ import {
   OneOrMany,
   IStringInput,
   MetaField,
-} from '@falsy/metacore'
+} from '@falsy/metacore';
 import { defaultTo, head, isNil, lensPath, prop, set, view, when } from 'ramda'
 import { getFieldProperty } from 'metaforms'
 
@@ -103,28 +103,13 @@ export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns:
   );
 };
 
-type Options = { submitLabel?: string; label?: string; resetLabel?: string };
+type Options = { value?: IStringInput['filters'], label?: string, submit?: MetaField };
 
-const getColumnFilterActionPath = (columnPath: string[]) => `${columnPath.join('.')}.actions`
+const exist = <T>(value: T): boolean => !!value;
+const filter = <T>(array: T[]): T[] => array.filter(exist);
 
-const exist = <T>(value: T): boolean => !!value
-
-const getButtonGroupItems = (options?: Options) => [
-  (options?.resetLabel ? {
-    name: 'reset',
-    type: 'reset',
-    label: options.resetLabel,
-  } : undefined),
-  {
-    name: 'submit',
-    type: 'submit',
-    label: options?.submitLabel || 'Submit',
-    primary: true
-  },
-].filter(exist)
-
-export const getStringFilter = (path: string[], value?: IStringInput['filters'], options?: Options): MetaField[] =>
-  [{
+export const getStringFilter = (path: string[], options?: Options): MetaField[] =>
+  filter([{
       name: getColumnFilterTypePath(path),
       type: 'hidden',
       value: 'string',
@@ -133,11 +118,7 @@ export const getStringFilter = (path: string[], value?: IStringInput['filters'],
       name: getColumnFilterFiltersPath(path),
       type: 'text',
       label: options?.label,
-      value,
+      value: options?.value,
     },
-    {
-      name: getColumnFilterActionPath(path),
-      type: 'buttonGroup',
-      items: getButtonGroupItems(options),
-    }
-  ];
+    options?.submit,
+  ])
