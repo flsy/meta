@@ -105,8 +105,7 @@ export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns:
 
 type Options = { value?: IStringInput['filters'], label?: string, submit?: MetaField };
 
-const exist = <T>(value: T): boolean => !!value;
-const filter = <T>(array: T[]): T[] => array.filter(exist);
+const filter = <T>(array: Array<T | undefined>): T[] => array.filter((value) => !!value);
 
 export const getStringFilter = (path: string[], options?: Options): MetaField[] =>
   filter([{
