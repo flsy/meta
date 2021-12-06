@@ -13,9 +13,13 @@ const customerIdFilterForm: MetaField[] = [
     value: [{ operator: 'EQ', value: 'CUST_ID' }],
   },
   {
-    name: 'submit',
-    type: 'submit',
-    label: 'submit',
+    name: "customer.id.actions",
+    type: "buttonGroup",
+    items: [{
+      name: 'submit',
+      type: 'submit',
+      label: 'Submit',
+    }]
   },
 ];
 
@@ -49,7 +53,26 @@ const mockedColumns1: Columns<'number' | 'timestamp' | 'string' | 'boolean'> = {
         type: 'sort',
         value: 'ASC',
       }],
-      filterForm: getStringFilter(['name'], [{ value: 'hey', operator: 'EQ' }]),
+        filterForm: getStringFilter(['name'], {
+          value: [{ value: 'hey', operator: 'EQ' }],
+          label: 'Name',
+          submit: {
+            name: "name.actions",
+            type: "buttonGroup",
+            items: [
+              {
+                label: "Reset",
+                name: "reset",
+                type: "reset",
+              },
+              {
+                name: 'submit',
+                type: 'submit',
+                label: 'Submit',
+                primary: true
+              },
+            ]
+          }}),
     },
   },
   attachments: {
@@ -174,9 +197,37 @@ describe('Metatable utils', () => {
   it('transform to meta filters', async () => {
     expect(toMetaFilters(mockedColumns2)).toMatchObject(col2toMetafilterOutput);
   });
+
+  it('gets string filter without value, label and submit', () => {
+    expect(getStringFilter(['a', 'b'])).toEqual([
+      {
+        name: "a.b.type",
+        type: "hidden",
+        value: "string"
+      },
+      {
+        name: "a.b.filters",
+        type: "text"
+      }
+    ])
+  })
+
   it('gets string filter', async () => {
-    expect(getStringFilter(['customer', 'id'], [{ operator: 'EQ', value: 'CUST_ID' }])).toMatchObject(customerIdFilterForm);
+    expect(getStringFilter(['customer', 'id'], {
+      value: [{ operator: 'EQ', value: 'CUST_ID' }],
+      label: 'Customer id',
+      submit: {
+        name: "customer.id.actions",
+        type: "buttonGroup",
+        items: [{
+          name: 'submit',
+          type: 'submit',
+          label: 'Submit',
+        }]
+      }}
+    )).toMatchObject(customerIdFilterForm);
   });
+
   it('filters column path', async () => {
     const displayedColumnPaths = filterColumnPaths((column) => !column?.isOmitted)(mockedColumns2);
     expect(displayedColumnPaths).toEqual([['name'], ['customer', 'id']]);
@@ -239,9 +290,15 @@ describe('Metatable utils', () => {
           ]
         },
         {
-          label: "submit",
-          name: "submit",
-          type: "submit"
+          items: [
+            {
+              label: "Submit",
+              name: "submit",
+              type: "submit"
+            }
+          ],
+          name: "customer.id.actions",
+          type: "buttonGroup"
         }
       ],
     });
@@ -295,6 +352,7 @@ describe('Metatable utils', () => {
             value: "string"
           },
           {
+            label: 'Name',
             name: "name.filters",
             type: "text",
             value: [
@@ -305,9 +363,21 @@ describe('Metatable utils', () => {
             ]
           },
           {
-            label: "submit",
-            name: "submit",
-            type: "submit"
+            items: [
+              {
+                label: "Reset",
+                name: "reset",
+                type: "reset",
+              },
+              {
+                label: "Submit",
+                name: "submit",
+                primary: true,
+                type: "submit"
+              }
+            ],
+            name: "name.actions",
+            type: "buttonGroup"
           }
         ],
         label: 'CreatedBy',
