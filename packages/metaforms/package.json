@@ -28,7 +28,7 @@
   "dependencies": {
     "@falsy/metacore": "^1.0.0-alpha.4",
     "fputils": "^1.2.4",
-    "ramda": "^0.27.1"
+    "ramda": "^0.28.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.0",
