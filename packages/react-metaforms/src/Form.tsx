@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react';
 import { Form, Formik, FormikContextType, FormikHelpers, FormikProps, useField, useFormikContext } from 'formik'
 import { FieldHelperProps, FieldInputProps, FieldMetaProps } from 'formik/dist/types'
 import { getErrorMessages, getValues, setValues, validateForm } from 'metaforms'
@@ -14,21 +14,27 @@ export interface IProps {
 }
 
 export default (props: IProps) => {
-  const isFocused = useRef<boolean>(false);
+  const firstEl = useRef<any>();
 
   const Field = ({ field }: { field: MetaField }): JSX.Element => {
     const [input, meta, helpers] = useField(field.name);
     const form = useFormikContext<MetaFormValues>();
 
     const ref = (el: any) => {
-      if(field.name === props.fields[0].name && !isFocused.current) {
-        isFocused.current = true;
-        el?.focus?.();
+      if(field.name === props.fields[0].name) {
+        firstEl.current = el;
       }
     }
 
     return props.components({ field, ref, input, meta, helpers, form })
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      firstEl.current?.focus?.();
+    }, 200);
+
+  }, [])
 
   return (
     <Formik
