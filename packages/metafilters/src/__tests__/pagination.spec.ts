@@ -5,7 +5,7 @@ import { all, close, get } from '../sqliteUtils';
 describe('pagination', () => {
   it('paginate sorted by keyColumn ASC', async () => {
     const db = await seed();
-    const response1 = await metafilters(exampleColumn, 'person-dash', { limit: 3 });
+    const response1 = await metafilters('person-dash',exampleColumn, { limit: 3 });
 
     const count = await get(db, response1.count);
     const nodes = await all(db, response1.nodes);
@@ -19,7 +19,7 @@ describe('pagination', () => {
       { id: 3, firstName: 'Beta', lastName: 'Woods', isValid: 1, age: 30 },
     ]);
 
-    const response2 = await metafilters(exampleColumn, 'person-dash', { page: 1, limit: 3 });
+    const response2 = await metafilters('person-dash', exampleColumn, { page: 1, limit: 3 });
     const nodes2 = await all(db, response2.nodes);
     await close(db);
     expect(nodes2.length).toEqual(1);
@@ -28,7 +28,7 @@ describe('pagination', () => {
 
   it('paginate sorted by keyColumn DESC', async () => {
     const db = await seed();
-    const response1 = await metafilters(exampleColumn, 'person-dash', { limit: 3, sort: { id: 'DESC' } });
+    const response1 = await metafilters('person-dash', exampleColumn, { limit: 3, sort: { id: 'DESC' } });
 
     const count = await get(db, response1.count);
     const nodes = await all(db, response1.nodes);
@@ -42,7 +42,7 @@ describe('pagination', () => {
       { id: 2, firstName: 'Alpha', isValid: 1, lastName: 'Tree', age: 2 },
     ]);
 
-    const response2 = await metafilters(exampleColumn, 'person-dash', { page: 1, limit: 3, sort: { id: 'DESC' } });
+    const response2 = await metafilters( 'person-dash', exampleColumn, { page: 1, limit: 3, sort: { id: 'DESC' } });
     const nodes2 = await all(db, response2.nodes);
     await close(db);
 
@@ -52,7 +52,7 @@ describe('pagination', () => {
 
   it('return empty nodes with page number outside stored data', async () => {
     const db = await seed();
-    const response1 = await metafilters(exampleColumn, 'person-dash', { page: 10, limit: 3, sort: { firstName: 'DESC' } });
+    const response1 = await metafilters( 'person-dash', exampleColumn, { page: 10, limit: 3, sort: { firstName: 'DESC' } });
 
     const count = await get(db, response1.count);
     const nodes = await all(db, response1.nodes);
@@ -64,7 +64,7 @@ describe('pagination', () => {
 
   it('return all nodes without limit', async () => {
     const db = await seed();
-    const response1 = await metafilters(exampleColumn, 'person-dash', { sort: { firstName: 'DESC' } });
+    const response1 = await metafilters('person-dash', exampleColumn, { sort: { firstName: 'DESC' } });
 
     const count = await get(db, response1.count);
     const nodes = await all(db, response1.nodes);
@@ -72,7 +72,7 @@ describe('pagination', () => {
     expect(count).toEqual({ count: 4 });
     expect(nodes.length).toEqual(4);
 
-    const response2 = await metafilters(exampleColumn, 'person-dash', { page: 10, sort: { firstName: 'DESC' } });
+    const response2 = await metafilters( 'person-dash', exampleColumn, { page: 10, sort: { firstName: 'DESC' } });
     const count2 = await get(db, response2.count);
     const nodes2 = await all(db, response2.nodes);
 

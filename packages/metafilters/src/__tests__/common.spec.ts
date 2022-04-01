@@ -5,7 +5,7 @@ import { exampleColumn, seed } from '../testData';
 describe('common code', () => {
   it('map records to table column names', async () => {
     const db = await seed();
-    const response = await metafilters(exampleColumn, 'person-dash');
+    const response = await metafilters('person-dash', exampleColumn);
 
     const nodes = await all(db, response.nodes);
     await close(db);
@@ -21,5 +21,17 @@ describe('common code', () => {
       { id: 3, firstName: 'Beta', lastName: 'Woods', age: 30, isValid: 1 },
       { id: 5, firstName: 'Carol', lastName: 'RainForest', age: 18, isValid: 1 },
     ]);
+  });
+  it('map use all columns if not provided', async () => {
+    const db = await seed();
+    const response = await metafilters('person-dash');
+
+    const nodes = await all(db, response.nodes);
+    await close(db);
+
+    expect(response).toMatchObject({
+      count: 'SELECT COUNT(*) as count FROM "person-dash";',
+      nodes: 'SELECT * FROM "person-dash";',
+    });
   });
 });

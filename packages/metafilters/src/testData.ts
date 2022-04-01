@@ -1,24 +1,6 @@
 import { getDatabase, prepare, run } from './sqliteUtils';
-import { Columns } from '@falsy/metacore';
 
-export const exampleColumn: Columns<'number' | 'string' | 'boolean'> = {
-  id: {
-    key: true,
-    type: 'number',
-  },
-  firstName: {
-    type: 'string',
-  },
-  lastName: {
-    type: 'string',
-  },
-  age: {
-    type: 'number',
-  },
-  isValid: {
-    type: 'boolean',
-  },
-};
+export const exampleColumn = ['id', 'firstName', 'lastName', 'age', 'isValid']
 
 export const seed = async () => {
   const db = await getDatabase(':memory:');

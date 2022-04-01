@@ -5,7 +5,7 @@ import { exampleColumn, seed } from '../testData';
 describe('sort', () => {
   it('return records sorted by string DESC', async () => {
     const db = await seed();
-    const response = await metafilters(exampleColumn, 'person-dash', { sort: { firstName: 'DESC' } });
+    const response = await metafilters( 'person-dash', exampleColumn, { sort: { firstName: 'DESC' } });
 
     const count = await get(db, response.count);
     const nodes = await all(db, response.nodes);
@@ -21,7 +21,7 @@ describe('sort', () => {
   });
   it('handles undefined sort', async () => {
     const db = await seed();
-    const response = await metafilters(exampleColumn, 'person-dash', { sort: { id: undefined, lastName: undefined } });
+    const response = await metafilters( 'person-dash', exampleColumn, { sort: { id: undefined, lastName: undefined } });
 
     const count = await get(db, response.count);
     await close(db);

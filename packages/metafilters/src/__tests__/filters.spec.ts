@@ -6,7 +6,7 @@ describe('filters', () => {
   describe('string filters', () => {
     it('filter by string EQ', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, 'person-dash', {
+      const response = await metafilters('person-dash', exampleColumn, {
         filters: { firstName: { type: 'string', filters: [{ value: 'Beta', operator: 'EQ' }] } },
       });
 
@@ -26,7 +26,7 @@ describe('filters', () => {
 
     it('filter string by GE and LE operators', async () => {
       const db = await seed();
-      const filters = metafilters(exampleColumn, 'person-dash', {
+      const filters = metafilters( 'person-dash', exampleColumn, {
         filters: {
           firstName: {
             type: 'string',
@@ -61,7 +61,7 @@ describe('filters', () => {
 
     it('filter string by NE operator', async () => {
       const db = await seed();
-      const filters = metafilters(exampleColumn, 'person-dash', {
+      const filters = metafilters('person-dash', exampleColumn, {
         filters: { lastName: { type: 'string', filters: [{ operator: 'NE', value: 'Forest' }] } },
       });
 
@@ -80,7 +80,7 @@ describe('filters', () => {
 
     it('filter by string default LIKE', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, 'person-dash', {
+      const response = await metafilters('person-dash', exampleColumn, {
         filters: { firstName: { type: 'string', filters: [{ value: 'a' }] } },
       });
 
@@ -100,7 +100,7 @@ describe('filters', () => {
 
     it('filter by string with null value', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, 'person-dash', {
+      const response = await metafilters('person-dash', exampleColumn, {
         filters: { firstName: { type: 'string', filters: [{ value: null }] } },
       });
 
@@ -122,7 +122,7 @@ describe('filters', () => {
       const db = await seed();
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const response = await metafilters(exampleColumn, 'person-dash', { filters: { name: { type: 'string', filters: undefined } } });
+      const response = await metafilters('person-dash', exampleColumn, { filters: { name: { type: 'string', filters: undefined } } });
 
       const count = await get(db, response.count);
       const nodes = await all(db, response.nodes);
@@ -139,7 +139,7 @@ describe('filters', () => {
 
     it('filter by string with user defined function', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, 'person-dash', {
+      const response = await metafilters('person-dash', exampleColumn, {
         filters: { firstName: { type: 'string', filters: [{ value: 'beta', operator: 'EQ', customFunction: 'lower' }] } },
       });
 
@@ -161,7 +161,7 @@ describe('filters', () => {
   describe('strings filter', () => {
     it('should return all when empty filter', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, 'person-dash', {
+      const response = await metafilters('person-dash', exampleColumn, {
         filters: {
           firstName: {
             type: 'strings',
@@ -185,7 +185,7 @@ describe('filters', () => {
 
     it('should filter', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, 'person-dash', {
+      const response = await metafilters('person-dash', exampleColumn, {
         filters: {
           firstName: {
             type: 'strings',
@@ -212,7 +212,7 @@ describe('filters', () => {
 
     it('should filter with operators', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, 'person-dash', {
+      const response = await metafilters('person-dash', exampleColumn, {
         filters: {
           firstName: {
             type: 'strings',
@@ -237,7 +237,7 @@ describe('filters', () => {
 
     it('should filter with functions', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, 'person-dash', {
+      const response = await metafilters('person-dash', exampleColumn, {
         filters: {
           firstName: {
             type: 'strings',
@@ -267,7 +267,7 @@ describe('filters', () => {
   describe('filters combined', () => {
     it('filter', async () => {
       const db = await seed();
-      const response = await metafilters(exampleColumn, 'person-dash', {
+      const response = await metafilters( 'person-dash',exampleColumn, {
         filters: {
           firstName: { type: 'string', filters: [{ value: 'a' }, { value: 'a' }] },
           age: {
@@ -303,7 +303,7 @@ describe('filters', () => {
   describe('number filter', () => {
     it('filter number by like operator', async () => {
       const db = await seed();
-      const response = metafilters(exampleColumn, 'person-dash', {
+      const response = metafilters('person-dash', exampleColumn, {
         filters: {
           age: {
             type: 'number',
