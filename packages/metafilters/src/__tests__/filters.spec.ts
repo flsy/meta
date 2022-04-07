@@ -24,6 +24,26 @@ describe('filters', () => {
       expect(nodes).toMatchObject([{ firstName: 'Beta', lastName: 'Woods' }]);
     });
 
+    it('filter by string EQ with alias', async () => {
+      const db = await seed();
+      const response = await metafilters('person-dash', [['firstName', 'name']], {
+        filters: { firstName: { type: 'string', filters: [{ value: 'Beta', operator: 'EQ' }] } },
+      });
+
+      const count = await get(db, response.count);
+      const nodes = await all(db, response.nodes);
+      await close(db);
+
+      expect(response).toMatchObject({
+        count: `SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" = 'Beta';`,
+        nodes: `SELECT "firstName" as "name" FROM "person-dash" WHERE "firstName" = 'Beta';`,
+      });
+
+      expect(count).toEqual({ count: 1 });
+      expect(nodes.length).toEqual(1);
+      expect(nodes).toMatchObject([{ name: 'Beta' }]);
+    });
+
     it('filter string by GE and LE operators', async () => {
       const db = await seed();
       const filters = metafilters( 'person-dash', exampleColumn, {

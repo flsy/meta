@@ -1,22 +1,22 @@
 import { IMetaFiltersArgs } from '@falsy/metacore';
 import { getSortKey } from './sort';
 import { whereFilters } from './filters';
-import { escape } from './tools';
+import { Column, columnsToQuery, escape } from './tools';
 
 /**
  * @param tableName DB table name
  * @param columns List of columns to select from DB
  * @param args
  */
-export const metafilters = <T>(tableName: string, columns?: string[], args?: IMetaFiltersArgs) => {
+export const metafilters = <T>(tableName: string, columns?: Column[], args?: IMetaFiltersArgs) => {
   const sortKey = getSortKey(args?.sort);
 
-  const chunks = [`SELECT ${columns ? columns.map(escape).join(', ') : '*'}`, `FROM ${escape(tableName)}`];
+  const chunks = [`SELECT ${columns ? columnsToQuery(columns) : '*'}`, `FROM ${escape(tableName)}`];
   const countChunks = [`SELECT COUNT(*) as count`, `FROM ${escape(tableName)}`];
   let wheres: string[] = [];
 
   if (args && args.filters) {
-    wheres = [...wheres, ...whereFilters(args.filters)];
+    wheres = [...wheres, ...whereFilters(args.filters, columns)];
   }
 
   if (wheres.length) {

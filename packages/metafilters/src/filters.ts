@@ -1,5 +1,5 @@
 import { Filters, IBooleanInput, INumberInput, IStringInput, IStringsInput, Nullable, Operator } from '@falsy/metacore';
-import { prepareColumnName } from './tools';
+import { Column, getColumnDbName, prepareColumnName } from './tools';
 
 const numberFilter = (name: string, filter: INumberInput): string[] =>
   (filter.filters || []).map(({ operator, value, customFunction }) => {
@@ -81,17 +81,18 @@ const booleanFilter = (name: string, filter: IBooleanInput): string => {
   return [columnName, '=', filter.value].join(' ');
 };
 
-export const whereFilters = (filters: Filters): string[] => {
+export const whereFilters = (filters: Filters, columns: Column[] = []): string[] => {
   return Object.entries(filters).reduce<string[]>((all, [name, filter]) => {
+    const columnDbName = getColumnDbName(columns, name)
     switch (filter?.type) {
       case 'string':
-        return [...all, ...stringFilter(name, filter)];
+        return [...all, ...stringFilter(columnDbName, filter)];
       case 'strings':
-        return [...all, ...stringsFilter(name, filter)];
+        return [...all, ...stringsFilter(columnDbName, filter)];
       case 'number':
-        return [...all, ...numberFilter(name, filter)];
+        return [...all, ...numberFilter(columnDbName, filter)];
       case 'boolean':
-        return [...all, booleanFilter(name, filter)];
+        return [...all, booleanFilter(columnDbName, filter)];
       default:
         return all;
     }
