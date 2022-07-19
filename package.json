@@ -19,7 +19,8 @@
     "packages/metaforms",
     "packages/metatable",
     "packages/metafilters",
-    "packages/react-metaforms"
+    "packages/react-metaforms",
+    "packages/metahelpers"
   ],
   "scripts": {
     "build": "yarn workspaces run build",
