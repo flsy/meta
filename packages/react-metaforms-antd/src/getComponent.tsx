@@ -1,6 +1,5 @@
 import React from 'react';
 import { DatePicker as $DatePicker, Input as $Input } from 'antd';
-import { FieldArray } from 'formik';
 import { MetaField } from 'metaforms';
 import moment from 'moment';
 import { IProps } from 'react-metaforms';
@@ -13,35 +12,26 @@ import ImageUpload from './components/ImageUpload';
 import Input from './components/Input';
 import Multiselect from './components/Multiselect';
 import Select from './components/Select';
+import { IComponentProps } from 'react-metaforms/lib/Form';
 
-export const getComponent: IProps['components'] = (props, createField) => {
+
+export type ParentGetComponent = (componentProps: IComponentProps, getComponent: IProps['components'], createField: (field: MetaField) => JSX.Element) => JSX.Element | undefined;
+
+export const getComponent =
+  (parentGetComponent?: ParentGetComponent): IProps['components'] =>
+    (props, createField) => {
+      if (parentGetComponent) {
+        const found = parentGetComponent(props, getComponent(), createField);
+        if (found) {
+          return found;
+        }
+      }
+
   const { ref, field, input, meta, helpers, form } = props;
   const errorMessage = field.errorMessage || meta.error;
   const disabled = field.disabled || form.isSubmitting;
 
   switch (field.type) {
-    case 'list':
-      return (
-        <FieldArray
-          name={field.name}
-          render={(arrayHelpers) => (
-            <div>
-              {form.values?.[field.name]?.map((_: unknown, index: number) => (
-                <div key={index}>
-                  {field.fields.map((f: MetaField) => createField({ ...f, name: `${field.name}.${index}.${f.name}` }))}
-                  <button type="button" onClick={() => arrayHelpers.remove(index)}>
-                    Odstranit
-                  </button>
-                </div>
-              ))}
-              <button type="button" onClick={() => arrayHelpers.push({})}>
-                Přidat
-              </button>
-              {meta.error ? <div>{meta.error}</div> : null}
-            </div>
-          )}
-        />
-      );
     case 'number':
     case 'text':
     case 'password':
