@@ -27,7 +27,7 @@ const initialFields: MetaField[] = [
     name: 'roles',
     label: 'Roles',
     type: 'list',
-    value: [{ name: 'Admin'}],
+    // value: [{ name: 'Admin'}],
     fields: [
       {
         name: "name",

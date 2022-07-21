@@ -1,0 +1,37 @@
+{
+  "name": "react-metaforms-antd",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "keywords": [
+    "react",
+    "forms"
+  ],
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "rm -rf ./lib && tsc -b",
+    "prepare": "yarn build"
+  },
+  "peerDependencies": {
+    "react": "16.14.0",
+    "react-dom": "16.14.0"
+  },
+  "dependencies": {
+    "antd": "^4.21.7",
+    "formik": "^2.2.9",
+    "moment": "^2.29.4",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "styled-components": "^5.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^16.7.2",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "@types/styled-components": "^5.1.25",
+    "typescript": "^4.3.5"
+  }
+}

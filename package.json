@@ -20,7 +20,8 @@
     "packages/metatable",
     "packages/metafilters",
     "packages/react-metaforms",
-    "packages/metahelpers"
+    "packages/metahelpers",
+    "packages/react-metaforms-antd"
   ],
   "scripts": {
     "build": "yarn workspaces run build",
