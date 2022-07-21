@@ -13,7 +13,8 @@
   ],
   "scripts": {
     "build": "rm -rf ./lib && tsc -b",
-    "prepare": "yarn build"
+    "prepare": "yarn build",
+    "start": "start-storybook -p 9010"
   },
   "peerDependencies": {
     "react": "16.14.0",
@@ -28,10 +29,20 @@
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@storybook/addon-actions": "^6.5.9",
+    "@storybook/addon-essentials": "^6.5.9",
+    "@storybook/addon-interactions": "^6.5.9",
+    "@storybook/addon-links": "^6.5.9",
+    "@storybook/builder-webpack4": "^6.5.9",
+    "@storybook/manager-webpack4": "^6.5.9",
+    "@storybook/react": "^6.5.9",
+    "@storybook/testing-library": "^0.0.13",
     "@types/node": "^16.7.2",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
     "@types/styled-components": "^5.1.25",
+    "babel-loader": "^8.2.5",
     "typescript": "^4.3.5"
   }
 }
