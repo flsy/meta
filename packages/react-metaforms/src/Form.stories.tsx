@@ -2,6 +2,8 @@ import MetaForm from './export'
 import React from 'react';
 import { isRequired } from 'metaforms'
 import { MetaField } from '@falsy/metacore'
+import { FieldArray } from 'formik';
+import { action } from '@storybook/addon-actions';
 
 const initialFields: MetaField[] = [
   {
@@ -22,11 +24,23 @@ const initialFields: MetaField[] = [
     value: ''
   },
   {
-    name: "role",
-    label: "Role",
-    type: "text",
-    validation: [],
-    value: "admin"
+    name: 'roles',
+    label: 'Roles',
+    type: 'list',
+    value: [{ name: 'Admin'}],
+    fields: [
+      {
+        name: "name",
+        label: "Name",
+        type: "text",
+        validation: [
+          { type: "required", message: "Please enter role name" },
+        ],
+      },
+    ],
+    validation: [
+      { type: "required", message: "Please enter at least one role" },
+    ],
   },
   {
     name: "submit",
@@ -61,23 +75,42 @@ const Input = React.forwardRef((props: any, ref: React.Ref<HTMLInputElement>) =>
     />
     {props.errorMessage ? <div>{props.errorMessage}</div> : null}
   </div>
-)
-);
+));
 
 
 export const Basic = () => {
   return (
     <MetaForm
       onSubmit={(v, h) => {
-        console.log(v)
+        action('onSubmit')(v)
 
         setTimeout(() => {
           h.setSubmitting(false);
         }, 1000)
       }}
       fields={initialFields}
-      components={({ field, ref, input, meta, form }) => {
+      components={({ field, ref, input, meta, form }, createField) => {
         switch (field.type) {
+          case 'list':
+            return (
+              <FieldArray
+                name={field.name}
+                render={arrayHelpers => (
+                  <>
+                    {form.values?.[field.name]?.map((_: unknown, index: number) => (
+                      <div key={index}>
+                        {field.fields.map((f: MetaField) => createField({ ...f, name: `${field.name}.${index}.${f.name}`}))}
+                        <button onClick={() => arrayHelpers.remove(index)}>Remove</button>
+                      </div>
+                    ))}
+                    <button type="button" onClick={() => arrayHelpers.push('')}>
+                      Add a role
+                    </button>
+                    {meta.error ? <div>{meta.error}</div> : null}
+                  </>
+                )}
+              />
+            )
           case 'text':
             return <Input ref={ref} name={field.name} label={field.label} value={input.value} onChange={input.onChange} onBlur={input.onBlur} errorMessage={meta.error}/>;
           case 'submit':

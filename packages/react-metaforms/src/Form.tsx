@@ -1,5 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import { Form, Formik, FormikContextType, FormikHelpers, FormikProps, useField, useFormikContext } from 'formik'
+import {
+  Form,
+  Formik,
+  FormikContextType,
+  FormikHelpers,
+  FormikProps,
+  useField,
+  useFormikContext,
+} from 'formik';
 import { FieldHelperProps, FieldInputProps, FieldMetaProps } from 'formik/dist/types'
 import { getErrorMessages, getValues, setValues, validateForm } from 'metaforms'
 import { MetaField, MetaFormValues, MetaFieldValue } from '@falsy/metacore'
@@ -9,7 +17,7 @@ export interface IComponentProps { ref: any, form: FormikContextType<MetaFormVal
 export interface IProps {
   fields: MetaField[];
   onSubmit: (p: { values: MetaFormValues, fields: MetaField[] }, helpers: FormikHelpers<MetaFormValues>) => void;
-  components: (q: IComponentProps ) => JSX.Element;
+  components: (q: IComponentProps, createField: (field: MetaField) => JSX.Element) => JSX.Element;
   formikProps?: FormikProps<any>;
 }
 
@@ -26,7 +34,7 @@ export default (props: IProps) => {
       }
     }
 
-    return props.components({ field, ref, input, meta, helpers, form })
+    return props.components({ field, ref, input, meta, helpers, form }, (nextField) => <Field key={`${field.name}${nextField.name}`} field={nextField}  />)
   }
 
   useEffect(() => {
