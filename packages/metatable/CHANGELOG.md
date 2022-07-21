@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha.7](https://github.com/flsy/meta/compare/metatable@3.0.0-alpha.6...metatable@3.0.0-alpha.7) (2022-07-21)
+
+**Note:** Version bump only for package metatable
+
+
+
+
+
 # [3.0.0-alpha.6](https://github.com/flsy/meta/compare/metatable@3.0.0-alpha.5...metatable@3.0.0-alpha.6) (2021-12-06)
 
 **Note:** Version bump only for package metatable

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.5](https://github.com/flsy/metaforms/compare/metaforms@2.0.0-alpha.4...metaforms@2.0.0-alpha.5) (2022-07-21)
+
+**Note:** Version bump only for package metaforms
+
+
+
+
+
 # [2.0.0-alpha.4](https://github.com/flsy/metaforms/compare/metaforms@2.0.0-alpha.3...metaforms@2.0.0-alpha.4) (2021-11-24)
 
 **Note:** Version bump only for package metaforms
