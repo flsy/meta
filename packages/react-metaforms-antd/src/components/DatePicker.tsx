@@ -1,7 +1,5 @@
 import { DatePicker as $DatePicker } from 'antd';
-import locale from 'antd/es/date-picker/locale/cs_CZ';
 import moment, { Moment } from 'moment';
-import 'moment/locale/cs';
 import React from 'react';
 import { useBoolean } from '../hooks';
 
@@ -30,7 +28,6 @@ const DatePicker = React.forwardRef<any, IDatePickerProps>(({ withTimePicker, va
       onOpenChange={isOpen.setValue}
       open={isOpen.value}
       onOk={handleChange}
-      locale={locale}
       onChange={handleChange}
       style={{ width: '100%' }}
       value={value ? moment(value) : undefined}
