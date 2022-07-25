@@ -24,11 +24,7 @@ interface IImageUploadSingleProps extends ICommonProps {
 
 export type ImageUploadProps = IImageUploadMultipleProps | IImageUploadSingleProps;
 
-const getImage = async (file: File) => {
-  const dataUrl = await imageReader(file);
-  return dataUrl?.replace(/^data:image.+;base64,/, '');
-};
-
+const getImage = async (file: File) => imageReader(file)
 const isMultiple = (p: ImageUploadProps): p is IImageUploadMultipleProps => p.multiple;
 
 const ImageUpload = (props: ImageUploadProps) => {
