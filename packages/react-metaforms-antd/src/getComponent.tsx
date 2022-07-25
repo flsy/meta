@@ -92,7 +92,7 @@ export const getComponent =
         </FormItem>
       );
     case 'image':
-      return <ImageUpload label={field.label} error={errorMessage} {...input} onChange={helpers.setValue} multiple={true} />;
+      return <ImageUpload label={field.label} error={errorMessage} {...input} onChange={helpers.setValue} multiple={field.multiple} />;
     case 'file':
       return <FileUpload label={field.label} accept={field.accept} error={errorMessage} {...input} onChange={helpers.setValue} />;
     case 'dateRange':

@@ -40,7 +40,7 @@ export const InputWrapper = styled.div`
 `;
 
 const ErrorMessageStyled = styled.div`
-  color: ${({ theme }) => theme.colors.error};
+  color: red;
   height: 1.5em;
   white-space: nowrap;
   overflow: hidden;

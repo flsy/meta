@@ -41,12 +41,6 @@ const ToggleResults = styled.div`
   }
 `;
 
-const PrimaryBadge = styled(Badge)`
-  sup {
-    background: ${({ theme }) => theme.colors.primary};
-  }
-`;
-
 const Multiselect = React.forwardRef(({ options = [], value = [], onChange, placeholder, disabled, onFocus, onBlur }: ICheckboxListProps, ref: Ref<any>) => {
   const focusedRef = useRef(null);
   const [search, setSearch] = useState<string>();
@@ -135,7 +129,7 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
           <Input ref={ref} placeholder={placeholder} name="search" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />
           <ToggleResults>
             <Switch size="small" checked={showSelected.value} onChange={showSelected.setValue} />
-            <span>Zobrazit pouze vybrané {value && <PrimaryBadge size="small" count={value.length} />}</span>
+            <span>Zobrazit pouze vybrané {value && <Badge size="small" count={value.length} />}</span>
           </ToggleResults>
         </>
       )}

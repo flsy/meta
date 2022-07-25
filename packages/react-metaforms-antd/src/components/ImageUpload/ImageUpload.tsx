@@ -33,11 +33,10 @@ const isMultiple = (p: ImageUploadProps): p is IImageUploadMultipleProps => p.mu
 
 const ImageUpload = (props: ImageUploadProps) => {
   const { name, label, error, multiple } = props;
-  const value: string[] = isMultiple(props) ? props.value : [props.value];
 
   const handleRemove = (index: number) => {
     if (isMultiple(props)) {
-      const f = value.filter((_, i) => index === i);
+      const f = props.value.filter((_, i) => index === i);
       return props.onChange(f);
     }
 
@@ -59,7 +58,7 @@ const ImageUpload = (props: ImageUploadProps) => {
     <InputWrapper>
       {label && <Label fieldId={name} label={label} hasError={!!error} />}
       <DropArea name={name} onChange={handleChange} multiple={multiple} label="Vybrat" accept="image/*" />
-      {value && <ImagePreview onRemove={handleRemove} base64={value} />}
+      {props.value && <ImagePreview onRemove={handleRemove} base64={isMultiple(props) ? props.value : [props.value]} />}
       {error && <ErrorMessage message={error} name={name} />}
     </InputWrapper>
   );
