@@ -18,7 +18,7 @@ export interface IProps {
   fields: MetaField[];
   onSubmit: (p: { values: MetaFormValues, fields: MetaField[] }, helpers: FormikHelpers<MetaFormValues>) => void;
   components: (q: IComponentProps, createField: (field: MetaField) => JSX.Element) => JSX.Element;
-  formikProps?: FormikProps<any>;
+  formikProps?: Partial<FormikProps<any>>;
 }
 
 export default (props: IProps) => {

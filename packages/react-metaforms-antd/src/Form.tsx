@@ -13,8 +13,7 @@ export interface IProps {
 
 const Form = ({ fields, onSubmit, components, formikProps, size }: IProps) => (
   <$Form layout="vertical" size={size} component="div">
-    {/* TODO: change metaform formikProps to be partial */}
-    <MetaForm onSubmit={onSubmit} fields={fields} formikProps={formikProps as any} components={getComponent(components)} />
+    <MetaForm onSubmit={onSubmit} fields={fields} formikProps={formikProps} components={getComponent(components)} />
   </$Form>
 );
 
