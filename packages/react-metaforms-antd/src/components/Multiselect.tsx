@@ -20,8 +20,8 @@ interface ICheckboxListProps {
 
 const ListItem = styled(List.Item)<{ $focused: boolean }>`
   ${({ $focused }) =>
-    $focused &&
-    css`
+  $focused &&
+  css`
       background: rgba(180, 180, 180, 0.1);
     `}
   cursor: pointer;
@@ -71,6 +71,12 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
     setFilteredOptions(visibleOptions);
     onChange(opts);
   };
+
+  const handleSelectAll = (checked: boolean) => {
+    const optValues = checked ? options.map(opt => opt.value) : [];
+    setFilteredOptions(checked ? options : []);
+    onChange(optValues);
+  }
 
   const handleInputFocus = (e: any) => {
     inputFocused.setTrue();
@@ -122,13 +128,19 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
     }
   }, [downPress, upPress]);
 
+
   return (
     <>
       {options.length > 5 && (
         <>
           <Input ref={ref} placeholder={placeholder} name="search" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />
           <ToggleResults>
-            <Switch size="small" checked={showSelected.value} onChange={showSelected.setValue} />
+            <span>
+              <Checkbox checked={value.length && value.length === options.length} indeterminate={value.length && (value.length < options.length)} onChange={(e) => handleSelectAll(e.target.checked)}>
+                Označit vše
+              </Checkbox>
+            </span>
+            <Checkbox checked={showSelected.value} onChange={(e) => showSelected.setValue(e.target.checked)} />
             <span>Zobrazit pouze vybrané {value && <Badge size="small" count={value.length} />}</span>
           </ToggleResults>
         </>
@@ -152,7 +164,7 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
         }}
       />
     </>
-  );
+  )
 });
 
 export default Multiselect;
