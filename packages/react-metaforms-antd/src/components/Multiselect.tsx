@@ -1,4 +1,4 @@
-import { Badge, Checkbox, List, Switch } from 'antd';
+import { Badge, Checkbox, List } from 'antd';
 import Fuse from 'fuse.js';
 import { head } from 'ramda';
 import React, { Ref, useEffect, useRef, useState } from 'react';
