@@ -9,11 +9,12 @@ export interface IProps {
   components?: ParentGetComponent;
   formikProps?: Partial<ReactMetaformProps['formikProps']>;
   size?: 'small' | 'middle' | 'large';
+  validate?: ReactMetaformProps['validate'];
 }
 
-const Form = ({ fields, onSubmit, components, formikProps, size }: IProps) => (
+const Form = ({ fields, onSubmit, components, formikProps, size, validate }: IProps) => (
   <$Form layout="vertical" size={size} component="div">
-    <MetaForm onSubmit={onSubmit} fields={fields} formikProps={formikProps} components={getComponent(components)} />
+    <MetaForm onSubmit={onSubmit} fields={fields} formikProps={formikProps} components={getComponent(components)} validate={validate} />
   </$Form>
 );
 
