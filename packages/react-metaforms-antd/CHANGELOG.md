@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.8](https://github.com/flsy/meta/compare/react-metaforms-antd@1.0.7...react-metaforms-antd@1.0.8) (2022-08-03)
+
+**Note:** Version bump only for package react-metaforms-antd
+
+
+
+
+
 ## [1.0.7](https://github.com/flsy/meta/compare/react-metaforms-antd@1.0.6...react-metaforms-antd@1.0.7) (2022-07-29)
 
 **Note:** Version bump only for package react-metaforms-antd
