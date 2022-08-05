@@ -6,14 +6,11 @@ import styled, { css } from 'styled-components';
 import { KeyboardKey, useBoolean, useKeyPress } from '../hooks';
 import { toggleSelection } from '../hooks/useSelection';
 import Input from './Input';
+import { MultiSelectMetaProps } from "metahelpers";
 
-interface ICheckboxListProps {
-  value?: number[];
+interface ICheckboxListProps extends MultiSelectMetaProps {
   size?: 'default' | 'large' | 'small';
-  placeholder?: string;
-  options?: Array<{ value: number; label: string }>;
   onChange: (value: number[]) => void;
-  disabled?: boolean;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
@@ -41,7 +38,7 @@ const ToggleResults = styled.div`
   }
 `;
 
-const Multiselect = React.forwardRef(({ options = [], value = [], onChange, placeholder, disabled, onFocus, onBlur }: ICheckboxListProps, ref: Ref<any>) => {
+const Multiselect = React.forwardRef(({ options = [], value = [], onChange, placeholder, disabled, onFocus, onBlur, showSearchInput = true }: ICheckboxListProps, ref: Ref<any>) => {
   const focusedRef = useRef(null);
   const [search, setSearch] = useState<string>();
   const [focused, setFocused] = useState<number>();
@@ -73,9 +70,7 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
   };
 
   const handleSelectAll = (checked: boolean) => {
-    const optValues = checked ? options.map(opt => opt.value) : [];
-    setFilteredOptions(checked ? options : []);
-    onChange(optValues);
+    onChange(checked ? options.map(opt => opt.value) : []);
   }
 
   const handleInputFocus = (e: any) => {
@@ -133,7 +128,7 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
     <>
       {options.length > 5 && (
         <>
-          <Input ref={ref} placeholder={placeholder} name="search" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />
+          {showSearchInput && <Input ref={ref} placeholder={placeholder} name="search" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />}
           <ToggleResults>
             <span>
               <Checkbox checked={value.length && value.length === options.length} indeterminate={value.length && (value.length < options.length)} onChange={(e) => handleSelectAll(e.target.checked)}>

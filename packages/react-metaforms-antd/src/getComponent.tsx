@@ -119,12 +119,14 @@ export const getComponent =
         <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
           <Multiselect
             ref={ref}
+            name={input.name}
             placeholder={field.placeholder}
             options={field.options}
             onChange={helpers.setValue}
             value={input.value}
             disabled={disabled}
             onBlur={input.onBlur}
+            showSearchInput={field.showSearchInput}
           />
         </FormItem>
       );
