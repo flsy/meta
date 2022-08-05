@@ -7,8 +7,6 @@ interface CommonProps {
   errorMessage?: MetaField['errorMessage'];
 }
 
-export const isMultiSelect = (field: any): field is MultiSelectMetaProps => field.type === 'multiselect';
-
 export interface MultiSelectMetaProps extends CommonProps {
   value?: number[];
   disabled?: boolean;
