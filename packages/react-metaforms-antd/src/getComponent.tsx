@@ -126,7 +126,7 @@ export const getComponent =
             value={input.value}
             disabled={disabled}
             onBlur={input.onBlur}
-            showSearchInput={field.showSearchInput}
+            showExtendedSearch={field.showExtendedSearch}
           />
         </FormItem>
       );

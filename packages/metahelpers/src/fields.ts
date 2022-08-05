@@ -12,7 +12,7 @@ export interface MultiSelectMetaProps extends CommonProps {
   disabled?: boolean;
   placeholder?: string;
   options?: Array<{ value: number; label: string }>;
-  showSearchInput?: boolean;
+  showExtendedSearch?: boolean;
 }
 export const getMultiSelectMeta = (props: MultiSelectMetaProps): MetaField => ({ ...props, type: 'multiselect' });
 
