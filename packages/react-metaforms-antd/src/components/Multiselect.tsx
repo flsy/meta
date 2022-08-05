@@ -126,20 +126,16 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
 
   return (
     <>
-      {options.length > 5 && (
-        <>
-          {showSearchInput && <Input ref={ref} placeholder={placeholder} name="search" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />}
-          <ToggleResults>
-            <span>
-              <Checkbox checked={value.length && value.length === options.length} indeterminate={value.length && (value.length < options.length)} onChange={(e) => handleSelectAll(e.target.checked)}>
-                Označit vše
-              </Checkbox>
-            </span>
-            <Checkbox checked={showSelected.value} onChange={(e) => showSelected.setValue(e.target.checked)} />
-            <span>Zobrazit pouze vybrané {value && <Badge size="small" count={value.length} />}</span>
-          </ToggleResults>
-        </>
-      )}
+      {showSearchInput && <Input ref={ref} placeholder={placeholder} name="search" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />}
+      <ToggleResults>
+        <span>
+          <Checkbox checked={value.length && value.length === options.length} indeterminate={value.length && (value.length < options.length)} onChange={(e) => handleSelectAll(e.target.checked)}>
+            Označit vše
+          </Checkbox>
+        </span>
+        <Checkbox checked={showSelected.value} onChange={(e) => showSelected.setValue(e.target.checked)} />
+        <span>Zobrazit pouze vybrané {value && <Badge size="small" count={value.length} />}</span>
+      </ToggleResults>
       <List
         bordered={true}
         size="small"
