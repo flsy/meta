@@ -1,12 +1,10 @@
 import { Input as $Input, InputRef as $InputRef } from 'antd';
 import React from 'react';
+import {TextMetaProps} from "metahelpers";
 
 export type InputRef = $InputRef;
-export interface InputProps {
+export interface InputProps extends TextMetaProps {
   name: string;
-  disabled?: boolean;
-  placeholder?: string;
-  value?: string;
   type?: 'text' | 'password' | 'number';
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;

@@ -68,7 +68,6 @@ export const Text = (args) => (
         label: args.label,
         disabled: args.disabled,
         placeholder: args.placeholder,
-        value: '',
         validation: [
           {
             type: 'required',
@@ -495,11 +494,11 @@ export const Multiselect = () => (
         name: 'multiselect',
         label: 'Select multiple',
         options: [
-          { label: 'Dog 1', value: 1 },
-          { label: 'Cat 2', value: 2 },
-          { label: 'Pig 3', value: 3 },
-          { label: 'Rat 4', value: 4 },
-          { label: 'Dog 5', value: 5 },
+          { label: 'Dog 1', value: 'dog' },
+          { label: 'Cat 2', value: 'cat' },
+          { label: 'Pig 3', value: 'pig' },
+          { label: 'Rat 4', value: 'rat' },
+          { label: 'Dog 5', value: 'dog' },
         ],
       }),
       getMultiSelectMeta({

@@ -1,12 +1,10 @@
 import { Button } from 'antd';
 import styled from 'styled-components';
 import React from 'react';
+import {SubmitMetaProps} from "metahelpers";
 
-interface ISubmitProps {
-  fullWidth?: boolean;
+interface ISubmitProps extends SubmitMetaProps {
   onClick?: () => void;
-  name?: string;
-  label?: string;
   disabled?: boolean;
   isLoading?: boolean;
   size?: 'small' | 'middle' | 'large';

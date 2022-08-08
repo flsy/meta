@@ -6,11 +6,11 @@ import styled, { css } from 'styled-components';
 import { KeyboardKey, useBoolean, useKeyPress } from '../hooks';
 import { toggleSelection } from '../hooks/useSelection';
 import Input from './Input';
-import { MultiSelectMetaProps } from "metahelpers";
+import {MultiSelectMetaProps, MultiSelectMetaValue} from "metahelpers";
 
 interface ICheckboxListProps extends MultiSelectMetaProps {
   size?: 'default' | 'large' | 'small';
-  onChange: (value: number[]) => void;
+  onChange: (value: MultiSelectMetaProps['value']) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
@@ -41,7 +41,7 @@ const ToggleResults = styled.div`
 const Multiselect = React.forwardRef(({ options = [], value = [], onChange, placeholder, disabled, onFocus, onBlur, showExtendedSearch = true }: ICheckboxListProps, ref: Ref<any>) => {
   const focusedRef = useRef(null);
   const [search, setSearch] = useState<string>();
-  const [focused, setFocused] = useState<number>();
+  const [focused, setFocused] = useState<MultiSelectMetaValue>();
   const inputFocused = useBoolean(false);
   const showSelected = useBoolean(false);
 
@@ -53,7 +53,7 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
 
   const [filteredOptions, setFilteredOptions] = useState(options);
 
-  const handleClick = (itemValue: number) => {
+  const handleClick = (itemValue: MultiSelectMetaValue) => {
     if (disabled) {
       return;
     }

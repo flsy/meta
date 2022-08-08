@@ -14,6 +14,7 @@
   "scripts": {
     "build": "rm -rf ./lib && tsc -b",
     "prepare": "yarn build",
+    "test": "echo todo",
     "start": "start-storybook -p 9010"
   },
   "peerDependencies": {

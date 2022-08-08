@@ -84,7 +84,7 @@ export const getComponent =
         </FormItem>
       );
     case 'submit':
-      return <Submit label={field.label} isLoading={form.isSubmitting} fullWidth={field.fullWidth} />;
+      return <Submit label={field.label} isLoading={form.isSubmitting} fullWidth={field.fullWidth} name={field.name}/>;
     case 'date':
       return (
         <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
