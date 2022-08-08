@@ -7,17 +7,18 @@ interface CommonProps {
   errorMessage?: MetaField['errorMessage'];
 }
 
+export type MultiSelectMetaValue = string | number;
 export interface MultiSelectMetaProps extends CommonProps {
-  value?: number[];
+  value?: MultiSelectMetaValue[];
   disabled?: boolean;
   placeholder?: string;
-  options?: Array<{ value: number; label: string }>;
+  options?: Array<{ value: MultiSelectMetaValue; label: string }>;
   showExtendedSearch?: boolean;
 }
 export const getMultiSelectMeta = (props: MultiSelectMetaProps): MetaField => ({ ...props, type: 'multiselect' });
 
 export interface TextMetaProps extends CommonProps {
-  value: string;
+  value?: string;
   disabled?: boolean;
   placeholder?: string;
 }
