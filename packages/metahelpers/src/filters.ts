@@ -1,8 +1,10 @@
-import { IStringInput, MetaField, Operator } from 'metaforms';
-import { getDateRangeCalendarMeta } from './fields';
+import {  MetaField, Operator } from 'metaforms';
+import {getDateRangeCalendarMeta, getSelectMeta} from './fields';
+import {getColumnFilterFiltersPath, getColumnFilterTypePath} from "metatable";
+import {getTextMeta} from "metahelpers";
 
-const getColumnFilterTypePath = (columnPath: string[]) => `${columnPath.join('.')}.type`;
-const getColumnFilterFiltersPath = (columnPath: string[]) => `${columnPath.join('.')}.filters`;
+const getColumnFilterOptionsPath = (columnPath: string[]) => `${columnPath.join('.')}.options`;
+
 
 const actions = {
   name: 'actions',
@@ -24,23 +26,38 @@ const actions = {
   ],
 };
 
-type FilterResult<T> = [MetaField, { name: string; type: 'hidden'; value: T }, MetaField];
-type GetFilterFc<TInput extends { filters: any; type: string }> = (path: string[], config?: { value?: TInput['filters']; label?: string }) => FilterResult<TInput['type']>;
+const add = <T, A, R>(index: number, value: T, array: A[]): R => {
+  const e = [...array];
+  e.splice(index, 0, value as any);
+  return e as any;
+}
 
-export const getTextFilter: GetFilterFc<IStringInput> = (path, options) => [
-  {
-    name: getColumnFilterFiltersPath(path),
-    type: 'text',
-    label: options?.label,
-    value: options?.value,
-  },
-  {
-    name: getColumnFilterTypePath(path),
-    type: 'hidden',
-    value: 'string',
-  },
-  actions,
-];
+type FilterResult<T> = [MetaField, { name: string; type: 'hidden'; value: T }, MetaField] | [MetaField, MetaField, { name: string; type: 'hidden'; value: T }, MetaField];
+
+export const getTextFilter = <TInput extends { filters: any; type: string }>(path: string[], options?: { value?: TInput['filters']; label?: string, withOptions?: boolean }): FilterResult<TInput['type']> => {
+  const result: FilterResult<string> = [
+    getTextMeta({
+      name: getColumnFilterFiltersPath(path),
+      label: options?.label,
+      value: options?.value,
+    }),
+    {
+      name: getColumnFilterTypePath(path),
+      type: 'hidden',
+      value: 'string',
+    },
+    actions,
+  ];
+
+  if(options?.withOptions) {
+    return add(1, getSelectMeta({
+      name: getColumnFilterOptionsPath(path),
+      options: [{value: 'EQ', label: 'EQ'}, { value: 'LIKE', label: 'LIKE'}]
+    }), result)
+  }
+
+  return result;
+}
 
 type GetTernaryFilter = (
   path: string[],
