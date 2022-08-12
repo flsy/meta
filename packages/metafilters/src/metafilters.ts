@@ -8,7 +8,7 @@ import { Column, columnsToQuery, escape } from './tools';
  * @param columns List of columns to select from DB
  * @param args
  */
-export const metafilters = <T>(tableName: string, columns?: Column[], args?: IMetaFiltersArgs) => {
+export const metafilters = (tableName: string, columns?: Column[], args?: IMetaFiltersArgs) => {
   const sortKey = getSortKey(args?.sort);
 
   const chunks = [`SELECT ${columns ? columnsToQuery(columns) : '*'}`, `FROM ${escape(tableName)}`];
