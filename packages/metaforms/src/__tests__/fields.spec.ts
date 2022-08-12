@@ -1,5 +1,4 @@
-import { getErrorMessages, hasError, maxlength, pattern, required, setFieldValue, validateForm } from '..'
-import { compose } from 'fputils';
+import { getErrorMessages, hasError, maxlength, pattern, required, validateForm } from '..'
 
 const fields = [
   {

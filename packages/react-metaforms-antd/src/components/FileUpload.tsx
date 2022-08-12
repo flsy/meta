@@ -33,8 +33,8 @@ const FileUpload = ({ name, label, accept, value, error, hideResults, onChange, 
           bordered={true}
           size="small"
           dataSource={[value]}
-          renderItem={(item) => (
-            <List.Item actions={[<DeleteOutlined key="delete" onClick={() => onChange(undefined)} />]}>
+          renderItem={(item, index) => (
+            <List.Item key={[item.name, index].join('-')} actions={[<DeleteOutlined key="delete" onClick={() => onChange(undefined)} />]}>
               <FileOutlined style={{ marginRight: '1em' }} />
               {item.name}
             </List.Item>

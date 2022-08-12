@@ -26,7 +26,7 @@ describe('common code', () => {
     const db = await seed();
     const response = await metafilters('person-dash');
 
-    const nodes = await all(db, response.nodes);
+    await all(db, response.nodes);
     await close(db);
 
     expect(response).toMatchObject({

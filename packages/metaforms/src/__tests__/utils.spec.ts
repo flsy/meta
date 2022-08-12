@@ -1,6 +1,5 @@
 import { getErrorMessages, hasError, isRequired, setFieldValidation, setFieldValue, validateForm } from '../utils'
 import { required } from '..';
-import { isLeft } from 'fputils'
 
 describe('utils', () => {
   describe('isRequired', () => {
