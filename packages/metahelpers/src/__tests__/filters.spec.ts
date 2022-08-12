@@ -74,5 +74,53 @@ describe('filters', () => {
         },
       ]);
     });
+
+    it('gets string filter with select options', async () => {
+      expect(
+          getTextFilter(['customer', 'id'], {
+            value: [{ operator: 'EQ', value: 'CUST_ID' }],
+            label: 'Customer id',
+            withOptions: true
+          }),
+      ).toEqual([
+        {
+          name: 'customer.id.filters',
+          label: 'Customer id',
+          type: 'text',
+          value: [{ operator: 'EQ', value: 'CUST_ID' }],
+        },
+        {
+          name: 'customer.id.options',
+          type: 'select',
+          options: [
+              { value: 'EQ', label: 'EQ' },
+              { value: 'LIKE', label: 'LIKE' }]
+        },
+        {
+          name: 'customer.id.type',
+          type: 'hidden',
+          value: 'string',
+        },
+        {
+          name: 'actions',
+          type: 'buttonGroup',
+          items: [
+            {
+              name: 'reset',
+              type: 'reset',
+              size: 'small',
+              label: 'Reset',
+            },
+            {
+              name: 'submit',
+              type: 'submit',
+              size: 'small',
+              primary: true,
+              label: 'Filtrovat',
+            },
+          ],
+        },
+      ]);
+    });
   });
 });
