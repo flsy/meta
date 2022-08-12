@@ -1,7 +1,6 @@
 import {  MetaField, Operator } from 'metaforms';
-import {getDateRangeCalendarMeta, getSelectMeta} from './fields';
+import {getDateRangeCalendarMeta, getSelectMeta, getTextMeta} from './fields';
 import {getColumnFilterFiltersPath, getColumnFilterTypePath} from "metatable";
-import {getTextMeta} from "metahelpers";
 
 const getColumnFilterOptionsPath = (columnPath: string[]) => `${columnPath.join('.')}.options`;
 
