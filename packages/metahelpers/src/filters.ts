@@ -1,9 +1,6 @@
 import {  MetaField, Operator } from 'metaforms';
 import {getDateRangeCalendarMeta, getSelectMeta, getTextMeta} from './fields';
-import {getColumnFilterFiltersPath, getColumnFilterTypePath} from "metatable";
-
-const getColumnFilterOptionsPath = (columnPath: string[]) => `${columnPath.join('.')}.options`;
-
+import {getColumnFilterFiltersPath, getColumnFilterTypePath, getColumnFilterOptionsPath} from "metatable";
 
 const actions = {
   name: 'actions',
@@ -33,7 +30,7 @@ const add = <T, A, R>(index: number, value: T, array: A[]): R => {
 
 type FilterResult<T> = [MetaField, { name: string; type: 'hidden'; value: T }, MetaField] | [MetaField, MetaField, { name: string; type: 'hidden'; value: T }, MetaField];
 
-export const getTextFilter = <TInput extends { filters: any; type: string }>(path: string[], options?: { value?: TInput['filters']; label?: string, withOptions?: boolean }): FilterResult<TInput['type']> => {
+export const getTextFilter = <TInput extends { filters: any; type: string }>(path: string[], options?: { value?: string; label?: string, withOptions?: boolean, defaultOption?: 'EQ' | 'LIKE' }): FilterResult<TInput['type']> => {
   const result: FilterResult<string> = [
     getTextMeta({
       name: getColumnFilterFiltersPath(path),
@@ -51,7 +48,8 @@ export const getTextFilter = <TInput extends { filters: any; type: string }>(pat
   if(options?.withOptions) {
     return add(1, getSelectMeta({
       name: getColumnFilterOptionsPath(path),
-      options: [{value: 'EQ', label: 'EQ'}, { value: 'LIKE', label: 'LIKE'}]
+      options: [{value: 'EQ', label: 'EQ'}, { value: 'LIKE', label: 'LIKE'}],
+      value: options?.defaultOption,
     }), result)
   }
 
