@@ -48,7 +48,10 @@ export const getTextFilter = <TInput extends { filters: any; type: string }>(pat
   if(options?.withOptions) {
     return add(1, getSelectMeta({
       name: getColumnFilterOptionsPath(path),
-      options: [{value: 'EQ', label: 'EQ'}, { value: 'LIKE', label: 'LIKE'}],
+      options: [
+          { value: 'EQ', label: 'Přesná shoda' },
+          { value: 'LIKE', label: 'Fulltext' }
+      ],
       value: options?.defaultOption,
     }), result)
   }
