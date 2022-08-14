@@ -106,7 +106,7 @@ export const Basic = () => {
                     <button type="button" onClick={() => arrayHelpers.push('')}>
                       Add a role
                     </button>
-                    {meta.error ? <div>{meta.error}</div> : null}
+                    {meta.error && typeof meta.error === 'string' ? <div>{meta.error}</div> : null}
                   </>
                 )}
               />
