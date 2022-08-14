@@ -2,6 +2,42 @@
 
 A tool for building and managing forms in simple JSON format.
 
+
+## usage:
+```typescript
+// build form definition on server
+const definitions = metaform()
+    .addTextField('name', { label: 'Name' })
+        .validationRequired('Please fill it!')
+    .addNumberField('age', { label: 'Age', additionalProps: 'ok' })
+    .addSubmitButton('submit')
+
+    // send to client as JSON
+    res.json(definitions.toJSON()) // .toString() etc..
+
+// then on web wait for user input
+const loaded = metaformClient()
+    .fromJSON(response) // .fromString()
+
+loaded.update('name', 'value')
+loaded.validate('name') // validate one field and show errorMessage next to it
+
+loaded.validate() // validate whole form
+if (loaded.isValid()) {
+    await send(loaded.values())
+}
+
+// POST route on server
+const submitted = definitions()
+    .fillValues({ name: req.body.name, age: req.body.age })
+    .validate()
+
+    if(submitted.hasErrors()) {
+        return  log(submitted.errors())
+    }
+    submitted.getValues() // { name: 'A', age: 4 }
+
+```
 ## usage:
 ```typescript
 import { hasError, setFieldValue, validateForm } from "metaforms";
