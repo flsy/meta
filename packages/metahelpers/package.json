@@ -13,10 +13,11 @@
     "typescript": "4.5.4"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b",
     "test": "jest"
   },
   "dependencies": {
-    "metaforms": "^2.0.0-alpha.6"
+    "metaforms": "^2.0.0-alpha.6",
+    "metatable": "^3.0.0-alpha.8"
   }
 }

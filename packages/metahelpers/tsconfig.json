@@ -4,7 +4,8 @@
     "outDir": "./lib",
     "rootDir": "./src",
     "strict": true,
-    "lib": ["esnext"]
+    "lib": ["esnext"],
+    "composite": true
   },
   "exclude": ["./src/**/*.spec.ts", "node_modules", "lib"]
 }

@@ -62,7 +62,7 @@ export interface IStringsInput {
 export type FilterType = IStringInput | IBooleanInput | INumberInput | IStringsInput;
 
 export type Filters = {
-  [key: string]: FilterType | undefined;
+  [key: string]: FilterType | Filters | undefined;
 };
 
 export interface IMetaFiltersArgs {
