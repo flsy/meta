@@ -8,10 +8,13 @@ import {
   FormikProps,
   useField,
   useFormikContext,
+  setIn,
+  getIn
 } from 'formik';
 import { FieldHelperProps, FieldInputProps, FieldMetaProps } from 'formik/dist/types'
-import { getErrorMessages, getValues, setValues, validateForm } from 'metaforms'
+import { getValues, setValues } from 'metaforms';
 import { MetaField, MetaFormValues, MetaFieldValue } from '@falsy/metacore'
+import { validateField } from 'metaforms/lib/validate/validate';
 
 export interface IComponentProps { ref: any, form: FormikContextType<MetaFormValues>, field: MetaField, input: FieldInputProps<MetaFieldValue>, meta: FieldMetaProps<MetaFieldValue>, helpers: FieldHelperProps<MetaFieldValue> }
 
@@ -25,6 +28,7 @@ export interface IProps {
 
 export default (props: IProps) => {
   const firstEl = useRef<any>();
+  const fields = useRef<Map<string, MetaField>>(new Map());
 
   const Field = ({ field }: { field: MetaField }): JSX.Element => {
     const [input, meta, helpers] = useField(field.name);
@@ -35,6 +39,15 @@ export default (props: IProps) => {
         firstEl.current = el;
       }
     }
+
+    useEffect(() => {
+      fields.current.set(field.name, field)
+
+      return () => {
+        fields.current.delete(field.name)
+      }
+    }, [])
+
 
     return props.components({ field, ref, input, meta, helpers, form }, (nextField) => <Field key={`${field.name}${nextField.name}`} field={nextField}  />)
   }
@@ -50,10 +63,13 @@ export default (props: IProps) => {
     <Formik
       {...props.formikProps}
       initialValues={getValues(props.fields)}
-      validate={(v) => {
-        const res = validateForm(setValues(v, props.fields));
-        const errs = getErrorMessages(res);
-        return props.validate ? {...errs, ...props.validate(v)} : errs;
+      validate={(formikValues) => {
+        return  Array.from(fields.current.entries()).reduce((acc, [name, field]) => {
+          const f = {...field, value: getIn(formikValues, name)};
+          const v = validateField(formikValues, f);
+
+          return setIn(acc, name, v);
+        }, {})
       }}
       onSubmit={(values, formikHelpers) =>
         props.onSubmit({ values, fields: setValues(values, props.fields) }, formikHelpers)}
