@@ -1,6 +1,6 @@
 {
   "name": "metahelpers",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "license": "MIT",
@@ -17,6 +17,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "metaforms": "^2.0.0-alpha.5"
+    "metaforms": "^2.0.0-alpha.6"
   }
 }
