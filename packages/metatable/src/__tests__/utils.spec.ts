@@ -1,7 +1,5 @@
  import { filterColumnPaths, unsetAllSortFormValues, toMetaFilters } from '../utils';
 import {Columns, IMetaFiltersArgs, MetaField} from '@falsy/metacore';
-// todo: omg vubec nevim, metahelpers mi nejdou nainstalovat
-// @ts-ignore
  import {getDateRangeFilter, getTextFilter} from "metahelpers";
 
 const customerIdFilterForm: MetaField[] = [

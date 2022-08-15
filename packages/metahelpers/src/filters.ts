@@ -1,6 +1,10 @@
 import {  MetaField, Operator } from 'metaforms';
 import {getDateRangeCalendarMeta, getSelectMeta, getTextMeta} from './fields';
-import {getColumnFilterFiltersPath, getColumnFilterTypePath, getColumnFilterOptionsPath} from "metatable";
+
+export const getColumnFilterTypePath = (columnPath: string[]) => `${columnPath.join('.')}.type`;
+export const getColumnFilterValuePath = (columnPath: string[]) => `${columnPath.join('.')}.value`;
+export const getColumnFilterFiltersPath = (columnPath: string[]) => `${columnPath.join('.')}.filters`;
+export const getColumnFilterOptionsPath = (columnPath: string[]) => `${columnPath.join('.')}.options`;
 
 const actions = {
   name: 'actions',

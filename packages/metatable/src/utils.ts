@@ -65,11 +65,6 @@ export const unsetAllSortFormValues = <TTypes>(columns: Columns<TTypes>): Column
   }, columns);
 };
 
-export const getColumnFilterTypePath = (columnPath: string[]) => `${columnPath.join('.')}.type`;
-export const getColumnFilterValuePath = (columnPath: string[]) => `${columnPath.join('.')}.value`;
-export const getColumnFilterFiltersPath = (columnPath: string[]) => `${columnPath.join('.')}.filters`;
-export const getColumnFilterOptionsPath = (columnPath: string[]) => `${columnPath.join('.')}.options`;
-
 const filterFormValues = (filterForm: MetaField[]) : FilterType => {
     const type = filterForm.find(field => field.name.endsWith('.type'))?.value
     const value = filterForm.find(field => field.name.endsWith('.filters'))?.value
