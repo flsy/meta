@@ -487,7 +487,7 @@ export const ThreeStateSwitch = () => (
   />
 );
 
-export const Multiselect = () => (
+export const Multiselect = (args) => (
   <Form
     fields={[
       getMultiSelectMeta({
@@ -503,8 +503,9 @@ export const Multiselect = () => (
       }),
       getMultiSelectMeta({
         name: 'multiselect',
-        label: 'Select multiple',
-        showExtendedSearch: false,
+        label:  'Select multiple',
+        showFilterInput: args.showFilterInput,
+        showSelectedCounter: args.showSelectedCounter,
         options: [
           { label: 'Dog 1', value: 1 },
           { label: 'Cat 2', value: 2 },
@@ -531,4 +532,12 @@ export const Multiselect = () => (
 
 export default {
   title: 'Form/Components',
+    argTypes: {
+        showFilterInput: { control: { type: 'boolean' } },
+        showSelectedCounter: { control: { type: 'boolean' } },
+    },
+    args: {
+        showFilterInput: true,
+        showSelectedCounter: true,
+    },
 };

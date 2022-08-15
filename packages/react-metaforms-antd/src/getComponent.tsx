@@ -126,7 +126,8 @@ export const getComponent =
             value={input.value}
             disabled={disabled}
             onBlur={input.onBlur}
-            showExtendedSearch={field.showExtendedSearch}
+            showFilterInput={field.showFilterInput}
+            showSelectedCounter={field.showSelectedCounter}
           />
         </FormItem>
       );
