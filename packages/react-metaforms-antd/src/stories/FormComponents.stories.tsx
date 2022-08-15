@@ -504,7 +504,8 @@ export const Multiselect = () => (
       getMultiSelectMeta({
         name: 'multiselect',
         label: 'Select multiple',
-        showExtendedSearch: false,
+        showFilterInput: false,
+        showSelectedCounter: true,
         options: [
           { label: 'Dog 1', value: 1 },
           { label: 'Cat 2', value: 2 },

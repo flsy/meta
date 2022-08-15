@@ -38,7 +38,7 @@ const ToggleResults = styled.div`
   }
 `;
 
-const Multiselect = React.forwardRef(({ options = [], value = [], onChange, placeholder, disabled, onFocus, onBlur, showExtendedSearch = true }: ICheckboxListProps, ref: Ref<any>) => {
+const Multiselect = React.forwardRef(({ options = [], value = [], onChange, placeholder, disabled, onFocus, onBlur, showSelectedCounter = true, showFilterInput = true }: ICheckboxListProps, ref: Ref<any>) => {
   const focusedRef = useRef(null);
   const [search, setSearch] = useState<string>();
   const [focused, setFocused] = useState<MultiSelectMetaValue>();
@@ -126,14 +126,14 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
 
   return (
     <>
-      {showExtendedSearch && <Input ref={ref} placeholder={placeholder} name="search" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />}
+      {showFilterInput && <Input ref={ref} placeholder={placeholder} name="search" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />}
       <ToggleResults>
         <span>
           <Checkbox checked={value.length && value.length === options.length} indeterminate={value.length && (value.length < options.length)} onChange={(e) => handleSelectAll(e.target.checked)}>
             Označit vše
           </Checkbox>
         </span>
-        {showExtendedSearch && (
+        {showSelectedCounter && (
             <>
               <Checkbox checked={showSelected.value} onChange={(e) => showSelected.setValue(e.target.checked)} />
               <span>Zobrazit pouze vybrané {value && <Badge size="small" count={value.length} />}</span>
