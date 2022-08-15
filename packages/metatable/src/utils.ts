@@ -1,8 +1,8 @@
 import {
     Column,
-    Columns, Filters, FilterType, IBooleanInput,
+    Columns, FilterType, IBooleanInput,
     IMetaFiltersArgs, INumberInput, IStringInput, IStringsInput, MetaField,
-    OneOrMany,
+    OneOrMany, Operator, Optional,
 } from '@falsy/metacore';
 import { defaultTo, head, lensPath, prop, set, view, when } from 'ramda'
 import { getFieldProperty } from 'metaforms';
@@ -65,73 +65,95 @@ export const unsetAllSortFormValues = <TTypes>(columns: Columns<TTypes>): Column
   }, columns);
 };
 
-const filterFormValues = (filterForm: MetaField[]) : FilterType => {
-    const type = filterForm.find(field => field.name.endsWith('.type'))?.value
-    const value = filterForm.find(field => field.name.endsWith('.filters'))?.value
-    const operator = filterForm.find(field => field.name.endsWith('.options'))?.value
+const getValue = <T>(searchString: '.type' | '.filters' | '.options' | '.value', form: MetaField[]): Optional<T> => form?.find(field => field.name.endsWith(searchString))?.value
 
-    if (type === 'string') {
-        const result: IStringInput = {
-            type: 'string',
-            filters: [{ value, operator }] //todo: this could be more than one
-        }
-        return result
-    }
-    if (type === 'strings') {
-        const result: IStringsInput = {
-            type: 'strings',
-            filters: [{ value, operator }] //todo: this could be more than one
-        }
-        return result
-    }
+const formType = (filterForm: MetaField[]): 'string' | 'strings' | 'boolean' | 'number'  => getValue('.type', filterForm);
+const formValue = <T>(filterForm: MetaField[]): Optional<T> => getValue('.filters', filterForm);
+const formOptions = <T>(filterForm: MetaField[]): T => getValue('.options', filterForm);
 
-    if (type === 'boolean') {
-        const result: IBooleanInput = {
-            type: 'boolean',
-            value: value ?? false
-        }
-        return result
-    }
+const stringFilter = (form: MetaField[]): IStringInput => {
+    const value = formValue<string>(form);
+    const operator = formOptions<Operator>(form)
+    if (!is(formValue<any>(form))) return;
 
-    if (type === 'number') {
-        // this is hack for our Datepickers who returns value as [number, number]
-        if (Array.isArray(value)) {
-            const [gt, lt] = value.sort((a, b) => a - b)
-            const result: INumberInput = {
-                type: 'number',
-                filters: [
-                    { value: gt, operator: 'GT' },
-                    { value: lt, operator: 'LT' },
-                ]
-            }
-            return result
-        }
-
-        const result: INumberInput = {
-            type: 'number',
-            filters: [{value, operator }] //todo: this could be more than one
-        }
-
-        return result
+    return {
+        type: 'string',
+        filters: [{ value, operator }] //todo: this could be more than one option
     }
 }
+
+const stringsFilter = (form: MetaField[]): IStringsInput => {
+    const value = formValue<string>(form);
+    const operator = formOptions<'EQ'>(form)
+    if (!is(formValue<any>(form))) return;
+    return {
+        type: 'strings',
+        filters: [{ value, operator }] //todo: this could be more than one option
+    }
+}
+const booleanFilter = (form: MetaField[]): IBooleanInput => {
+    const value = formValue<boolean>(form);
+    if (!is(value)) return;
+    return {
+        type: 'boolean',
+        value: value ?? false
+    }
+}
+const numberFilter = (form: MetaField[]): INumberInput => {
+    const value = formValue<number>(form);
+    const operator = formOptions<Operator>(form)
+    if (!is(formValue<any>(form))) return;
+
+    // this is hack for our Datepickers who returns value as [number, number]
+    if (Array.isArray(value)) {
+        const [gt, lt] = value.sort((a, b) => a - b)
+        return  {
+            type: 'number',
+            filters: [
+                { value: gt, operator: 'GT' },
+                { value: lt, operator: 'LT' },
+            ]
+        }
+    }
+
+    return {
+        type: 'number',
+        filters: [{value, operator }] //todo: this could be more than one
+    }
+}
+
+const filterFormValues = (filterForm: MetaField[]): FilterType => {
+    switch (formType(filterForm)) {
+        case "string":
+            return stringFilter(filterForm)
+        case "strings":
+            return stringsFilter(filterForm)
+        case "boolean":
+            return booleanFilter(filterForm)
+        case 'number':
+        return numberFilter(filterForm)
+    }
+}
+
+const is = <T>(value: T | undefined | null): value is T => value !== undefined && value !== null;
 
 export const toMetaFilters = <TColumns extends Columns<TTypes>, TTypes>(columns: TColumns): IMetaFiltersArgs => {
   return getColumnPaths(columns).reduce(
     (acc, columnPath) => {
       const filterForm: MetaField[] = view(lensPath([...columnPath, 'filterForm']), columns);
+      const filters = filterFormValues(filterForm);
+
       const sortForm: MetaField[] = view(lensPath([...columnPath, 'sortForm']), columns);
+      const sortFormValue = getFieldProperty('value', columnPath.join('.'), sortForm);
 
-
-      const filters: Filters = filterForm && set(lensPath(columnPath), filterFormValues(filterForm), acc.filters);
-
-      const columnSortFormValue = getFieldProperty('value', columnPath.join('.'), sortForm);
-
-      const sort = when(() => columnSortFormValue,
-        set(lensPath(columnPath), columnSortFormValue)
-      )(acc.sort);
-
-      return { filters, sort };
+      return {
+          filters: when(() => is(filters),
+              set(lensPath(columnPath), filters)
+          )(acc.filters),
+          sort: when(() => sortFormValue,
+              set(lensPath(columnPath), sortFormValue)
+          )(acc.sort)
+      };
     },
     { filters: {}, sort: {} },
   );

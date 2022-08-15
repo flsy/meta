@@ -1,6 +1,6 @@
  import { filterColumnPaths, unsetAllSortFormValues, toMetaFilters } from '../utils';
 import {Columns, IMetaFiltersArgs, MetaField} from '@falsy/metacore';
- import {getDateRangeFilter, getTextFilter} from "metahelpers";
+ import {getDateRangeFilter, getTextFilter, getTernaryFilter, columnBuilder} from "metahelpers";
 
 const customerIdFilterForm: MetaField[] = [
   {
@@ -40,7 +40,7 @@ const customerIdFilterForm: MetaField[] = [
    {
      name: 'customer.id.options',
      type: 'select',
-     options: [{ value: 'EQ', label: 'eq'}, { value: 'LIKE', label: 'like'}],
+     options: [{ value: 'EQ', label: 'Přesná shoda'}, { value: 'LIKE', label: 'Fulltext'}],
      value: 'EQ'
    },
    {
@@ -55,11 +55,14 @@ const customerIdFilterForm: MetaField[] = [
        {
          name: 'reset',
          type: 'reset',
+         size: 'small',
          label: 'Reset',
        },
        {
          name: 'submit',
          type: 'submit',
+         size: 'small',
+         primary: true,
          label: 'Filtrovat',
        }
      ]
@@ -189,7 +192,7 @@ const mockedColumns2: Columns<'number' | 'string' | 'boolean'> = {
         value: 'boolean',
       },
       {
-        name: 'isDeleted.value',
+        name: 'isDeleted.filters',
         type: 'checkbox',
         value: false,
       },
@@ -223,6 +226,93 @@ const col2toMetafilterOutput: IMetaFiltersArgs = {
 };
 
 describe('Metatable utils', () => {
+  describe('all form types', () => {
+    describe('string filters', () => {
+      it('return undefined when value is not set', async () => {
+        expect(toMetaFilters(columnBuilder().addStringColumn('longText',{
+          label: 'Dlouhý text',
+          filterForm: getTextFilter(['longText'], { label: 'Dlouhý text', withOptions: true, defaultOption: 'EQ' }),
+        }).columns).filters).toEqual({})
+      });
+
+      it('return right value when set', async () => {
+        expect(toMetaFilters(columnBuilder().addStringColumn('longText',{
+          label: 'Dlouhý text',
+          filterForm: getTextFilter(['longText'], { label: 'Dlouhý text', withOptions: true }).map(field => {
+            if (field.type === 'text') {
+              return {...field, value: 'ok' }
+            }
+            if (field.type === 'select') {
+              return {...field, value: 'LIKE' }
+            }
+            return field
+
+          }),
+        }).columns).filters)
+        .toEqual({
+          longText: {
+            type: "string",
+            filters: [{ value: "ok", operator: "LIKE" }]
+          }
+        })
+      })
+    })
+
+    describe('boolean filters', () => {
+      it('return undefined when value is not set', async () => {
+        expect(toMetaFilters(columnBuilder().addBooleanColumn('isPublished', {
+          label: 'Is published',
+          filterForm: getTernaryFilter(['isPublished'], { label: 'Is published' }),
+        }).columns).filters).toEqual({})
+      });
+      it('return right values when set', async () => {
+        expect(toMetaFilters(columnBuilder().addBooleanColumn('isPublished', {
+          label: 'Is published',
+          filterForm: getTernaryFilter(['isPublished'], { label: 'Is published' }).map(field => {
+            if (field.type === 'threeStateSwitch') {
+              return {...field, value: false }
+            }
+            return field
+          }),
+        }).columns).filters).toEqual({
+          isPublished: {
+            type: 'boolean',
+            value: false
+          }
+        })
+      });
+    });
+
+    describe('number filters', () => {
+      it('return undefined when value is not set', async () => {
+        expect(toMetaFilters(columnBuilder().addNumberColumn('createdAtFormatted', {
+          label: 'Čas vytvoření',
+          filterForm: getDateRangeFilter(['createdAtFormatted'], { label: 'Čas vytvoření' }),
+        }).columns).filters).toEqual({})
+      });
+
+      it('return right values when set', async () => {
+        expect(toMetaFilters(columnBuilder().addNumberColumn('createdAtFormatted', {
+          label: 'Čas vytvoření',
+          filterForm: getDateRangeFilter(['createdAtFormatted'], { label: 'Čas vytvoření' }).map(field => {
+            if (field.type === 'dateRangeCalendar') {
+              return {...field, value: [5, 8] }
+            }
+            return field
+          }),
+        }).columns).filters).toEqual({
+          createdAtFormatted: {
+            type: "number",
+            filters: [
+              { operator: "GT", value: 5 },
+              { operator: "LT", value: 8 }
+            ],
+          }
+        })
+      });
+    });
+  });
+
   it('transform to meta filters', async () => {
     expect(toMetaFilters(mockedColumns2)).toMatchObject(col2toMetafilterOutput);
     expect(toMetaFilters(
@@ -401,49 +491,7 @@ describe('Metatable utils', () => {
         },
       ],
       type: 'string',
-      filterForm: [
-        {
-          name: "customer.id.filters",
-          type: "text",
-          value: "customr #2"
-        },
-        {
-          name: "customer.id.options",
-          options: [
-            {
-              "label": "eq",
-              "value": "EQ"
-            },
-            {
-              "label": "like",
-              "value": "LIKE"
-            }
-          ],
-          type: "select",
-          value: "EQ"
-        },
-        {
-          name: "customer.id.type",
-          type: "hidden",
-          value: "string"
-        },
-        {
-          name: "actions",
-          type: "buttonGroup",
-          items: [
-            {
-              label: "Reset",
-              name: "reset",
-              type: "reset"
-            },
-            {
-              label: "Filtrovat",
-              name: "submit",
-              type: "submit"
-            }
-          ],
-        }
-      ],
+      filterForm: getTextFilter(['customer', 'id'], { withOptions: true, value: 'customr #2', defaultOption: 'EQ' })
     });
 
     expect(result2.isDeleted).toEqual({
@@ -454,7 +502,7 @@ describe('Metatable utils', () => {
           value: "boolean"
         },
         {
-          name: "isDeleted.value",
+          "name": "isDeleted.filters",
           type: "checkbox",
           value: false
         },
