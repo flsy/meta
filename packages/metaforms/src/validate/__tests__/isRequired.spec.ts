@@ -19,4 +19,9 @@ describe('required', () => {
     expect(validateField({}, { type: 'text', value: 0, validation })).toEqual(undefined);
     expect(validateField({}, { type: 'text', value: 5, validation })).toEqual(undefined);
   });
+
+  it('should return an error message when the field value is empty array', () => {
+    const errorMessage = validateField({}, { type: 'text', value: [], validation });
+    expect(errorMessage).toEqual('Please enter your name');
+  });
 });

@@ -37,7 +37,7 @@ const parseNumber = (value: any): Optional<number> => {
 };
 
 const isEmpty = <Value extends unknown>(value: Value, rule: Required): Optional<string> =>
-  value === null || value === undefined || value === '' ? rule.message : undefined;
+  value === null || value === undefined || value === '' || (Array.isArray(value) && !value.length) ? rule.message : undefined;
 
 const getErrorIfDoesNotMatchRegEx = <Value>(value: Value, rule: Pattern): Optional<string> => {
   if (isString(value) && value.length > 0) {
