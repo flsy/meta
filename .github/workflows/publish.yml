@@ -28,6 +28,6 @@ jobs:
           git config --global user.name "ci@$GITHUB_ACTOR"
 
       - name: Release
-        run: yarn release
+        run: git checkout $GIT_BRANCH && yarn release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
