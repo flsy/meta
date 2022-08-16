@@ -1,6 +1,6 @@
 {
   "name": "react-metaforms-antd",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "keywords": [
@@ -28,7 +28,7 @@
     "moment": "^2.29.4",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-metaforms": "^4.0.0-alpha.15",
+    "react-metaforms": "^4.0.0-alpha.16",
     "styled-components": "^5.3.5"
   },
   "devDependencies": {
