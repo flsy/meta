@@ -1,0 +1,33 @@
+name: Publish new version
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+          registry-url: 'https://registry.npmjs.org'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
+      - name: Configure Git User
+        run: |
+          git config --global user.email "ci@falsy.cz"
+          git config --global user.name "ci@$GITHUB_ACTOR"
+
+      - name: Release
+        run: yarn release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
