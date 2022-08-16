@@ -14,7 +14,7 @@ jobs:
           node-version: 14
       - run: yarn
       - run: yarn build
-      - uses: plutotcool/release@v2
+      - uses: plutotcool/release@v2.0.0
         with:
           github_token:  ${{ secrets.GITHUB_TOKEN }}
           npm_token: ${{ secrets.NPM_TOKEN }}
