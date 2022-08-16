@@ -29,7 +29,9 @@ jobs:
 
       - name: Release
         run: |
-          git checkout $GITHUB_REF
+          git fetch origin +refs/heads/master:refs/remotes/origin/master
+          git checkout master
+          git reset --hard "$GITHUB_SHA"
           yarn release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
