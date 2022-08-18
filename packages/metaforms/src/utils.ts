@@ -49,15 +49,25 @@ export const setFieldValue = curry((fieldName: string, value: MetaFieldValue, fi
   setFieldProperty('value', fieldName, value, fields)
 )
 
-export const setValues = (values: any, fields: MetaField[]) =>
-  fields.map(f => {
+export const setValues = (values: any, fields: MetaField[]): any =>
+  fields.map((f) => {
     const nameLens = lensPath(f.name.split('.'));
+
+    if (f.fields) {
+      return { ...f, value: view(nameLens, values), fields: setValues(values, f.fields) };
+    }
+
     return { ...f, value: view(nameLens, values) };
   });
 
 export const getValues = (fields: MetaField[]): MetaFormValues =>
   fields.reduce((acc, f) => {
     const nameLens = lensPath(f.name.split('.'));
+
+    if (f.fields) {
+      return {...acc, ...getValues(f.fields)}
+    }
+
     return set(nameLens, f.value, acc);
   }, {});
 
