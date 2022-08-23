@@ -25,6 +25,13 @@ export interface TextMetaProps extends CommonProps {
 }
 export const getTextMeta = (props: TextMetaProps): MetaField => ({ ...props, type: 'text' });
 
+export type HiddenMetaField<T extends string> = {
+  type: 'hidden';
+  name: string;
+  value: string extends T ? never : true;
+}
+export const getHiddenMeta = <T extends string>(props: { name: string, value: T }): HiddenMetaField<T> => ({ ...props, type: 'hidden', value: props.value as any });
+
 export interface SubmitMetaProps extends Omit<CommonProps, 'errorMessage' | 'validation'> {
   fullWidth?: boolean;
 }
