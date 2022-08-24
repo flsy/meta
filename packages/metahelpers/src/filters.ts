@@ -4,7 +4,7 @@ import {
   getDateRangeCalendarMeta, getHiddenMeta, getMultiSelectMeta,
   getSelectMeta,
   getTextMeta, getThreeStateSwitch, HiddenMetaField, IThreeStateSwitch,
-  MultiSelectMetaProps, SelectMetaProps, TextMetaProps
+  MultiSelectMetaProps, MultiSelectMetaValue, SelectMetaProps, TextMetaProps
 } from './fields';
 import {Optional, pipe} from "fputils";
 
@@ -100,7 +100,6 @@ export const setValueText = (value: string, option?: 'EQ' | 'LIKE') => (filter: 
 
 export const setValueTernary = (value: boolean) => (filter: FilterResult<'boolean'>): FilterResult<'boolean'> => {
   return filter.map(field => {
-
     if (isFiltersField(field.name)) { // type threeStateSwitch
       return {...field, value: value }
     }
@@ -117,6 +116,14 @@ export const setValueDateRange = (value: number[]) => (filter: FilterResult<'num
   }) as any
 }
 
+export const setValueMultiValue = (value: MultiSelectMetaValue[]) => (filter: FilterResult<'multiselect'>): FilterResult<'multiselect'> => {
+  return filter.map(field => {
+    if (isFiltersField(field.name)) { // type multiselect
+      return {...field, value: value }
+    }
+    return field
+  }) as any
+}
 
 export const getTernaryFilter = (path: string[], options: Omit<IThreeStateSwitch, 'name'>): FilterResult<'boolean'> => [
   getThreeStateSwitch({
