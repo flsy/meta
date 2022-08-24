@@ -1,6 +1,14 @@
  import { filterColumnPaths, unsetAllSortFormValues, toMetaFilters } from '../utils';
 import {Columns, IMetaFiltersArgs, MetaField} from '@falsy/metacore';
- import {getDateRangeFilter, getTextFilter, getTernaryFilter, columnBuilder} from "metahelpers";
+ import {
+  getDateRangeFilter,
+  getTextFilter,
+  getTernaryFilter,
+  columnBuilder,
+   setValueText,
+  setValueTernary, setValueDateRange
+} from "metahelpers";
+ import {pipe} from "fputils";
 
 const customerIdFilterForm: MetaField[] = [
   {
@@ -238,16 +246,7 @@ describe('Metatable utils', () => {
       it('return right value when set', async () => {
         expect(toMetaFilters(columnBuilder().addStringColumn('longText',{
           label: 'Dlouhý text',
-          filterForm: getTextFilter(['longText'], { label: 'Dlouhý text', withOptions: true }).map(field => {
-            if (field.type === 'text') {
-              return {...field, value: 'ok' }
-            }
-            if (field.type === 'select') {
-              return {...field, value: 'LIKE' }
-            }
-            return field
-
-          }),
+          filterForm: pipe(getTextFilter(['longText'], { label: 'Dlouhý text', withOptions: true }), setValueText('ok', 'LIKE'))
         }).columns).filters)
         .toEqual({
           longText: {
@@ -268,12 +267,7 @@ describe('Metatable utils', () => {
       it('return right values when set', async () => {
         expect(toMetaFilters(columnBuilder().addBooleanColumn('isPublished', {
           label: 'Is published',
-          filterForm: getTernaryFilter(['isPublished'], { label: 'Is published' }).map(field => {
-            if (field.type === 'threeStateSwitch') {
-              return {...field, value: false }
-            }
-            return field
-          }),
+          filterForm: pipe(getTernaryFilter(['isPublished'], { label: 'Is published' }), setValueTernary(false))
         }).columns).filters).toEqual({
           isPublished: {
             type: 'boolean',
@@ -294,12 +288,7 @@ describe('Metatable utils', () => {
       it('return right values when set', async () => {
         expect(toMetaFilters(columnBuilder().addNumberColumn('createdAtFormatted', {
           label: 'Čas vytvoření',
-          filterForm: getDateRangeFilter(['createdAtFormatted'], { label: 'Čas vytvoření' }).map(field => {
-            if (field.type === 'dateRangeCalendar') {
-              return {...field, value: [5, 8] }
-            }
-            return field
-          }),
+          filterForm: pipe(getDateRangeFilter(['createdAtFormatted'], { label: 'Čas vytvoření' }), setValueDateRange([5, 8]))
         }).columns).filters).toEqual({
           createdAtFormatted: {
             type: "number",
