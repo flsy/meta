@@ -36,6 +36,7 @@ const fields: MetaField[] = [
   {
     type: 'object',
     name: 'roles',
+    array: true,
     validation: [
       { type: "required", message: "Please enter at least one role" },
     ],
@@ -49,6 +50,12 @@ const fields: MetaField[] = [
         ],
       },
     ],
+  },
+  {
+    name: "friends",
+    array: true,
+    label: "Friends",
+    type: "text",
   },
   {
     name: "submit",
@@ -100,7 +107,7 @@ export const Basic = () => {
       components={(componentProps) => {
         if(isComponentArray(componentProps)) {
           const { children, arrayHelpers  } = componentProps;
-          return <>{children.map((c, idx) => <React.Fragment key={idx}>{c} <button onClick={() => arrayHelpers.remove(idx)}>Remove</button></React.Fragment>)}<br /><button onClick={() => arrayHelpers.push({})}>Add</button><br /><br /></>
+          return <>{children?.map((c, idx) => <React.Fragment key={idx}>{c} <button onClick={() => arrayHelpers.remove(idx)}>Remove</button></React.Fragment>)}<br /><button onClick={() => arrayHelpers.push(null)}>Add</button><br /><br /></>
         }
 
         if(isComponentObject(componentProps)) {

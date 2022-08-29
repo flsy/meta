@@ -18,7 +18,7 @@ import { validateField } from 'metaforms/lib/validate/validate';
 
 export interface ControlRenderProps { ref: any, form: FormikContextType<MetaFormValues>, field: MetaField, input: FieldInputProps<MetaFieldValue>, meta: FieldMetaProps<MetaFieldValue>, helpers: FieldHelperProps<MetaFieldValue> }
 export interface ObjectRenderProps { children: JSX.Element[], field: MetaField }
-export interface ArrayRenderProps { children: JSX.Element[][], field: MetaField, arrayHelpers: ArrayHelpers }
+export interface ArrayRenderProps { children: JSX.Element[], field: MetaField, arrayHelpers: ArrayHelpers }
 
 export type ComponentRenderProps = ControlRenderProps | ObjectRenderProps | ArrayRenderProps;
 
@@ -30,7 +30,7 @@ export interface IProps {
   components: (q: ComponentRenderProps) => JSX.Element;
 }
 
-export const isComponentArray = (c: ComponentRenderProps): c is ArrayRenderProps => c.field.type === 'array';
+export const isComponentArray = (c: ComponentRenderProps): c is ArrayRenderProps => c.field.array === true;
 export const isComponentObject = (c: ComponentRenderProps): c is ObjectRenderProps => c.field.type === 'object';
 export const isComponentControl = (c: ComponentRenderProps): c is ControlRenderProps => !isComponentObject(c) && !isComponentArray(c);
 
@@ -56,17 +56,7 @@ export default (props: IProps) => {
       }
     }, [])
 
-
-    if(field.type === 'object') {
-      const children = field?.fields?.map((f: MetaField) => {
-        const name = `${field.name}.${f.name}`
-        return <Field key={name} field={{...f, name }} />
-      })
-
-      return props.components({ children, field })
-    }
-
-    if(field.type === 'array') {
+    if(field.array && field.type === 'object') {
       const children = form.values?.[field.name]?.map((_: unknown, index: number) => (
         field.fields.map((f: MetaField) => {
           const name = `${field.name}.${index}.${f.name}`
@@ -82,6 +72,28 @@ export default (props: IProps) => {
       )
     }
 
+    if(field.type === 'object') {
+      const children = field?.fields?.map((f: MetaField) => {
+        const name = `${field.name}.${f.name}`
+        return <Field key={name} field={{...f, name }} />
+      })
+
+      return props.components({ children, field })
+    }
+
+    if(field.array) {
+      const children = form.values?.[field.name]?.map((_: unknown, index: number) => {
+        const name = `${field.name}.${index}`;
+        return <Field key={name} field={{ ...field, array: false, name }} />
+      })
+
+      return (
+        <FieldArray
+          name={field.name}
+          render={arrayHelpers => props.components({ children, field, arrayHelpers })}
+        />
+      )
+    }
 
     return props.components({ field, ref, input, meta, helpers, form })
   }
