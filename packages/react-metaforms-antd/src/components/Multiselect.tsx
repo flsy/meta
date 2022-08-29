@@ -13,6 +13,8 @@ interface ICheckboxListProps extends MultiSelectMetaProps {
   onChange: (value: MultiSelectMetaProps['value']) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  showSelectedCounter?: boolean;
+  showFilterInput?: boolean;
 }
 
 const ListItem = styled(List.Item)<{ $focused: boolean }>`

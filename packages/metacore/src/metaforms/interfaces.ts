@@ -10,7 +10,7 @@ export interface MetaField {
   name: string,
   type: string,
   label?: string;
-  value?: MetaFieldValue;
+  // value?: MetaFieldValue;
   validation?: Validation[];
   errorMessage?: MetaFieldErrorMessage;
   [key: string]: any;
