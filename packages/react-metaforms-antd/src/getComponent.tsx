@@ -1,8 +1,7 @@
 import React from 'react';
 import { DatePicker as $DatePicker, Input as $Input } from 'antd';
-import { MetaField } from 'metaforms';
 import moment from 'moment';
-import { IProps } from 'react-metaforms';
+import { IProps, isComponentArray, isComponentObject } from 'react-metaforms';
 import { Submit } from './components/Button';
 import Checkbox from './components/Checkbox';
 import DatePicker from './components/DatePicker';
@@ -12,20 +11,24 @@ import ImageUpload from './components/ImageUpload';
 import Input from './components/Input';
 import Multiselect from './components/Multiselect';
 import Select from './components/Select';
-import { IComponentProps } from 'react-metaforms/lib/Form';
+
+ // 'type': 'object',
+ // 'layout': 'tabs' | 'vertical' | 'horizontal',
+
+export const getComponent: IProps['components'] = (props) => {
+  if(isComponentArray(props)) {
+    return;
+  }
+
+  if(isComponentObject(props)) {
+    if(props.field.layout === 'tabs') {
+      return <div>I am tabs</div>
+      // return <Tabs onChange={}>{props.children[0]}</Tabs>
+    }
 
 
-export type ParentGetComponent = (componentProps: IComponentProps, getComponent: IProps['components'], createField: (field: MetaField) => JSX.Element) => JSX.Element | undefined;
-
-export const getComponent =
-  (parentGetComponent?: ParentGetComponent): IProps['components'] =>
-    (props, createField) => {
-      if (parentGetComponent) {
-        const found = parentGetComponent(props, getComponent(), createField);
-        if (found) {
-          return found;
-        }
-      }
+    return;
+  }
 
   const { ref, field, input, meta, helpers, form } = props;
   const errorMessage = field.errorMessage || meta.error;

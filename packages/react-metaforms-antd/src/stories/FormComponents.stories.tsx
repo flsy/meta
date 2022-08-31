@@ -2,21 +2,16 @@ import { action } from '@storybook/addon-actions';
 import {
   getCheckboxMeta,
   getDateMeta,
-  getDateRangeCalendarMeta,
   getDateRangeMeta,
   getFileMeta,
   getImageMeta,
-  getJsonMeta,
   getMultiSelectMeta,
-  getMultistringMeta,
   getNumberMeta,
   getPasswordMeta,
   getSelectMeta,
   getSubmitMeta,
   getTextareaMeta,
   getTextMeta,
-  getThreeStateSwitch,
-  getVariableListMeta,
 } from 'metahelpers';
 import React from 'react';
 import Form from '../Form';
@@ -127,52 +122,6 @@ export const Password = (args) => (
 
 Password.args = {
   label: 'Password',
-  disabled: false,
-  placeholder: '',
-};
-
-export const VariableList = (args) => (
-  <Form
-    fields={[
-      getVariableListMeta({
-        name: 'variablelist',
-        label: args.label,
-        disabled: args.disabled,
-        placeholder: args.placeholder,
-        value: '',
-        variables: [
-          {
-            name: 'user',
-            description: 'User',
-          },
-          {
-            name: 'password',
-            description: 'Password',
-          },
-        ],
-        validation: [
-          {
-            type: 'required',
-            message: 'Povinné pole',
-          },
-          {
-            type: 'minlength',
-            message: 'Zadejte alespoň 2 znaky',
-            value: 2,
-          },
-        ],
-      }),
-      getSubmitMeta({
-        name: 'submit',
-        label: 'Uložit',
-      }),
-    ]}
-    onSubmit={handleSubmit}
-  />
-);
-
-VariableList.args = {
-  label: 'Variable List',
   disabled: false,
   placeholder: '',
 };
@@ -371,34 +320,6 @@ Checkbox.args = {
   disabled: false,
 };
 
-export const Json = (args) => (
-  <Form
-    fields={[
-      getJsonMeta({
-        name: 'json',
-        label: args.label,
-        disabled: args.disabled,
-        validation: [
-          {
-            type: 'required',
-            message: 'Povinné pole',
-          },
-        ],
-      }),
-      getSubmitMeta({
-        name: 'submit',
-        label: 'Uložit',
-      }),
-    ]}
-    onSubmit={handleSubmit}
-  />
-);
-
-Json.args = {
-  label: 'Json',
-  disabled: false,
-};
-
 export const DateRange = () => (
   <Form
     fields={[
@@ -423,84 +344,9 @@ export const DateRange = () => (
   />
 );
 
-export const Multistring = () => (
-  <Form
-    fields={[
-      getMultistringMeta({
-        name: 'multistring',
-        label: 'Multi string',
-        validation: [
-          {
-            type: 'required',
-            message: 'Povinné pole',
-          },
-        ],
-      }),
-      getSubmitMeta({
-        name: 'submit',
-        label: 'Uložit',
-      }),
-    ]}
-    onSubmit={handleSubmit}
-  />
-);
-
-export const DateRangeCalendar = (args) => (
-  <Form
-    fields={[
-      getDateRangeCalendarMeta({
-        name: 'daterangecalendar',
-        label: args.label,
-        dateInputPlaceholder: args.dateInputPlaceholder,
-        withTimePicker: args.withTimePicker,
-        format: args.format,
-      }),
-      getSubmitMeta({
-        name: 'submit',
-        label: 'Uložit',
-      }),
-    ]}
-    onSubmit={handleSubmit}
-  />
-);
-
-DateRangeCalendar.args = {
-  label: 'Date Range Calendar',
-  dateInputPlaceholder: '',
-  withTimePicker: false,
-  format: '',
-};
-
-export const ThreeStateSwitch = () => (
-  <Form
-    fields={[
-      getThreeStateSwitch({
-        name: 'threeStateSwitch',
-        label: 'Is winter here?',
-      }),
-      getSubmitMeta({
-        name: 'submit',
-        label: 'Uložit',
-      }),
-    ]}
-    onSubmit={handleSubmit}
-  />
-);
-
 export const Multiselect = (args) => (
   <Form
     fields={[
-      getMultiSelectMeta({
-        name: 'multiselect',
-        label: 'Select multiple',
-        options: [
-          { label: 'Dog 1', value: 'dog' },
-          { label: 'Cat 2', value: 'cat' },
-          { label: 'Pig 3', value: 'pig' },
-          { label: 'Rat 4', value: 'rat' },
-          { label: 'Dog 5', value: 'dog' },
-        ],
-      }),
       getMultiSelectMeta({
         name: 'multiselect',
         label:  'Select multiple',

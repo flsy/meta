@@ -96,7 +96,7 @@ export default (props: IProps) => {
   return (
     <Formik
       {...props.formikProps}
-      initialValues={props.values}
+      initialValues={props.values || {}}
       validate={(formikValues) => {
         return Array.from(fields.current.entries()).reduce((acc, [name, field]) => {
           const f = {...field, value: getIn(formikValues, name)};

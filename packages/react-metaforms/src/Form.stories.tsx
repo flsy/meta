@@ -9,30 +9,11 @@ const values = {
   user: {
     name: 'John Doe'
   },
-  roles: [{ name: 'Admin'}, { name: 'Superuser' }]
+  roles: [{ name: 'Admin'}, { name: 'Superuser' }],
+  friends: ['Karel', 'Ondra']
 }
 
 const fields: MetaField[] = [
-  {
-    type: 'object',
-    name: 'user',
-    fields: [
-      {
-        name: "email",
-        label: "Email",
-        type: "text",
-        validation: [
-          { type: "required", message: "Please enter your email address" },
-          { type: "pattern", message: "Sorry, we do not recognise that email address", value: "^.*@.*\\..*$" }
-        ],
-      },
-      {
-        name: "name",
-        label: "Name",
-        type: "text",
-      },
-    ]
-  },
   {
     type: 'object',
     name: 'roles',
