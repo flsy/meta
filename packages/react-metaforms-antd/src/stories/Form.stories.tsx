@@ -1,131 +1,81 @@
 import { action } from '@storybook/addon-actions';
-import { getTextMeta } from 'metahelpers';
 import React from 'react';
 import Form from '../Form';
-import { IProps } from '../Form';
 
-const fields: IProps['fields'] = [
-  getTextMeta({
-    name: 'username',
-    label: 'Username',
-    value: '',
-    validation: [
-      {
-        type: 'required',
-        message: 'This field is required',
-      },
-      {
-        type: 'minlength',
-        message: 'Too short',
-        value: 2,
-      },
-    ],
-  }),
-  {
-    name: 'variable-list-example',
-    type: 'variable-list',
-    label: 'Variables',
-    options: [],
-    variables: [
-      { name: '{{RULE_NAME}}', description: 'Nazev pravidla' },
-      { name: '{{TIME}}', description: 'Cas' },
-    ],
-  },
-  {
-    name: 'image',
-    type: 'image',
-    label: 'Cat image',
-  },
-  {
-    name: 'csv',
-    type: 'file',
-    accept: '.csv',
-    label: 'Select CSV',
-  },
-  {
-    name: 'upload',
-    type: 'file',
-    label: 'Select any file',
-  },
-  {
-    name: 'password',
-    type: 'password',
-    label: 'Password',
-    validation: [
-      {
-        type: 'required',
-        message: 'This field is required',
-      },
-    ],
-  },
-  {
-    name: 'notes',
-    type: 'textarea',
-    label: 'Notes',
-    validation: [
-      {
-        type: 'required',
-        message: 'This field is required',
-      },
-    ],
-  },
-  {
-    name: 'date',
-    type: 'date',
-    label: 'Date',
-    format: 'DD.MM.YYYY',
-  },
-  {
-    name: 'json',
-    type: 'json',
-    label: 'JSON',
-    validation: [
-      {
-        type: 'required',
-        message: 'This field is required',
-      },
-    ],
-  },
-  {
-    name: 'dateRange',
-    type: 'dateRange',
-    label: 'Date Range',
-  },
-  {
-    name: 'dateRangeWithTime',
-    type: 'dateRange',
-    label: 'Date Range',
-    withTimePicker: true,
-  },
-  {
-    name: 'select-example',
-    type: 'select',
-    label: 'Okno?',
-    options: [{ value: 'ok' }, { value: 'no' }],
-  },
-  {
-    name: 'checkbox-example',
-    type: 'checkbox',
-    label: 'doIt',
-  },
-  {
-    name: 'multiselect-example',
-    type: 'multiselect',
-    label: 'Multiselect',
-    options: [
-      { value: 1, label: 'do it' },
-      { value: 2, label: 'dont do it' },
-    ],
-  },
-  {
-    name: 'submit',
-    type: 'submit',
-    label: 'Login',
-  },
-];
+export const Array = (args) => (
+  <Form fields={[
+    {
+      name: 'user',
+      type: 'object',
+      label: 'User',
+      array: true,
+      fields: [
+        {
+          type: 'text',
+          name: 'fname',
+          label: 'First name'
+        },
+        {
+          type: 'text',
+          name: 'lname',
+          label: 'Last name'
+        }
+      ]
+    },
+    {
+      type: 'text',
+      name: 'role',
+      array: true,
+      label: 'Role',
+      validation: [
+        {
+          type: 'required',
+          message: 'This field is required',
+        },
+        {
+          type: 'minlength',
+          message: 'Too short',
+          value: 2,
+        },
+      ],
+    },
+    {
+      name: 'submit',
+      type: 'submit',
+      label: 'Login',
+    },
+  ]} onSubmit={action('onSubmit')} {...args} />
+);
 
-export const Basic = (args) => (
-  <Form fields={fields} onSubmit={action('onSubmit')} {...args} />
+export const Tabs = (args) => (
+  <Form fields={[
+    {
+      name: 'search',
+      type: 'object',
+      layout: 'tabs',
+      label: 'Search',
+      fields: [
+        {
+          type: 'text',
+          name: 'term',
+          label: 'Search term'
+        },
+        {
+          type: 'checkbox',
+          name: 'valid',
+          label: 'Valid'
+        }
+      ]
+    },
+    {
+      name: 'submit',
+      type: 'submit',
+      label: 'Login',
+    },
+  ]} onSubmit={(values, helpers) => {
+    action('onSubmit')(values);
+    helpers.setSubmitting(false);
+  }} {...args} />
 );
 
 export default {

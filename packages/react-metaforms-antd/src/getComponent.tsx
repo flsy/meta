@@ -1,5 +1,5 @@
 import React from 'react';
-import { DatePicker as $DatePicker, Input as $Input } from 'antd';
+import { Button, DatePicker as $DatePicker, Input as $Input, Tabs } from 'antd';
 import moment from 'moment';
 import { IProps, isComponentArray, isComponentObject } from 'react-metaforms';
 import { Submit } from './components/Button';
@@ -11,23 +11,40 @@ import ImageUpload from './components/ImageUpload';
 import Input from './components/Input';
 import Multiselect from './components/Multiselect';
 import Select from './components/Select';
+import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
+import PlusOutlined from '@ant-design/icons/PlusOutlined';
 
  // 'type': 'object',
  // 'layout': 'tabs' | 'vertical' | 'horizontal',
 
 export const getComponent: IProps['components'] = (props) => {
   if(isComponentArray(props)) {
-    return;
+    const { children, arrayHelpers } = props;
+    return (<div>
+      {children?.map((c: unknown, index: number) => (
+        <div key={index} style={{ display: 'flex', alignItems: 'center', columnGap: '1em' }}>
+          <div style={{ width: '100%', border: '1px solid #eee', padding: '1em' }}>
+            {c}
+          </div>
+          <Button danger={true} size="small" icon={<DeleteOutlined />} shape="circle" onClick={() => arrayHelpers.remove(index)} />
+        </div>
+      ))}
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '1em' }}>
+        <Button size="small" onClick={() => arrayHelpers.push(null)} icon={<PlusOutlined />}>
+          {props.field.label}
+        </Button>
+      </div>
+    </div>)
   }
 
   if(isComponentObject(props)) {
-    if(props.field.layout === 'tabs') {
-      return <div>I am tabs</div>
-      // return <Tabs onChange={}>{props.children[0]}</Tabs>
+    const field = props.field;
+    if(field.layout === 'tabs') {
+      return <Tabs>{props.children.map((c, i) => <Tabs.TabPane key={i} tab={field.fields[i].label}>{c}</Tabs.TabPane>)}</Tabs>
     }
 
 
-    return;
+    return <>{props.children}</>;
   }
 
   const { ref, field, input, meta, helpers, form } = props;
