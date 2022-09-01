@@ -26,7 +26,7 @@
     "build": "yarn workspaces foreach run build",
     "release": "lerna publish --include-merged-tags",
     "lint": "eslint '*/**/*.{js,ts,tsx}'",
-    "test": "yarn workspaces run test"
+    "test": "yarn workspaces foreach run test"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.28.5",
