@@ -138,7 +138,7 @@ const mockedColumns1: Columns<'number' | 'timestamp' | 'string' | 'boolean'> = {
       {
         name: 'submit',
         type: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       },
     ],
   },

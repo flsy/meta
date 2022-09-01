@@ -13,7 +13,7 @@ const AsteriskStyled = styled.span`
 
 const Asterisk: React.FC = () => (
   <AsteriskStyled>
-    <Tooltip title="Povinné pole">*</Tooltip>
+    <Tooltip title="Required field">*</Tooltip>
   </AsteriskStyled>
 );
 

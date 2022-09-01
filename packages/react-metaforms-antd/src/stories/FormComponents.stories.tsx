@@ -36,13 +36,13 @@ export const Number = (args) => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -66,18 +66,18 @@ export const Text = (args) => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
           {
             type: 'minlength',
-            message: 'Zadejte alespoň 2 znaky',
+            message: 'Enter at least 2 characters',
             value: 2,
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -102,18 +102,18 @@ export const Password = (args) => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
           {
             type: 'minlength',
-            message: 'Zadejte alespoň 2 znaky',
+            message: 'Enter at least 2 characters',
             value: 2,
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -139,18 +139,18 @@ export const Textarea = (args) => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
           {
             type: 'minlength',
-            message: 'Zadejte alespoň 2 znaky',
+            message: 'Enter at least 2 characters',
             value: 2,
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -174,13 +174,13 @@ export const Image = (args) => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -201,13 +201,13 @@ export const File = (args) => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -232,13 +232,13 @@ export const Date = (args) => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -273,13 +273,13 @@ export const Select = (args) => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -302,13 +302,13 @@ export const Checkbox = (args) => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -331,13 +331,13 @@ export const DateRange = () => (
         validation: [
           {
             type: 'required',
-            message: 'Povinné pole',
+            message: 'Required field',
           },
         ],
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
@@ -369,7 +369,7 @@ export const Multiselect = (args) => (
       }),
       getSubmitMeta({
         name: 'submit',
-        label: 'Uložit',
+        label: 'Save',
       }),
     ]}
     onSubmit={handleSubmit}
