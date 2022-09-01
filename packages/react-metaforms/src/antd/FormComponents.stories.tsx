@@ -328,6 +328,10 @@ export const DateRange = () => (
         label: 'Date Range',
         withTimePicker: true,
         value: [1645686522, 1645686522],
+        presets: {
+          lastDay: 'Last day',
+          lastWeek: 'Last week'
+        },
         validation: [
           {
             type: 'required',
@@ -376,14 +380,12 @@ export const Multiselect = (args) => (
   />
 );
 
+Multiselect.args = {
+  label: 'Multiselect',
+  showFilterInput: true,
+  showSelectedCounter: true,
+}
+
 export default {
   title: 'AntdForm/Components',
-    argTypes: {
-        showFilterInput: { control: { type: 'boolean' } },
-        showSelectedCounter: { control: { type: 'boolean' } },
-    },
-    args: {
-        showFilterInput: true,
-        showSelectedCounter: true,
-    },
 };

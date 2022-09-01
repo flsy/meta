@@ -106,6 +106,11 @@ export const getJsonMeta = (props: JsonMetaProps): MetaField => ({ ...props, typ
 export interface DateRangeMetaProps extends CommonProps {
   value?: [number, number];
   withTimePicker?: boolean;
+  presets?: {
+    lastDay?: string;
+    lastWeek?: string;
+    lastMonth?: string;
+  }
 }
 export const getDateRangeMeta = (props: DateRangeMetaProps): MetaField => ({ ...props, type: 'dateRange' });
 
