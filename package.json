@@ -23,7 +23,7 @@
     "packages/metahelpers"
   ],
   "scripts": {
-    "build": "yarn workspaces run build",
+    "build": "yarn workspaces foreach run build",
     "release": "lerna publish --include-merged-tags",
     "lint": "eslint '*/**/*.{js,ts,tsx}'",
     "test": "yarn workspaces run test"
