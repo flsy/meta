@@ -13,9 +13,13 @@ import Multiselect from './components/Multiselect';
 import Select from './components/Select';
 import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
+import styled from 'styled-components';
 
- // 'type': 'object',
- // 'layout': 'tabs' | 'vertical' | 'horizontal',
+const NoLabel = styled.div`
+    .ant-form-item-label {
+      display: none;
+    }
+`
 
 export const getComponent: IProps['components'] = (props) => {
   if(isComponentArray(props)) {
@@ -40,7 +44,18 @@ export const getComponent: IProps['components'] = (props) => {
   if(isComponentObject(props)) {
     const field = props.field;
     if(field.layout === 'tabs') {
-      return <Tabs>{props.children.map((c, i) => <Tabs.TabPane key={i} tab={field.fields[i].label}>{c}</Tabs.TabPane>)}</Tabs>
+
+      const handleChange = (activeFieldName: string) => {
+        props.field.fields
+          .filter(childrenField => childrenField.name !== activeFieldName)
+          .map(childrenField => props.form.setFieldValue(`${props.field.name}.${childrenField.name}`, undefined))
+      }
+
+      return <Tabs onChange={handleChange}>
+        {props.children.map((c, i) =>
+          <Tabs.TabPane key={field.fields[i].name} tab={field.fields[i].label}><NoLabel>{c}</NoLabel></Tabs.TabPane>
+        )}
+      </Tabs>
     }
 
 

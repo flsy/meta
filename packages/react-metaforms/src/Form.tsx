@@ -17,7 +17,7 @@ import { MetaField, MetaFormValues, MetaFieldValue } from '@falsy/metacore'
 import { validateField } from 'metaforms/lib/validate/validate';
 
 export interface ControlRenderProps { ref: any, form: FormikContextType<MetaFormValues>, field: MetaField, input: FieldInputProps<MetaFieldValue>, meta: FieldMetaProps<MetaFieldValue>, helpers: FieldHelperProps<MetaFieldValue> }
-export interface ObjectRenderProps { children: JSX.Element[], field: MetaField }
+export interface ObjectRenderProps { children: JSX.Element[], field: MetaField, form: FormikContextType<MetaFormValues> }
 export interface ArrayRenderProps { children: JSX.Element[], field: MetaField, arrayHelpers: ArrayHelpers }
 
 export type ComponentRenderProps = ControlRenderProps | ObjectRenderProps | ArrayRenderProps;
@@ -80,7 +80,7 @@ export default (props: IProps) => {
         return <Field key={name} field={{ ...f, name }} />
       })
 
-      return props.components({ children, field })
+      return props.components({ children, field, form })
     }
 
     return props.components({ field, ref, input, meta, helpers, form })
