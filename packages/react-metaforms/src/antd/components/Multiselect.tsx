@@ -3,8 +3,8 @@ import Fuse from 'fuse.js';
 import { head } from 'ramda';
 import React, { Ref, useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { KeyboardKey, useBoolean, useKeyPress } from '../hooks';
-import { toggleSelection } from '../hooks/useSelection';
+import { KeyboardKey, useBoolean, useKeyPress } from '../../hooks';
+import { toggleSelection } from '../../hooks/useSelection';
 import Input from './Input';
 import {MultiSelectMetaProps, MultiSelectMetaValue} from "metahelpers";
 

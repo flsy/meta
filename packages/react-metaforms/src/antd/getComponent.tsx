@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, DatePicker as $DatePicker, Input as $Input, Tabs } from 'antd';
 import moment from 'moment';
-import { IProps, isComponentArray, isComponentObject } from 'react-metaforms';
+import { IProps, isComponentArray, isComponentObject } from '../core/Form';
 import { Submit } from './components/Button';
 import Checkbox from './components/Checkbox';
 import DatePicker from './components/DatePicker';

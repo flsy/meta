@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
-import Form from '../Form';
+import Form from './Form';
 
 export const Array = (args) => (
   <Form fields={[
@@ -79,7 +79,7 @@ export const Tabs = (args) => (
 );
 
 export default {
-  title: 'Form',
+  title: 'AntdForm',
   argTypes: {
     size: { control: { type: 'select' }, options: ['small', 'middle', 'large'] },
   },

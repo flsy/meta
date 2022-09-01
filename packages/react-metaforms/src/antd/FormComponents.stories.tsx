@@ -14,7 +14,7 @@ import {
   getTextMeta,
 } from 'metahelpers';
 import React from 'react';
-import Form from '../Form';
+import Form from './Form';
 
 import 'antd/dist/antd.variable.min.css';
 
@@ -377,7 +377,7 @@ export const Multiselect = (args) => (
 );
 
 export default {
-  title: 'Form/Components',
+  title: 'AntdForm/Components',
     argTypes: {
         showFilterInput: { control: { type: 'boolean' } },
         showSelectedCounter: { control: { type: 'boolean' } },

@@ -1,6 +1,6 @@
 import { Form as $Form } from 'antd';
 import React from 'react';
-import MetaForm, { IProps as ReactMetaformProps } from 'react-metaforms';
+import MetaForm, { IProps as ReactMetaformProps } from '../core/Form';
 import { getComponent } from './getComponent';
 
 export interface IProps {

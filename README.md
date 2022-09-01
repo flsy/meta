@@ -3,7 +3,7 @@
 ## Krok 1
 - Zmenšit počet balíčků, ideálně na 2:
   - @falsy/metacore = metacore + metafilters + metaforms + metatable
-  - @falsy/metaforms = react-metaforms + react-metaforms-antd + (metahelpers)
+  - @falsy/metaforms = react-metaforms + (metahelpers)
 - Přidat metacharts do monorepa
   - @falsy/metachars
 - Přidat react metatable z baf platform 

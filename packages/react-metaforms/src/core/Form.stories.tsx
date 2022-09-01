@@ -1,4 +1,4 @@
-import MetaForm  from './export'
+import MetaForm  from './Form'
 import React from 'react';
 import { isRequired } from 'metaforms'
 import { MetaField } from '@falsy/metacore'
