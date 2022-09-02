@@ -28,16 +28,14 @@
     "deploy": "NODE_DEBUG=gh-pages gh-pages -d storybook-static"
   },
   "peerDependencies": {
-    "react": "*",
-    "react-dom": "*"
+    "react": "^16.14.0 || 17.0.2",
+    "react-dom": "^16.14.0 || 17.0.2"
   },
   "dependencies": {
     "antd": "^4.21.7",
     "formik": "^2.2.9",
     "fuse.js": "^6.5.3",
     "moment": "^2.29.4",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
     "react-metaforms": "^4.0.0-alpha.17",
     "styled-components": "^5.3.5"
   },
@@ -56,6 +54,7 @@
     "@types/react-dom": "^17.0.9",
     "babel-loader": "^8.2.2",
     "gh-pages": "^3.2.3",
+    "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "typescript": "~4.8.2"
   }
