@@ -14546,17 +14546,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"metahelpers@npm:^1.0.13":
-  version: 1.0.13
-  resolution: "metahelpers@npm:1.0.13"
-  dependencies:
-    metaforms: ^2.0.0-alpha.11
-    metatable: ^3.0.0-alpha.16
-  checksum: f4216164eef6f5a641850312c363e2b9f409c6fd1c8b6664a6e3d135d03348fbb99031cd823c79350b62c5dea6ef442cddc8137c2ef27fb50a43f7e3aa33c90f
-  languageName: node
-  linkType: hard
-
-"metatable@^3.0.0-alpha.16, metatable@workspace:packages/metatable":
+"metatable@workspace:packages/metatable":
   version: 0.0.0-use.local
   resolution: "metatable@workspace:packages/metatable"
   dependencies:
@@ -14567,7 +14557,6 @@ __metadata:
     enzyme: ^3.11.0
     jest: ^27.0.6
     metaforms: ^2.0.0-alpha.11
-    metahelpers: ^1.0.13
     ramda: ^0.28.0
     ts-jest: ^27.0.4
     typescript: ~4.2.3
