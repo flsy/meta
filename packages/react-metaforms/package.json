@@ -28,8 +28,6 @@
     "deploy": "NODE_DEBUG=gh-pages gh-pages -d storybook-static"
   },
   "peerDependencies": {
-    "@falsy/metacore": "*",
-    "metaforms": "*",
     "react": "*",
     "react-dom": "*"
   },
