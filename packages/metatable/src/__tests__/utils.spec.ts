@@ -1,6 +1,6 @@
  import { filterColumnPaths, unsetAllSortFormValues, toMetaFilters } from '../utils';
 import {Columns, IMetaFiltersArgs, MetaField} from '@falsy/metacore';
- import {getDateRangeFilter, getTextFilter, getTernaryFilter, columnBuilder} from "metahelpers";
+ import {getDateRangeFilter, getTextFilter, getTernaryFilter, columnBuilder} from "metaforms";
 
 const customerIdFilterForm: MetaField[] = [
   {

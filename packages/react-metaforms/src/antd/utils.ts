@@ -1,4 +1,4 @@
-import { TextMetaProps, NumberMetaProps, PasswordMetaProps, SelectMetaProps, TextareaMetaProps, CheckboxMetaProps, SubmitMetaProps, DateMetaProps, ImageMetaProps, FileMetaProps, DateRangeMetaProps, MultiSelectMetaProps } from 'metahelpers';
+import { TextMetaProps, NumberMetaProps, PasswordMetaProps, SelectMetaProps, TextareaMetaProps, CheckboxMetaProps, SubmitMetaProps, DateMetaProps, ImageMetaProps, FileMetaProps, DateRangeMetaProps, MultiSelectMetaProps } from 'metaforms';
 
 export const isText = (field: any): field is TextMetaProps => field.type === 'text';
 export const isNumber = (field: any): field is NumberMetaProps => field.type === 'number';

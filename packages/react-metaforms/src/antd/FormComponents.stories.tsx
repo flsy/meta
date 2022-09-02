@@ -12,7 +12,7 @@ import {
   getSubmitMeta,
   getTextareaMeta,
   getTextMeta,
-} from 'metahelpers';
+} from 'metaforms';
 import React from 'react';
 import Form from './Form';
 

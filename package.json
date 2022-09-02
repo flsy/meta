@@ -19,8 +19,7 @@
     "packages/metaforms",
     "packages/metatable",
     "packages/metafilters",
-    "packages/react-metaforms",
-    "packages/metahelpers"
+    "packages/react-metaforms"
   ],
   "scripts": {
     "build": "yarn workspaces foreach run build",

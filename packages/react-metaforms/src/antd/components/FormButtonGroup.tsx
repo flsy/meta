@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import { IButtonGroupItem } from 'metahelpers';
+import { IButtonGroupItem } from 'metaforms';
 import styled from 'styled-components';
 import React from 'react';
 

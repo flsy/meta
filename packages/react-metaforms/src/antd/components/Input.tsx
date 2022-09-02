@@ -1,6 +1,6 @@
 import { Input as $Input, InputRef as $InputRef } from 'antd';
 import React from 'react';
-import {TextMetaProps} from "metahelpers";
+import {TextMetaProps} from "metaforms";
 
 export type InputRef = $InputRef;
 export interface InputProps extends TextMetaProps {

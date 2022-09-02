@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import styled from 'styled-components';
 import React from 'react';
-import {SubmitMetaProps} from "metahelpers";
+import {SubmitMetaProps} from "metaforms";
 
 interface ISubmitProps extends SubmitMetaProps {
   onClick?: () => void;

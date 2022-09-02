@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components';
 import { KeyboardKey, useBoolean, useKeyPress } from '../../hooks';
 import { toggleSelection } from '../../hooks/useSelection';
 import Input from './Input';
-import {MultiSelectMetaProps, MultiSelectMetaValue} from "metahelpers";
+import {MultiSelectMetaProps, MultiSelectMetaValue} from "metaforms";
 
 interface ICheckboxListProps extends MultiSelectMetaProps {
   size?: 'default' | 'large' | 'small';
