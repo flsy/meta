@@ -3,6 +3,7 @@ import { MetaField } from '..';
 interface CommonProps {
   name: MetaField['name'];
   label?: MetaField['label'];
+  array?: MetaField['array'];
   validation?: MetaField['validation'];
   errorMessage?: MetaField['errorMessage'];
 }
@@ -145,3 +146,9 @@ export interface ButtonGroupMetaProps extends CommonProps {
   items: IButtonGroupItem[];
 }
 export const getButtonGroupMeta = (props: ButtonGroupMetaProps): MetaField => ({ ...props, type: 'buttonGroup' });
+
+export interface ObjectMetaProps extends CommonProps {
+  items: IButtonGroupItem[];
+  fields: MetaField[];
+}
+export const getObjectMeta = (props: ObjectMetaProps): MetaField => ({ ...props, type: 'object' })
