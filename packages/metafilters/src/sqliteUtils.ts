@@ -1,6 +1,7 @@
-import { Database, verbose } from 'sqlite3';
+import { Database } from 'sqlite3';
+import * as sqlite3 from 'sqlite3';
 
-const sqlite = verbose();
+const sqlite = sqlite3.verbose();
 
 export const getDatabase = async (filename: string): Promise<Database> =>
   new Promise((resolve, reject) => {
