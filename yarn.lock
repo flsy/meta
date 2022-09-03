@@ -2074,7 +2074,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@falsy/metacore@^1.0.0-alpha.9, @falsy/metacore@workspace:packages/metacore":
+"@falsy/metacore@^1.0.0-alpha.10, @falsy/metacore@workspace:packages/metacore":
   version: 0.0.0-use.local
   resolution: "@falsy/metacore@workspace:packages/metacore"
   dependencies:
@@ -14440,7 +14440,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "metafilters@workspace:packages/metafilters"
   dependencies:
-    "@falsy/metacore": ^1.0.0-alpha.9
+    "@falsy/metacore": ^1.0.0-alpha.10
     "@types/jest": ^28.1.6
     "@types/sqlite3": ^3.1.6
     fputils: ^1.2.4
@@ -14452,11 +14452,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"metaforms@^2.0.0-alpha.11, metaforms@workspace:packages/metaforms":
+"metaforms@^2.0.0-alpha.12, metaforms@workspace:packages/metaforms":
   version: 0.0.0-use.local
   resolution: "metaforms@workspace:packages/metaforms"
   dependencies:
-    "@falsy/metacore": ^1.0.0-alpha.9
+    "@falsy/metacore": ^1.0.0-alpha.10
     "@types/jest": ^28.1.6
     "@types/ramda": ^0.28.15
     fputils: ^1.2.4
@@ -14471,13 +14471,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "metatable@workspace:packages/metatable"
   dependencies:
-    "@falsy/metacore": ^1.0.0-alpha.9
+    "@falsy/metacore": ^1.0.0-alpha.10
     "@types/enzyme": ^3.10.8
     "@types/jest": ^28.1.6
     "@types/ramda": ^0.28.15
     enzyme: ^3.11.0
     jest: ^27.0.6
-    metaforms: ^2.0.0-alpha.11
+    metaforms: ^2.0.0-alpha.12
     ramda: ^0.28.0
     ts-jest: ^27.0.4
     typescript: ~4.8.2
@@ -17731,7 +17731,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-metaforms@^4.0.0-alpha.17, react-metaforms@workspace:packages/react-metaforms":
+"react-metaforms@^4.0.0-alpha.18, react-metaforms@workspace:packages/react-metaforms":
   version: 0.0.0-use.local
   resolution: "react-metaforms@workspace:packages/react-metaforms"
   dependencies:
@@ -17755,7 +17755,7 @@ __metadata:
     moment: ^2.29.4
     react: ^16.14.0
     react-dom: ^16.14.0
-    react-metaforms: ^4.0.0-alpha.17
+    react-metaforms: ^4.0.0-alpha.18
     styled-components: ^5.3.5
     typescript: ~4.8.2
   peerDependencies:
