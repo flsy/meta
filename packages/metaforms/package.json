@@ -1,6 +1,6 @@
 {
   "name": "metaforms",
-  "version": "2.0.0-alpha.13",
+  "version": "2.0.0-alpha.14",
   "description": "metaforms - the heavy stuff",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
