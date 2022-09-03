@@ -4,7 +4,7 @@ import MetaForm, { IProps as ReactMetaformProps } from '../core/Form';
 import { getComponent } from './getComponent';
 
 export interface IProps {
-  initialValues: ReactMetaformProps['values'];
+  initialValues?: ReactMetaformProps['values'];
   fields: ReactMetaformProps['fields'];
   onSubmit: ReactMetaformProps['onSubmit'];
   formikProps?: Partial<ReactMetaformProps['formikProps']>;

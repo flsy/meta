@@ -46,5 +46,6 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "rootDir": "src"
-  }
+  },
+  "gitHead": "a3c02f3cad9753a22f53110ae1b5c232f829e534"
 }
