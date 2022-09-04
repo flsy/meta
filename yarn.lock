@@ -2074,7 +2074,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@falsy/metacore@^1.0.0-alpha.10, @falsy/metacore@workspace:packages/metacore":
+"@falsy/metacore@1.0.0-alpha.10, @falsy/metacore@^1.0.0-alpha.10, @falsy/metacore@workspace:packages/metacore":
   version: 0.0.0-use.local
   resolution: "@falsy/metacore@workspace:packages/metacore"
   dependencies:
@@ -14525,7 +14525,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"metaforms@^2.0.0-alpha.14, metaforms@workspace:packages/metaforms":
+"metaforms@2.0.0-alpha.14, metaforms@^2.0.0-alpha.14, metaforms@workspace:packages/metaforms":
   version: 0.0.0-use.local
   resolution: "metaforms@workspace:packages/metaforms"
   dependencies:
@@ -17817,6 +17817,7 @@ __metadata:
   resolution: "react-metaforms@workspace:packages/react-metaforms"
   dependencies:
     "@babel/core": ^7.18.13
+    "@falsy/metacore": 1.0.0-alpha.10
     "@storybook/addon-actions": ^6.5.10
     "@storybook/addon-essentials": ^6.5.10
     "@storybook/addon-interactions": ^6.5.10
@@ -17834,6 +17835,7 @@ __metadata:
     fuse.js: ^6.5.3
     gh-pages: ^3.2.3
     lerna: ^5.5.0
+    metaforms: 2.0.0-alpha.14
     moment: ^2.29.4
     react: ^16.14.0
     react-dom: ^16.14.0
