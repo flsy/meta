@@ -149,5 +149,6 @@ export const getButtonGroupMeta = (props: ButtonGroupMetaProps): MetaField => ({
 
 export interface ObjectMetaProps extends CommonProps {
   fields: MetaField[];
+  layout?: 'tabs'
 }
 export const getObjectMeta = (props: ObjectMetaProps): MetaField => ({ ...props, type: 'object' })

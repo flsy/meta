@@ -26,50 +26,18 @@ import {
   isText,
   isTextarea,
 } from './utils';
-
-const NoLabel = styled.div`
-    .ant-form-item-label {
-      display: none;
-    }
-`
+import LayoutArray from './components/LayoutArray';
+import LayoutTabs from './components/LayoutTabs';
 
 export const getComponent: IProps['components'] = (props) => {
   if(isComponentArray(props)) {
-    const { children, arrayHelpers } = props;
-    return (<div>
-      {children?.map((c: unknown, index: number) => (
-        <div key={index} style={{ display: 'flex', alignItems: 'center', columnGap: '1em' }}>
-          <div style={{ width: '100%', border: '1px solid #eee', padding: '1em' }}>
-            {c}
-          </div>
-          <Button danger={true} size="small" icon={<DeleteOutlined />} shape="circle" onClick={() => arrayHelpers.remove(index)} />
-        </div>
-      ))}
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '1em' }}>
-        <Button size="small" onClick={() => arrayHelpers.push(null)} icon={<PlusOutlined />}>
-          {props.field.label}
-        </Button>
-      </div>
-    </div>)
+    return <LayoutArray {...props} />
   }
 
   if(isComponentObject(props)) {
-    const field = props.field;
-    if(field.layout === 'tabs') {
-
-      const handleChange = (activeFieldName: string) => {
-        props.field.fields
-          .filter(childrenField => childrenField.name !== activeFieldName)
-          .map(childrenField => props.form.setFieldValue(`${props.field.name}.${childrenField.name}`, undefined))
-      }
-
-      return <Tabs onChange={handleChange}>
-        {props.children.map((c, i) =>
-          <Tabs.TabPane key={field.fields[i].name} tab={field.fields[i].label}><NoLabel>{c}</NoLabel></Tabs.TabPane>
-        )}
-      </Tabs>
+    if(props.field.layout === 'tabs') {
+      return <LayoutTabs {...props} />
     }
-
 
     return <>{props.children}</>;
   }
