@@ -1,15 +1,6 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "version": "independent",
-  "npmClient": "yarn",
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "useNx": true,
   "useWorkspaces": true,
-  "command": {
-    "publish": {
-      "conventionalCommits": true,
-      "create-release": "github",
-      "yes": true
-    }
-  }
+  "version": "0.0.0"
 }
