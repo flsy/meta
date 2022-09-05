@@ -27,18 +27,18 @@ const AddBtn = styled.div`
   padding: 1em;
 `
 
-const LayoutArray = ({ children, arrayHelpers, field }: ArrayRenderProps) => (
+const LayoutArray = ({ children, arrayHelpers, field, form }: ArrayRenderProps) => (
   <>
     {children?.map((c: unknown, index: number) => (
       <Child key={index}>
         <ChildComponent>
           {c}
         </ChildComponent>
-        <Button danger={true} size="small" icon={<DeleteOutlined />} shape="circle" onClick={() => arrayHelpers.remove(index)} />
+        <Button danger={true} size="small" icon={<DeleteOutlined />} shape="circle" onClick={() => arrayHelpers.remove(index)} disabled={form.isSubmitting} />
       </Child>
     ))}
     <AddBtn>
-      <Button size="small" onClick={() => arrayHelpers.push(null)} icon={<PlusOutlined />}>
+      <Button size="small" onClick={() => arrayHelpers.push(null)} icon={<PlusOutlined />} disabled={form.isSubmitting}>
         {field.label}
       </Button>
     </AddBtn>

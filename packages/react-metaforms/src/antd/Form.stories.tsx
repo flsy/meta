@@ -49,7 +49,7 @@ export const Array = (args) => (
 );
 
 export const Tabs = (args) => (
-  <Form fields={[
+  <Form initialValues={{ search: { valid: true } }} fields={[
     {
       name: 'search',
       type: 'object',
