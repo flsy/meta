@@ -1,6 +1,6 @@
 import MetaForm  from './Form'
 import React from 'react';
-import { isRequired } from 'metaforms'
+import {getObjectMeta, getSubmitMeta, getTextMeta, isRequired, minlength, required} from 'metaforms'
 import { MetaField } from '@falsy/metacore'
 import { action } from '@storybook/addon-actions';
 import { isComponentArray, isComponentObject } from './Form';
@@ -14,35 +14,31 @@ const values = {
 }
 
 const fields: MetaField[] = [
-  {
-    type: 'object',
-    name: 'roles',
-    array: true,
-    validation: [
-      { type: "required", message: "Please enter at least one role" },
-    ],
-    fields: [
-      {
-        name: "name",
-        label: "Name",
-        type: "text",
-        validation: [
-          { type: "required", message: "Please enter role name" },
-        ],
-      },
-    ],
-  },
-  {
-    name: "friends",
-    array: true,
-    label: "Friends",
-    type: "text",
-  },
-  {
+    getObjectMeta({
+      name: 'roles',
+      array: true,
+      validation: [
+        required("Please enter at least one role"),
+      ],
+      fields: [
+          getTextMeta({
+            name: "name",
+            label: "Name",
+            validation: [
+                required("Please enter role name")
+            ],
+          })
+      ],
+    }),
+    getTextMeta({
+      name: "friends",
+      array: true,
+      label: "Friends",
+    }),
+  getSubmitMeta({
     name: "submit",
     label: "Submit",
-    type: "submit"
-  }
+  })
 ]
 
 const Label = (props: { fieldId: string; label: string; isRequired: boolean; children?: React.ReactChildren }) => (

@@ -11,7 +11,7 @@ import {
   getSelectMeta,
   getSubmitMeta,
   getTextareaMeta,
-  getTextMeta,
+  getTextMeta, minlength, required,
 } from 'metaforms';
 import React from 'react';
 import Form from './Form';
@@ -34,10 +34,7 @@ export const Number = (args) => (
         disabled: args.disabled,
         placeholder: args.placeholder,
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
+            required('Required field'),
         ],
       }),
       getSubmitMeta({
@@ -64,15 +61,8 @@ export const Text = (args) => (
         disabled: args.disabled,
         placeholder: args.placeholder,
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
-          {
-            type: 'minlength',
-            message: 'Enter at least 2 characters',
-            value: 2,
-          },
+            required('Required field'),
+            minlength('Enter at least 2 characters', 2)
         ],
       }),
       getSubmitMeta({
@@ -100,15 +90,8 @@ export const Password = (args) => (
         placeholder: args.placeholder,
         value: '',
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
-          {
-            type: 'minlength',
-            message: 'Enter at least 2 characters',
-            value: 2,
-          },
+            required('Required field'),
+            minlength('Enter at least 2 characters', 2)
         ],
       }),
       getSubmitMeta({
@@ -137,15 +120,8 @@ export const Textarea = (args) => (
         rows: args.rows,
         value: '',
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
-          {
-            type: 'minlength',
-            message: 'Enter at least 2 characters',
-            value: 2,
-          },
+          required('Required field'),
+          minlength('Enter at least 2 characters', 2)
         ],
       }),
       getSubmitMeta({
@@ -172,10 +148,7 @@ export const Image = (args) => (
         label: args.label,
         value: '',
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
+          required('Required field'),
         ],
       }),
       getSubmitMeta({
@@ -199,10 +172,7 @@ export const File = (args) => (
         label: args.label,
         accept: args.accept,
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
+          required('Required field'),
         ],
       }),
       getSubmitMeta({
@@ -230,10 +200,7 @@ export const Date = (args) => (
         placeholder: args.placeholder,
         withTimePicker: args.withTimePicker,
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
+          required('Required field'),
         ],
       }),
       getSubmitMeta({
@@ -271,10 +238,7 @@ export const Select = (args) => (
           },
         ],
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
+          required('Required field'),
         ],
       }),
       getSubmitMeta({
@@ -300,10 +264,7 @@ export const Checkbox = (args) => (
         label: args.label,
         disabled: args.disabled,
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
+          required('Required field'),
         ],
       }),
       getSubmitMeta({
@@ -333,10 +294,7 @@ export const DateRange = () => (
           lastWeek: 'Last week'
         },
         validation: [
-          {
-            type: 'required',
-            message: 'Required field',
-          },
+          required('Required field'),
         ],
       }),
       getSubmitMeta({

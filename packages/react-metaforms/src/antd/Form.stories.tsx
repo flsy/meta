@@ -1,78 +1,63 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 import Form from './Form';
+import {getSubmitMeta, getTextMeta, required, minlength, getObjectMeta, getCheckboxMeta} from "metaforms";
 
 export const Array = (args) => (
   <Form initialValues={{ user: [{ fname: ['joe'] }]}} fields={[
-    {
-      name: 'user',
-      type: 'object',
-      label: 'User',
-      array: true,
-      fields: [
-        {
-          type: 'text',
-          name: 'fname',
-          array: true,
-          label: 'First name'
-        },
-        {
-          type: 'text',
-          name: 'lname',
-          label: 'Last name'
-        }
-      ]
-    },
-    {
-      type: 'text',
-      name: 'role',
-      array: true,
-      label: 'Role',
-      validation: [
-        {
-          type: 'required',
-          message: 'This field is required',
-        },
-        {
-          type: 'minlength',
-          message: 'Too short',
-          value: 2,
-        },
-      ],
-    },
-    {
-      name: 'submit',
-      type: 'submit',
-      label: 'Login',
-    },
+      getObjectMeta({
+        name: 'user',
+        label: 'User',
+        array: true,
+        fields: [
+            getTextMeta({
+              name: 'fname',
+              array: true,
+              label: 'First name'
+            }),
+            getTextMeta({
+              name: 'lname',
+              label: 'Last name'
+            })
+        ]
+      }),
+      getTextMeta({
+        name: 'role',
+        array: true,
+        label: 'Role',
+        validation: [
+          required('This field is required'),
+          minlength('Too short', 2)
+        ],
+      },),
+      getSubmitMeta({
+        name: 'submit',
+        label: 'Login',
+      })
   ]} onSubmit={action('onSubmit')} {...args} />
 );
 
 export const Tabs = (args) => (
   <Form initialValues={{ search: { valid: true } }} fields={[
-    {
-      name: 'search',
-      type: 'object',
-      layout: 'tabs',
-      label: 'Search',
-      fields: [
-        {
-          type: 'text',
-          name: 'term',
-          label: 'Search term'
-        },
-        {
-          type: 'checkbox',
-          name: 'valid',
-          label: 'Valid'
-        }
-      ]
-    },
-    {
-      name: 'submit',
-      type: 'submit',
-      label: 'Login',
-    },
+      getObjectMeta({
+        name: 'search',
+        layout: 'tabs',
+        label: 'Search',
+        fields: [
+            getTextMeta({
+                name: 'term',
+                label: 'Search term'
+            }),
+            getCheckboxMeta({
+                name: 'valid',
+                label: 'Valid'
+            })
+        ]
+      }),
+      getSubmitMeta({
+        name: 'submit',
+        label: 'Login',
+      })
   ]} onSubmit={(values, helpers) => {
     action('onSubmit')(values);
     helpers.setSubmitting(false);
