@@ -1,4 +1,18 @@
-import { TextMetaProps, NumberMetaProps, PasswordMetaProps, SelectMetaProps, TextareaMetaProps, CheckboxMetaProps, SubmitMetaProps, DateMetaProps, ImageMetaProps, FileMetaProps, DateRangeMetaProps, MultiSelectMetaProps } from 'metaforms';
+import {
+    TextMetaProps,
+    NumberMetaProps,
+    PasswordMetaProps,
+    SelectMetaProps,
+    TextareaMetaProps,
+    CheckboxMetaProps,
+    SubmitMetaProps,
+    DateMetaProps,
+    ImageMetaProps,
+    FileMetaProps,
+    DateRangeMetaProps,
+    MultiSelectMetaProps,
+    AutocompleteMetaProps
+} from 'metaforms';
 
 export const isText = (field: any): field is TextMetaProps => field.type === 'text';
 export const isNumber = (field: any): field is NumberMetaProps => field.type === 'number';
@@ -12,3 +26,4 @@ export const isImage = (field: any): field is ImageMetaProps => field.type === '
 export const isFile = (field: any): field is FileMetaProps => field.type === 'file';
 export const isDateRange = (field: any): field is DateRangeMetaProps => field.type === 'dateRange';
 export const isMultiselect = (field: any): field is MultiSelectMetaProps => field.type === 'multiselect';
+export const isAutocomplete = (field: any): field is AutocompleteMetaProps => field.type === 'autocomplete';

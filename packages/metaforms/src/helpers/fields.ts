@@ -152,3 +152,11 @@ export interface ObjectMetaProps extends CommonProps {
   layout?: 'tabs'
 }
 export const getObjectMeta = (props: ObjectMetaProps): MetaField => ({ ...props, type: 'object' })
+
+export interface AutocompleteMetaProps extends CommonProps {
+  value?: string;
+  disabled?: boolean;
+  placeholder?: string;
+  options: Array<{ value: string; }>;
+}
+export const getAutocompleteMeta = (props: AutocompleteMetaProps): MetaField => ({ ...props, type: 'autocomplete' })

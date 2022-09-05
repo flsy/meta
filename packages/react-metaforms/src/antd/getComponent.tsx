@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, DatePicker as $DatePicker, Input as $Input, Tabs } from 'antd';
+import {AutoComplete, DatePicker as $DatePicker, Input as $Input} from 'antd';
 import moment from 'moment';
 import { IProps, isComponentArray, isComponentObject } from '../core/Form';
 import { Submit } from './components/Button';
@@ -11,10 +11,8 @@ import ImageUpload from './components/ImageUpload';
 import Input from './components/Input';
 import Multiselect from './components/Multiselect';
 import Select from './components/Select';
-import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
-import PlusOutlined from '@ant-design/icons/PlusOutlined';
-import styled from 'styled-components';
 import {
+  isAutocomplete,
   isCheckbox,
   isDate, isDateRange,
   isFile,
@@ -198,6 +196,22 @@ export const getComponent: IProps['components'] = (props) => {
           showSelectedCounter={field.showSelectedCounter}
         />
       </FormItem>
+    )
+  }
+
+  if(isAutocomplete(field)) {
+    return (
+        <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
+          <AutoComplete
+              ref={ref}
+              value={input.value}
+              disabled={disabled}
+              options={field.options}
+              onBlur={input.onBlur}
+              placeholder={field.placeholder}
+              onChange={(v) => helpers.setValue(v)}
+          />
+        </FormItem>
     )
   }
 

@@ -1,17 +1,18 @@
 import { action } from '@storybook/addon-actions';
 import {
-  getCheckboxMeta,
-  getDateMeta,
-  getDateRangeMeta,
-  getFileMeta,
-  getImageMeta,
-  getMultiSelectMeta,
-  getNumberMeta,
-  getPasswordMeta,
-  getSelectMeta,
-  getSubmitMeta,
-  getTextareaMeta,
-  getTextMeta, minlength, required,
+    getAutocompleteMeta,
+    getCheckboxMeta,
+    getDateMeta,
+    getDateRangeMeta,
+    getFileMeta,
+    getImageMeta,
+    getMultiSelectMeta,
+    getNumberMeta,
+    getPasswordMeta,
+    getSelectMeta,
+    getSubmitMeta,
+    getTextareaMeta,
+    getTextMeta, minlength, required,
 } from 'metaforms';
 import React from 'react';
 import Form from './Form';
@@ -343,6 +344,39 @@ Multiselect.args = {
   showFilterInput: true,
   showSelectedCounter: true,
 }
+
+export const Autocomplete = (args) => (
+    <Form
+        fields={[
+            getAutocompleteMeta({
+                label: 'Autocomplete',
+                name: 'autocomplete',
+                validation: [required('Pole je povinne')],
+                options: [
+                    {
+                        value: 'A',
+                    },
+                    {
+                        value: 'B',
+                    },
+                    {
+                        value: 'C',
+                    },
+                ],
+            }),
+            getSubmitMeta({
+                name: 'submit',
+                label: 'Save',
+            }),
+        ]}
+        onSubmit={handleSubmit}
+    />
+);
+
+Autocomplete.args = {
+    label: 'Autocomplete',
+    disabled: false,
+};
 
 export default {
   title: 'AntdForm/Components',
