@@ -3,7 +3,7 @@ import React from 'react';
 import Form from './Form';
 
 export const Array = (args) => (
-  <Form initialValues={{ user: [{ fname: 'joe'}]}} fields={[
+  <Form initialValues={{ user: [{ fname: ['joe'] }]}} fields={[
     {
       name: 'user',
       type: 'object',
@@ -13,6 +13,7 @@ export const Array = (args) => (
         {
           type: 'text',
           name: 'fname',
+          array: true,
           label: 'First name'
         },
         {

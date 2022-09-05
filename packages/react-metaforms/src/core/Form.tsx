@@ -61,7 +61,7 @@ export default (props: IProps) => {
     }, [])
 
     if(field.array) {
-      const children = form.values?.[field.name]?.map((_: unknown, index: number) => {
+      const children = getIn(form.values, field.name)?.map((_: unknown, index: number) => {
         const name = `${field.name}.${index}`;
         return <Field key={name} field={{ ...field, array: false, name }} />
       })

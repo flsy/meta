@@ -1,2 +1,2 @@
-export type { IProps } from './core/Form';
+export type { IProps } from './antd/Form';
 export { default } from './antd/Form'
