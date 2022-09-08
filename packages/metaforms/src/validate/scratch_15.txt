@@ -1,0 +1,88 @@
+[13:40] Jakub Kolebaba
+{
+    "type": "text",
+    "name": "name",
+    "validation": "required"
+}
+
+{
+    "name": "Toto pole je povinne"
+}
+
+////////////////////////
+
+{
+    "type": "object",
+    "name": "person",
+    "validation": "required",
+    "fields": [
+        {
+            "type": "text",
+            "name": "name",
+            "validation": "required"
+        }
+    ]
+}
+
+{
+    "person": {
+           "name": "Toto pole je povinne"
+    }
+}
+
+////////////////////////
+
+{
+    "type": "text",
+    "array": true,
+    "name": "name",
+    "validation": "required"
+}
+
+{
+    value: [] | undefined | null
+}
+
+{
+    "name": ["Toto pole je povinne", null, null, "Toto pole je povinne"]
+}
+
+////////////////////////
+
+{
+    "type": "object",
+    "name": "person",
+    "array": true,
+    "fields": [
+        {
+            "type": "text",
+            "name": "name",
+            "array": true
+            "validation": "required"
+        }
+    ]
+}
+
+{
+    person: [
+
+    ]
+}
+
+{
+    "person": [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {
+           "name": "Toto pole je povinne"
+        }
+    }
+}
+
+
+
+
+

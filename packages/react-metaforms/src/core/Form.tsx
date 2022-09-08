@@ -134,6 +134,8 @@ const MetaForm = (props: IProps) => {
       {...props.formikProps}
       initialValues={props.values || {}}
       validate={(formikValues) => {
+        // const validated = validateForm(formikValues, props.fields);
+        // console.log({ validated})
         return Array.from(fields.current.entries()).reduce((acc, [name, field]) => {
           const f = {...field, value: getIn(formikValues, name)};
           const v = validateField(formikValues, f);

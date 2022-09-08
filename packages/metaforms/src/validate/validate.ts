@@ -140,7 +140,7 @@ const mustMatchCaseInsensitive = (
   return isString(value) && isString(target) && !equalIgnoreCase(target, value) ? rule.message : undefined;
 };
 
-const validate = (fieldValue: unknown, rule: Validation, formData: any): Optional<string> => {
+export const validate = (fieldValue: unknown, rule: Validation, formData: any): Optional<string> => {
   switch (rule.type) {
   case 'required':
     return isEmpty(fieldValue, rule);
