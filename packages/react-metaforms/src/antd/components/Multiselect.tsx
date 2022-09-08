@@ -10,7 +10,7 @@ import {MultiSelectMetaProps} from "metaforms";
 
 type MultiSelectMetaValue = string | number;
 
-interface ICheckboxListProps extends MultiSelectMetaProps {
+interface ICheckboxListProps extends Omit<MultiSelectMetaProps, 'type'> {
   size?: 'default' | 'large' | 'small';
   onChange: (value: MultiSelectMetaValue[]) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -131,7 +131,7 @@ const Multiselect = React.forwardRef(({ options = [], value = [], onChange, plac
 
   return (
     <>
-      {showFilterInput && <Input ref={ref} placeholder={placeholder} name="search" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />}
+      {showFilterInput && <Input ref={ref} placeholder={placeholder} name="search" type="text" value={search} onChange={(e) => setSearch(e.target.value)} onFocus={handleInputFocus} onBlur={handleInputBlur} />}
       <ToggleResults>
         <span>
           <Checkbox checked={value.length && value.length === options.length} indeterminate={value.length && (value.length < options.length)} onChange={(e) => handleSelectAll(e.target.checked)}>

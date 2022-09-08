@@ -65,7 +65,7 @@ export const unsetAllSortFormValues = <TTypes>(columns: Columns<TTypes>): Column
   }, columns);
 };
 
-const getValue = <T>(searchString: '.type' | '.filters' | '.options' | '.value', form: MetaField[]): Optional<T> => form?.find(field => field.name.endsWith(searchString))?.value
+const getValue = <T>(searchString: '.type' | '.filters' | '.options' | '.value', form: MetaField[]): Optional<T> => (form as any)?.find(field => field.name.endsWith(searchString))?.value
 
 const formType = (filterForm: MetaField[]): 'string' | 'strings' | 'boolean' | 'number'  => getValue('.type', filterForm);
 const formValue = <T>(filterForm: MetaField[]): Optional<T> => getValue('.filters', filterForm);

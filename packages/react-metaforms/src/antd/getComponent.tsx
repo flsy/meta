@@ -14,9 +14,11 @@ import Select from './components/Select';
 import {
   isAutocomplete,
   isCheckbox,
-  isDate, isDateRange,
+  isDate,
+  isDateRange,
   isFile,
-  isImage, isMultiselect,
+  isImage,
+  isMultiselect,
   isNumber,
   isPassword,
   isSelect,
@@ -25,7 +27,6 @@ import {
   isTextarea,
 } from './utils';
 import LayoutArray from './components/LayoutArray';
-import LayoutTabs from './components/LayoutTabs';
 import LayoutObject from './components/LayoutObject';
 
 export const getComponent: IProps['components'] = (props) => {
