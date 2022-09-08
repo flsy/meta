@@ -32,6 +32,7 @@ jobs:
           git fetch origin +refs/heads/master:refs/remotes/origin/master
           git checkout master
           git reset --hard "$GITHUB_SHA"
-          yarn release "${GITHUB_REF}"
+          echo "tag: ${GITHUB_REF:11}"
+          yarn release "${GITHUB_REF:11}"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
