@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.20](https://github.com/flsy/react-metaforms/compare/react-metaforms@4.0.0-alpha.19...react-metaforms@4.0.0-alpha.20) (2022-09-03)
+
+**Note:** Version bump only for package react-metaforms
+
+
+
+
+
+# [4.0.0-alpha.19](https://github.com/flsy/react-metaforms/compare/react-metaforms@4.0.0-alpha.18...react-metaforms@4.0.0-alpha.19) (2022-09-03)
+
+**Note:** Version bump only for package react-metaforms
+
+
+
+
+
+# [4.0.0-alpha.18](https://github.com/flsy/react-metaforms/compare/react-metaforms@4.0.0-alpha.17...react-metaforms@4.0.0-alpha.18) (2022-09-02)
+
+**Note:** Version bump only for package react-metaforms
+
+
+
+
+
 # 4.0.0-alpha.17 (2022-08-18)
 
 **Note:** Version bump only for package react-metaforms

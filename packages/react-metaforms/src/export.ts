@@ -1,4 +1,2 @@
-export { default } from './Form';
-export * from '@falsy/metacore'
-export * from 'metaforms'
-export type { IProps, IComponentProps } from './Form';
+export type { IProps } from './antd/Form';
+export { default } from './antd/Form'

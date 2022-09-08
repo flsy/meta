@@ -36,8 +36,8 @@ const parseNumber = (value: any): Optional<number> => {
   return undefined;
 };
 
-const isEmpty = <Value extends unknown>(value: Value, rule: Required): Optional<string> =>
-  value === null || value === undefined || value === '' || (Array.isArray(value) && !value.length) ? rule.message : undefined;
+const isEmpty = <Value>(value: Value, rule: Required): Optional<string> =>
+  value === null || value === undefined || (typeof value === 'string' && value === '') || (Array.isArray(value) && !value.length) ? rule.message : undefined;
 
 const getErrorIfDoesNotMatchRegEx = <Value>(value: Value, rule: Pattern): Optional<string> => {
   if (isString(value) && value.length > 0) {
@@ -86,7 +86,7 @@ const validateIsJson = <Value>(value: Value, rule: IsJson): Optional<string> => 
   }
 };
 
-const isNotEqualToExpectedValue = <Value extends any>(value: Value, rule: MustBeEqual): Optional<string> =>
+const isNotEqualToExpectedValue = <Value>(value: Value, rule: MustBeEqual): Optional<string> =>
   value !== rule.value ? rule.message : undefined;
 
 const isInList = (value: any, rule: InList): Optional<string> => (!rule.value.includes(value) ? rule.message : undefined);
