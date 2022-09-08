@@ -17,7 +17,7 @@ export const fieldPropertyLens = curry((property: keyof MetaField, fieldName: st
 
     return Left(new Error('Field not found'))
   } catch (e) {
-    return Left(e);
+    return Left(e as Error);
   }
 })
 
