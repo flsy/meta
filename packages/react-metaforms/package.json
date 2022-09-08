@@ -1,6 +1,6 @@
 {
   "name": "react-metaforms",
-  "version": "4.0.0-alpha.20",
+  "version": "5.0.0",
   "main": "lib/export",
   "typings": "lib/export",
   "repository": {
@@ -32,11 +32,11 @@
     "react-dom": "^16.14.0 || 17.0.2"
   },
   "dependencies": {
-    "@falsy/metacore": "1.0.0-alpha.10",
+    "@falsy/metacore": "^5.0.0",
     "antd": "^4.21.7",
     "formik": "^2.2.9",
     "fuse.js": "^6.5.3",
-    "metaforms": "2.0.0-alpha.14",
+    "metaforms": "^5.0.0",
     "moment": "^2.29.4",
     "styled-components": "^5.3.5"
   },
