@@ -36,8 +36,7 @@ export const getComponent: IProps['components'] = (props) => {
     if(props.field.layout === 'tabs') {
       return <LayoutTabs {...props} />
     }
-
-    return <>{props.children}</>;
+    return <FormItem label={props.field.label}  errorMessage={props.field.errorMessage} validation={props.field.validation}>{props.children}</FormItem>;
   }
 
   const { ref, input, meta, helpers, form } = props;

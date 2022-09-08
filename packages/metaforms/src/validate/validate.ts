@@ -21,6 +21,8 @@ import {
 
 const isString = (value: any): value is string => typeof value === 'string';
 const isNumber = (value: any): value is number => typeof value === 'number';
+const isArray = (value: any): value is any[] => Array.isArray(value);
+const isObject = (value: any): value is object => typeof value === "object";
 const parseNumber = (value: any): Optional<number> => {
   if (!value) {
     return undefined;
@@ -36,8 +38,23 @@ const parseNumber = (value: any): Optional<number> => {
   return undefined;
 };
 
-const isEmpty = <Value>(value: Value, rule: Required): Optional<string> =>
-  value === null || value === undefined || (typeof value === 'string' && value === '') || (Array.isArray(value) && !value.length) ? rule.message : undefined;
+const isEmpty = <Value>(value: Value, rule: Required): Optional<string> => {
+  if (value === null || value === undefined) {
+    return rule.message
+  }
+  if (isString(value) && value === '') {
+    return rule.message
+  }
+
+  if (isArray(value) && !value.length) {
+    return rule.message
+  }
+  if (isObject(value) && Object.keys(value).length === 0) {
+    return rule.message
+  }
+
+  return  undefined;
+}
 
 const getErrorIfDoesNotMatchRegEx = <Value>(value: Value, rule: Pattern): Optional<string> => {
   if (isString(value) && value.length > 0) {

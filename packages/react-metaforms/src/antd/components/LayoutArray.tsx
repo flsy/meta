@@ -4,6 +4,7 @@ import PlusOutlined from '@ant-design/icons/PlusOutlined';
 import React from 'react';
 import { ArrayRenderProps } from '../../core/Form';
 import styled from 'styled-components';
+import FormItem from "./FormItem";
 
 const Child = styled.div`
   display: flex; 
@@ -28,7 +29,7 @@ const AddBtn = styled.div`
 `
 
 const LayoutArray = ({ children, arrayHelpers, field, form }: ArrayRenderProps) => (
-  <>
+  <FormItem label={field.label}  errorMessage={field.errorMessage} validation={field.validation}>
     {children?.map((c: unknown, index: number) => (
       <Child key={index}>
         <ChildComponent>
@@ -42,7 +43,7 @@ const LayoutArray = ({ children, arrayHelpers, field, form }: ArrayRenderProps) 
         {field.label}
       </Button>
     </AddBtn>
-  </>
+  </FormItem>
 )
 
 export default LayoutArray;
