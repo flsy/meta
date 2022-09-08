@@ -1,8 +1,9 @@
 import { getValues } from '../utils';
+import {MetaField} from "metaforms";
 
 describe('getValues', () => {
   it('returns form data', () => {
-    const form1 = [
+    const form1: MetaField[] = [
       {
         type: 'text',
         name: 'name',
@@ -14,7 +15,7 @@ describe('getValues', () => {
         value: 18,
       },
       {
-        type: 'boolean',
+        type: 'checkbox',
         name: 'detailed.agree',
         value: false,
       },

@@ -1,12 +1,12 @@
 import { setFieldProperty } from '../utils'
+import {getTextMeta} from "../helpers";
 
 describe('setFieldProperty', () => {
   it('set options', () => {
     const form = [
-      {
-        type: 'text',
+      getTextMeta({
         name: "name",
-      },
+      }),
     ]
 
     expect(setFieldProperty('options', 'name', [ 'a', 'b', 'c'], form)).toEqual([{
@@ -17,10 +17,9 @@ describe('setFieldProperty', () => {
   });
   it('set random property', () => {
     const form = [
-      {
-        type: 'text',
+      getTextMeta({
         name: "name",
-      },
+      }),
     ]
 
     expect(setFieldProperty('random', 'name',{ a: { b: "c" }}, form)).toEqual([{

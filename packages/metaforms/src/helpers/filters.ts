@@ -1,14 +1,17 @@
 import {
-  ButtonGroupMetaProps, DateRangeCalendarMetaProps,
   getButtonGroupMeta,
   getHiddenMeta,
-  getMultiSelectMeta, getThreeStateSwitch, IThreeStateSwitch,
-  MultiSelectMetaProps,
-  Operator,
-  SelectMetaProps
-} from '..';
+  getMultiSelectMeta,
+  getThreeStateSwitch,
+} from './fields';
 import {getDateRangeCalendarMeta, getSelectMeta, getTextMeta} from './fields';
-import {HiddenMetaProps, TextMetaProps} from "@falsy/metacore";
+import {
+  ButtonGroupMetaProps, DateRangeCalendarMetaProps,
+  HiddenMetaProps,
+  IThreeStateSwitch, MultiSelectMetaProps, Operator,
+  SelectMetaProps,
+  TextMetaProps
+} from "@falsy/metacore";
 
 export const getColumnFilterTypePath = (columnPath: string[]) => `${columnPath.join('.')}.type`;
 export const getColumnFilterValuePath = (columnPath: string[]) => `${columnPath.join('.')}.value`;
