@@ -1,9 +1,10 @@
-import { Button } from 'antd';
+import { Button, Form } from 'antd';
 import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
 import React from 'react';
 import { ArrayRenderProps } from '../../core/Form';
 import styled from 'styled-components';
+import { isRequired } from 'metaforms';
 import FormItem from "./FormItem";
 
 const Child = styled.div`
@@ -22,28 +23,34 @@ const ChildComponent = styled.div`
   padding: 1em;
 `
 
-const AddBtn = styled.div`
-  display: flex;
-  justify-content: center;
+const AddBtn = styled(Form.Item)`
+  text-align: center;
   padding: 1em;
 `
 
-const LayoutArray = ({ children, arrayHelpers, field, form }: ArrayRenderProps) => (
-  <FormItem label={field.label}  errorMessage={field.errorMessage} validation={field.validation}>
-    {children?.map((c: unknown, index: number) => (
-      <Child key={index}>
-        <ChildComponent>
-          {c}
-        </ChildComponent>
-        <Button danger={true} size="small" icon={<DeleteOutlined />} shape="circle" onClick={() => arrayHelpers.remove(index)} disabled={form.isSubmitting} />
-      </Child>
-    ))}
-    <AddBtn>
-      <Button size="small" onClick={() => arrayHelpers.push(null)} icon={<PlusOutlined />} disabled={form.isSubmitting}>
-        {field.label}
-      </Button>
-    </AddBtn>
-  </FormItem>
-)
+const LayoutArray = ({ children, arrayHelpers, field, form, meta }: ArrayRenderProps) => {
+  const hasError = meta.error && typeof meta.error === 'string';
+  return (
+    <>
+      {children?.map((c: unknown, index: number) => (
+        <Child key={index}>
+          <ChildComponent>
+            {c}
+          </ChildComponent>
+          <Button danger={true} size="small" icon={<DeleteOutlined />} shape="circle" onClick={() => arrayHelpers.remove(index)} disabled={form.isSubmitting} />
+        </Child>
+      ))}
+        <AddBtn
+          required={isRequired(field.validation)}
+          validateStatus={hasError ? 'error' : undefined}
+          help={hasError ? meta.error : undefined}
+        >
+          <Button size="small" style={hasError ? { borderColor: '#ff4d4f', color: '#ff4d4f' } : undefined} onClick={() => arrayHelpers.push(null)} icon={<PlusOutlined />} disabled={form.isSubmitting}>
+            {field.label}
+          </Button>
+        </AddBtn>
+    </>
+  )
+}
 
 export default LayoutArray;

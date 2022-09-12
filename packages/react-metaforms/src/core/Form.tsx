@@ -17,8 +17,8 @@ import { MetaField, MetaFormValues, MetaFieldValue } from '@falsy/metacore'
 import { validateField } from 'metaforms/lib/validate/validate';
 
 export interface ControlRenderProps { ref: any, form: FormikContextType<MetaFormValues>, field: MetaField, input: FieldInputProps<MetaFieldValue>, meta: FieldMetaProps<MetaFieldValue>, helpers: FieldHelperProps<MetaFieldValue> }
-export interface ObjectRenderProps { children: JSX.Element[], field: MetaField, form: FormikContextType<MetaFormValues> }
-export interface ArrayRenderProps { children: JSX.Element[], field: MetaField, arrayHelpers: ArrayHelpers, form: FormikContextType<MetaFormValues> }
+export interface ObjectRenderProps { children: JSX.Element[], field: MetaField, form: FormikContextType<MetaFormValues>, meta: FieldMetaProps<MetaFieldValue> }
+export interface ArrayRenderProps { children: JSX.Element[], field: MetaField, arrayHelpers: ArrayHelpers, form: FormikContextType<MetaFormValues>, meta: FieldMetaProps<MetaFieldValue> }
 
 export type ComponentRenderProps = ControlRenderProps | ObjectRenderProps | ArrayRenderProps;
 
@@ -42,8 +42,6 @@ export default (props: IProps) => {
     const [input, meta, helpers] = useField(field.name);
     const form = useFormikContext<MetaFormValues>();
 
-    const isNested = field.array || field.type === 'object'
-
     const ref = (el: any) => {
       if(field.name === props.fields[0].name) {
         firstEl.current = el;
@@ -51,9 +49,7 @@ export default (props: IProps) => {
     }
 
     useEffect(() => {
-      if(!isNested) {
-        fields.current.set(field.name, field)
-      }
+      fields.current.set(field.name, field)
 
       return () => {
         fields.current.delete(field.name)
@@ -76,7 +72,7 @@ export default (props: IProps) => {
       return (
         <FieldArray
           name={field.name}
-          render={arrayHelpers => props.components({ children, field, arrayHelpers, form })}
+          render={arrayHelpers => props.components({ children, field, arrayHelpers, form, meta })}
         />
       )
     }
@@ -87,7 +83,7 @@ export default (props: IProps) => {
         return <Field key={name} field={{ ...f, name }} />
       })
 
-      return props.components({ children, field, form })
+      return props.components({ children, field, form, meta })
     }
 
     return props.components({ field, ref, input, meta, helpers, form })
@@ -105,12 +101,15 @@ export default (props: IProps) => {
       {...props.formikProps}
       initialValues={props.values || {}}
       validate={(formikValues) => {
-        return Array.from(fields.current.entries()).reduce((acc, [name, field]) => {
+        const vals = Array.from(fields.current.entries()).reduce((acc, [name, field]) => {
           const f = {...field, value: getIn(formikValues, name)};
           const v = validateField(formikValues, f);
-
           return setIn(acc, name, v);
         }, {})
+
+        console.log(vals);
+
+        return vals;
       }}
       onSubmit={(values, formikHelpers) =>
         props.onSubmit(values, formikHelpers)}
