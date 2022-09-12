@@ -6,11 +6,11 @@ interface CommonProps {
   array?: MetaField['array'];
   validation?: MetaField['validation'];
   errorMessage?: MetaField['errorMessage'];
+  visible?: MetaField['visible'];
 }
 
 export type MultiSelectMetaValue = string | number;
 export interface MultiSelectMetaProps extends CommonProps {
-  value?: MultiSelectMetaValue[];
   disabled?: boolean;
   placeholder?: string;
   options?: Array<{ value: MultiSelectMetaValue; label: string }>;
@@ -32,7 +32,6 @@ export interface SubmitMetaProps extends Omit<CommonProps, 'errorMessage' | 'val
 export const getSubmitMeta = (props: SubmitMetaProps): MetaField => ({ ...props, type: 'submit' });
 
 export interface VariableListMetaProps extends CommonProps {
-  value: string;
   disabled?: boolean;
   placeholder?: string;
   variables: { name: string; description: string }[];
@@ -40,26 +39,22 @@ export interface VariableListMetaProps extends CommonProps {
 export const getVariableListMeta = (props: VariableListMetaProps): MetaField => ({ ...props, type: 'variable-list' });
 
 export interface ImageMetaProps extends CommonProps {
-  value: string | string[];
   multiple?: boolean;
 }
 export const getImageMeta = (props: ImageMetaProps): MetaField => ({ ...props, type: 'image' });
 
 export interface FileMetaProps extends CommonProps {
-  value?: { name: string; data: string };
   accept?: string;
 }
 export const getFileMeta = (props: FileMetaProps): MetaField => ({ ...props, type: 'file' });
 
 export interface PasswordMetaProps extends CommonProps {
-  value: string;
   disabled?: boolean;
   placeholder?: string;
 }
 export const getPasswordMeta = (props: PasswordMetaProps): MetaField => ({ ...props, type: 'password' });
 
 export interface TextareaMetaProps extends CommonProps {
-  value: string;
   disabled?: boolean;
   placeholder?: string;
   rows?: number;
@@ -67,7 +62,6 @@ export interface TextareaMetaProps extends CommonProps {
 export const getTextareaMeta = (props: TextareaMetaProps): MetaField => ({ ...props, type: 'textarea' });
 
 export interface DateMetaProps extends CommonProps {
-  value: string;
   disabled?: boolean;
   placeholder?: string;
   withTimePicker?: boolean;
@@ -75,7 +69,6 @@ export interface DateMetaProps extends CommonProps {
 export const getDateMeta = (props: DateMetaProps): MetaField => ({ ...props, type: 'date' });
 
 export interface NumberMetaProps extends CommonProps {
-  value?: number;
   disabled?: boolean;
   placeholder?: string;
 }
@@ -94,18 +87,15 @@ export const getSelectMeta = (props: SelectMetaProps): MetaField => ({ ...props,
 
 export interface CheckboxMetaProps extends CommonProps {
   disabled?: boolean;
-  value?: boolean;
 }
 export const getCheckboxMeta = (props: CheckboxMetaProps): MetaField => ({ ...props, type: 'checkbox' });
 
 export interface JsonMetaProps extends CommonProps {
-  value?: string;
   disabled?: boolean;
 }
 export const getJsonMeta = (props: JsonMetaProps): MetaField => ({ ...props, type: 'json' });
 
 export interface DateRangeMetaProps extends CommonProps {
-  value?: [number, number];
   withTimePicker?: boolean;
   presets?: {
     lastDay?: string;
@@ -115,24 +105,16 @@ export interface DateRangeMetaProps extends CommonProps {
 }
 export const getDateRangeMeta = (props: DateRangeMetaProps): MetaField => ({ ...props, type: 'dateRange' });
 
-export interface MultistringMetaProps extends CommonProps {
-  value?: string;
-}
-export const getMultistringMeta = (props: MultistringMetaProps): MetaField => ({ ...props, type: 'multistring' });
+export const getMultistringMeta = (props: CommonProps): MetaField => ({ ...props, type: 'multistring' });
 
 export interface DateRangeCalendarMetaProps extends CommonProps {
-  value?: [number, number];
   withTimePicker?: boolean;
   dateInputPlaceholder?: string;
   format?: string;
 }
 export const getDateRangeCalendarMeta = (props: DateRangeCalendarMetaProps): MetaField => ({ ...props, type: 'dateRangeCalendar' });
 
-export interface IThreeStateSwitch extends CommonProps {
-  value?: boolean;
-}
-
-export const getThreeStateSwitch = (props: IThreeStateSwitch): MetaField => ({ ...props, type: 'threeStateSwitch' });
+export const getThreeStateSwitch = (props: CommonProps): MetaField => ({ ...props, type: 'threeStateSwitch' });
 
 export interface IButtonGroupItem {
   type: 'submit' | 'reset' | 'button';
@@ -154,7 +136,6 @@ export interface ObjectMetaProps extends CommonProps {
 export const getObjectMeta = (props: ObjectMetaProps): MetaField => ({ ...props, type: 'object' })
 
 export interface AutocompleteMetaProps extends CommonProps {
-  value?: string;
   disabled?: boolean;
   placeholder?: string;
   options: Array<{ value: string; }>;

@@ -64,6 +64,43 @@ export const Tabs = (args) => (
   }} {...args} />
 );
 
+export const InteractiveVisibility = (args) => (
+  <Form
+    initialValues={{}}
+    fields={[
+      getCheckboxMeta({
+        name: 'visible',
+        label: 'Show search',
+      }),
+      getObjectMeta({
+        name: 'search',
+        label: 'Search',
+        visible: { targetName: 'visible', value: true },
+        fields: [
+          getTextMeta({
+            name: 'username',
+            label: 'Search by username',
+          }),
+          getTextMeta({
+            name: 'term',
+            label: 'Search by term',
+            validation: [required('This is required')],
+          }),
+        ]
+      }),
+      getSubmitMeta({
+        name: 'submit',
+        label: 'Login',
+      })
+    ]}
+    onSubmit={(values, helpers) => {
+      action('onSubmit')(values);
+      helpers.setSubmitting(false);
+    }}
+    {...args}
+  />
+);
+
 export default {
   title: 'AntdForm',
   argTypes: {

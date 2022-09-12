@@ -6,15 +6,18 @@ import styled, { css } from 'styled-components';
 import { KeyboardKey, useBoolean, useKeyPress } from '../../hooks';
 import { toggleSelection } from '../../hooks/useSelection';
 import Input from './Input';
-import {MultiSelectMetaProps, MultiSelectMetaValue} from "metaforms";
+import {MultiSelectMetaProps} from "metaforms";
+
+type MultiSelectMetaValue = string | number;
 
 interface ICheckboxListProps extends MultiSelectMetaProps {
   size?: 'default' | 'large' | 'small';
-  onChange: (value: MultiSelectMetaProps['value']) => void;
+  onChange: (value: MultiSelectMetaValue[]) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   showSelectedCounter?: boolean;
   showFilterInput?: boolean;
+  value: MultiSelectMetaValue[];
 }
 
 const ListItem = styled(List.Item)<{ $focused: boolean }>`

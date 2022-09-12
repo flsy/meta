@@ -13,5 +13,7 @@ export interface MetaField {
   array?: boolean;
   validation?: Validation[];
   errorMessage?: MetaFieldErrorMessage;
+  // TODO: better value type
+  visible?: { targetName: string, value: any };
   [key: string]: any;
 }
