@@ -60,6 +60,13 @@ export default (props: IProps) => {
       }
     }, [])
 
+    if(field.visible) {
+      if(getIn(form.values, field.visible.targetName) !== field.visible.value) {
+        fields.current.delete(field.name)
+        return null;
+      }
+    }
+
     if(field.array) {
       const children = getIn(form.values, field.name)?.map((_: unknown, index: number) => {
         const name = `${field.name}.${index}`;

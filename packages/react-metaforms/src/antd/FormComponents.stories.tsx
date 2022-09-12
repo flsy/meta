@@ -89,7 +89,7 @@ export const Password = (args) => (
         label: args.label,
         disabled: args.disabled,
         placeholder: args.placeholder,
-        value: '',
+        // value: '',
         validation: [
             required('Required field'),
             minlength('Enter at least 2 characters', 2)
@@ -119,7 +119,7 @@ export const Textarea = (args) => (
         disabled: args.disabled,
         placeholder: args.placeholder,
         rows: args.rows,
-        value: '',
+        // value: '',
         validation: [
           required('Required field'),
           minlength('Enter at least 2 characters', 2)
@@ -147,7 +147,7 @@ export const Image = (args) => (
       getImageMeta({
         name: 'image',
         label: args.label,
-        value: '',
+        // value: '',
         validation: [
           required('Required field'),
         ],
@@ -196,7 +196,7 @@ export const Date = (args) => (
       getDateMeta({
         name: 'date',
         label: args.label,
-        value: '',
+        // value: '',
         disabled: args.disabled,
         placeholder: args.placeholder,
         withTimePicker: args.withTimePicker,
@@ -289,7 +289,7 @@ export const DateRange = () => (
         name: 'daterange',
         label: 'Date Range',
         withTimePicker: true,
-        value: [1645686522, 1645686522],
+        // value: [1645686522, 1645686522],
         presets: {
           lastDay: 'Last day',
           lastWeek: 'Last week'
@@ -345,7 +345,7 @@ Multiselect.args = {
   showSelectedCounter: true,
 }
 
-export const Autocomplete = (args) => (
+export const Autocomplete = () => (
     <Form
         fields={[
             getAutocompleteMeta({

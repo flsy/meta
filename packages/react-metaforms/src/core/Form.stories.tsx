@@ -1,6 +1,6 @@
 import MetaForm  from './Form'
 import React from 'react';
-import {getObjectMeta, getSubmitMeta, getTextMeta, isRequired, minlength, required} from 'metaforms'
+import {getObjectMeta, getSubmitMeta, getTextMeta, isRequired, required} from 'metaforms'
 import { MetaField } from '@falsy/metacore'
 import { action } from '@storybook/addon-actions';
 import { isComponentArray, isComponentObject } from './Form';
