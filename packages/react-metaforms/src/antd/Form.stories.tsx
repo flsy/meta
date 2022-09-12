@@ -43,6 +43,9 @@ export const Tabs = (args) => (
         name: 'search',
         layout: 'tabs',
         label: 'Search',
+        validation: [
+          required('One of the fields is required'),
+        ],
         fields: [
             getTextMeta({
                 name: 'term',
