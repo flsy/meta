@@ -19,7 +19,7 @@ import {
   isFile,
   isImage,
   isMultiselect,
-  isNumber, isObject,
+  isNumber,
   isPassword,
   isSelect,
   isSubmit,
