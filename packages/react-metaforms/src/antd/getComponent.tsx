@@ -1,5 +1,5 @@
 import React from 'react';
-import {AutoComplete, DatePicker as $DatePicker, Input as $Input} from 'antd';
+import {AutoComplete, DatePicker as $DatePicker, Input as $Input, Divider, Form} from 'antd';
 import moment from 'moment';
 import { IProps, isComponentArray, isComponentObject } from '../core/Form';
 import { Submit } from './components/Button';
@@ -26,6 +26,7 @@ import {
 } from './utils';
 import LayoutArray from './components/LayoutArray';
 import LayoutTabs from './components/LayoutTabs';
+import LayoutObject from './components/LayoutObject';
 
 export const getComponent: IProps['components'] = (props) => {
   if(isComponentArray(props)) {
@@ -33,10 +34,7 @@ export const getComponent: IProps['components'] = (props) => {
   }
 
   if(isComponentObject(props)) {
-    if(props.field.layout === 'tabs') {
-      return <LayoutTabs {...props} />
-    }
-    return <FormItem label={props.field.label}  errorMessage={props.field.errorMessage} validation={props.field.validation}>{props.children}</FormItem>;
+    return (<LayoutObject {...props} />)
   }
 
   const { ref, input, meta, helpers, form } = props;

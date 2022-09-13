@@ -5,7 +5,7 @@ import React from 'react';
 
 interface IProps {
   children: ReactNode;
-  label?: string;
+  label?: ReactNode;
   errorMessage?: string;
   validation?: MetaField['validation'];
 }

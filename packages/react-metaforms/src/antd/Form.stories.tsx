@@ -37,36 +37,6 @@ export const Array = (args) => (
   ]} onSubmit={action('onSubmit')} {...args} />
 );
 
-export const Tabs = (args) => (
-  <Form initialValues={{ search: { valid: true } }} fields={[
-      getObjectMeta({
-        name: 'search',
-        layout: 'tabs',
-        label: 'Search',
-        validation: [
-          required('One of the fields is required'),
-        ],
-        fields: [
-            getTextMeta({
-                name: 'term',
-                label: 'Search term'
-            }),
-            getCheckboxMeta({
-                name: 'valid',
-                label: 'Valid'
-            })
-        ]
-      }),
-      getSubmitMeta({
-        name: 'submit',
-        label: 'Login',
-      })
-  ]} onSubmit={(values, helpers) => {
-    action('onSubmit')(values);
-    helpers.setSubmitting(false);
-  }} {...args} />
-);
-
 export const InteractiveVisibility = (args) => (
   <Form
     initialValues={{}}
