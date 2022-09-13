@@ -1,14 +1,25 @@
-import {  MetaField, Operator } from '..';
+import {
+  getButtonGroupMeta,
+  getHiddenMeta,
+  getMultiSelectMeta,
+  getThreeStateSwitch,
+} from './fields';
 import {getDateRangeCalendarMeta, getSelectMeta, getTextMeta} from './fields';
+import {
+  ButtonGroupMetaProps, DateRangeCalendarMetaProps,
+  HiddenMetaProps,
+  IThreeStateSwitch, MultiSelectMetaProps, Operator,
+  SelectMetaProps,
+  TextMetaProps
+} from "@falsy/metacore";
 
 export const getColumnFilterTypePath = (columnPath: string[]) => `${columnPath.join('.')}.type`;
 export const getColumnFilterValuePath = (columnPath: string[]) => `${columnPath.join('.')}.value`;
 export const getColumnFilterFiltersPath = (columnPath: string[]) => `${columnPath.join('.')}.filters`;
 export const getColumnFilterOptionsPath = (columnPath: string[]) => `${columnPath.join('.')}.options`;
 
-const actions = {
+const actions = getButtonGroupMeta({
   name: 'actions',
-  type: 'buttonGroup',
   items: [
     {
       name: 'reset',
@@ -24,7 +35,7 @@ const actions = {
       primary: true,
     },
   ],
-};
+});
 
 const add = <T, A, R>(index: number, value: T, array: A[]): R => {
   const e = [...array];
@@ -32,20 +43,19 @@ const add = <T, A, R>(index: number, value: T, array: A[]): R => {
   return e as any;
 }
 
-type FilterResult<T> = [MetaField, { name: string; type: 'hidden'; value: T }, MetaField] | [MetaField, MetaField, { name: string; type: 'hidden'; value: T }, MetaField];
+type FilterResult = [TextMetaProps, HiddenMetaProps, ButtonGroupMetaProps] | [TextMetaProps, SelectMetaProps, HiddenMetaProps, ButtonGroupMetaProps];
 
-export const getTextFilter = <TInput extends { filters: any; type: string }>(path: string[], options?: { value?: string; label?: string, withOptions?: boolean, defaultOption?: 'EQ' | 'LIKE' }): FilterResult<TInput['type']> => {
-  const result: FilterResult<string> = [
+export const getTextFilter = (path: string[], options?: { value?: string; label?: string, withOptions?: boolean, defaultOption?: 'EQ' | 'LIKE' }): FilterResult => {
+  const result: FilterResult = [
     getTextMeta({
       name: getColumnFilterFiltersPath(path),
       label: options?.label,
       value: options?.value,
     }),
-    {
+    getHiddenMeta({
       name: getColumnFilterTypePath(path),
-      type: 'hidden',
       value: 'string',
-    },
+    }),
     actions,
   ];
 
@@ -69,19 +79,17 @@ type GetTernaryFilter = (
     value?: boolean;
     label?: string;
   },
-) => FilterResult<'boolean'>;
+) => [IThreeStateSwitch, HiddenMetaProps, ButtonGroupMetaProps];
 export const getTernaryFilter: GetTernaryFilter = (path, options) => [
-  {
-    type: 'threeStateSwitch',
+  getThreeStateSwitch({
     name: getColumnFilterFiltersPath(path),
     label: options?.label,
     value: options?.value,
-  },
-  {
+  }),
+  getHiddenMeta({
     name: getColumnFilterTypePath(path),
-    type: 'hidden',
     value: 'boolean',
-  },
+  }),
   actions,
 ];
 
@@ -90,45 +98,41 @@ type GetEnumFilter = (
   config: {
     value?: Array<{ value?: string; operator?: Operator }>;
     label?: string;
-    options: Array<{ value?: string; label: string }>;
+    options: Array<{ value: string; label: string }>;
   },
-) => MetaField[];
+) => [SelectMetaProps, HiddenMetaProps, ButtonGroupMetaProps];
 export const getEnumFilter: GetEnumFilter = (path, options) => [
-  {
+  getSelectMeta({
     name: getColumnFilterFiltersPath(path),
-    type: 'select',
     label: options?.label,
     options: options?.options,
-  },
-  {
+  }),
+  getHiddenMeta({
     name: getColumnFilterTypePath(path),
-    type: 'hidden',
     value: 'string',
-  },
+  }),
   actions,
 ];
 
 type GetMultiValueFilter = (
   path: string[],
   config: {
-    value?: Array<{ value?: string[]; operator?: Operator }>;
+    value?: MultiSelectMetaProps['value'];
     label?: string;
-    options: Array<{ value?: string; label: string }>;
+    options: MultiSelectMetaProps['options'];
   },
-) => MetaField[];
+) => [MultiSelectMetaProps, HiddenMetaProps, ButtonGroupMetaProps];
 export const getMultiValueFilter: GetMultiValueFilter = (path, options) => [
-  {
+  getMultiSelectMeta({
     name: getColumnFilterFiltersPath(path),
     label: options.label,
-    type: 'multiselect',
     value: options?.value,
     options: options?.options,
-  },
-  {
+  }),
+  getHiddenMeta({
     name: getColumnFilterTypePath(path),
-    type: 'hidden',
     value: 'multiselect',
-  },
+  }),
   actions,
 ];
 
@@ -139,17 +143,16 @@ type GetDateRangeFilter = (
     label?: string;
     withTimePicker?: boolean;
   },
-) => MetaField[];
+) => [DateRangeCalendarMetaProps, HiddenMetaProps, ButtonGroupMetaProps];
 export const getDateRangeFilter: GetDateRangeFilter = (path: string[], config) => [
   getDateRangeCalendarMeta({
     name: getColumnFilterFiltersPath(path),
     label: config.label,
     withTimePicker: config.withTimePicker,
   }),
-  {
+  getHiddenMeta({
     name: getColumnFilterTypePath(path),
-    type: 'hidden',
     value: 'number',
-  },
+  }),
   actions,
 ];

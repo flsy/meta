@@ -1,8 +1,9 @@
 import { setFieldValue } from '../utils';
+import {MetaField} from "@falsy/metacore";
 
 describe('setFieldValue', () => {
   it('set the value on simple path', () => {
-    const form = [
+    const form: MetaField[] = [
       {
         type: 'text',
         name: "name",
@@ -17,7 +18,7 @@ describe('setFieldValue', () => {
   });
 
   it('set the value on nested path', () => {
-    const form = [{
+    const form: MetaField[] = [{
         type: 'text',
         name: 'name.first',
       },
@@ -32,7 +33,7 @@ describe('setFieldValue', () => {
   });
 
   it('set values on two fields', () => {
-    const form = [
+    const form: MetaField[] = [
       {
         type: 'text',
         name: 'name',

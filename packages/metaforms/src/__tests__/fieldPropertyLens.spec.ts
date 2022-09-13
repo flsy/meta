@@ -1,13 +1,14 @@
 import { fieldPropertyLens } from '../utils';
 import { isLeft } from 'fputils'
 import { set } from 'ramda'
+import {MetaField} from "@falsy/metacore";
+import {getSelectMeta} from "../helpers";
 
-const form = [
-  {
-    type: 'myField',
+const form: MetaField[] = [
+  getSelectMeta({
     name: 'field1',
     options: [],
-  },
+  }),
 ]
 
 describe('fieldPropertyLens', () => {
@@ -23,7 +24,7 @@ describe('fieldPropertyLens', () => {
     expect(set(lens.value, options, form)).toEqual([
       {
         name: 'field1',
-        type: 'myField',
+        type: 'select',
         options,
       },
     ]);

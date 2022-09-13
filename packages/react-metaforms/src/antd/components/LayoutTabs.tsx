@@ -4,7 +4,6 @@ import { ObjectRenderProps } from '../../core/Form';
 import styled from 'styled-components';
 import { getIn } from 'formik';
 import { head } from 'ramda';
-import FormItem from "./FormItem";
 
 const NoLabel = styled.div`
     .ant-form-item-label {

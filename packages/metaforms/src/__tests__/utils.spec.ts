@@ -1,5 +1,6 @@
 import { getErrorMessages, hasError, isRequired, setFieldValidation, setFieldValue, validateForm } from '../utils'
 import { required } from '..';
+import {MetaField} from "@falsy/metacore";
 
 describe('utils', () => {
   describe('isRequired', () => {
@@ -17,7 +18,7 @@ describe('utils', () => {
       expect(hasError([{ name: 'b ', label: 'b', type: 'text', errorMessage: undefined } ])).toEqual(false);
       expect(hasError([{ name: 'c', label: 'c', type: 'text', errorMessage: 'error' } ])).toEqual(true);
 
-      const fields = [{ name: 'a', label: 'a', type: 'text', errorMessage: 'yes error' } ];
+      const fields: MetaField[] = [{ name: 'a', label: 'a', type: 'text', errorMessage: 'yes error' } ];
       expect(hasError(fields)).toEqual(true);
     });
   });
@@ -25,7 +26,7 @@ describe('utils', () => {
   describe('validateForm', () => {
     const message = 'This field is required error message';
     it('validates a form', () => {
-      const form = [
+      const form: MetaField[] = [
         {
           name: 'one',
           label: 'one',
@@ -68,7 +69,7 @@ describe('utils', () => {
 
   describe('setFieldValue', () => {
     it('sets a field value', () => {
-      const form = [
+      const form: MetaField[] = [
         {
           name: 'fieldone',
           label: 'fieldone',
@@ -101,7 +102,7 @@ describe('utils', () => {
 
   describe('setFieldValidation', () => {
     it('sets a validation', () => {
-      const form = [
+      const form: MetaField[] = [
         {
           name: 'fieldone',
           label: 'fieldone',

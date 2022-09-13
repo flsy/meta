@@ -1,6 +1,7 @@
 import { getErrorMessages, hasError, maxlength, pattern, required, validateForm } from '..'
+import {MetaField} from "@falsy/metacore";
 
-const fields = [
+const fields: MetaField[] = [
   {
     type: 'text',
     name: 'name',
@@ -12,7 +13,7 @@ const fields = [
     validation: [required('fill age'), maxlength('max 3 digits', 3)],
   },
   {
-    type: 'datetime-local',
+    type: 'dateRange',
     name: 'dob',
     validation: [required('fill DOB'), pattern('wrong date format', '^[0-9]+$')],
   },

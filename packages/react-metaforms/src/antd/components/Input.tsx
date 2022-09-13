@@ -1,15 +1,17 @@
 import { Input as $Input, InputRef as $InputRef } from 'antd';
 import React from 'react';
 import {TextMetaProps} from "metaforms";
+import {NumberMetaProps, PasswordMetaProps} from "@falsy/metacore";
 
 export type InputRef = $InputRef;
-export interface InputProps extends TextMetaProps {
-  name: string;
-  type?: 'text' | 'password' | 'number';
+
+interface InputEvents {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
+
+export type InputProps = (TextMetaProps | NumberMetaProps | PasswordMetaProps) & InputEvents;
 
 // TODO: ref here is a bit tricky to type
 const Input = React.forwardRef((props: InputProps, ref: any) => {

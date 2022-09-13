@@ -13,11 +13,12 @@ import {
   ArrayHelpers,
 } from 'formik';
 import { FieldHelperProps, FieldInputProps, FieldMetaProps } from 'formik/dist/types'
-import { MetaField, MetaFormValues, MetaFieldValue } from '@falsy/metacore'
+import {MetaField, MetaFormValues, MetaFieldValue, ObjectMetaProps} from '@falsy/metacore'
 import { validateField } from 'metaforms/lib/validate/validate';
+import {isObject} from "../antd/utils";
 
 export interface ControlRenderProps { ref: any, form: FormikContextType<MetaFormValues>, field: MetaField, input: FieldInputProps<MetaFieldValue>, meta: FieldMetaProps<MetaFieldValue>, helpers: FieldHelperProps<MetaFieldValue> }
-export interface ObjectRenderProps { children: JSX.Element[], field: MetaField, form: FormikContextType<MetaFormValues>, meta: FieldMetaProps<MetaFieldValue> }
+export interface ObjectRenderProps { children: JSX.Element[], field: ObjectMetaProps, form: FormikContextType<MetaFormValues>, meta: FieldMetaProps<MetaFieldValue> }
 export interface ArrayRenderProps { children: JSX.Element[], field: MetaField, arrayHelpers: ArrayHelpers, form: FormikContextType<MetaFormValues>, meta: FieldMetaProps<MetaFieldValue> }
 
 export type ComponentRenderProps = ControlRenderProps | ObjectRenderProps | ArrayRenderProps;
@@ -31,7 +32,7 @@ export interface IProps {
 }
 
 export const isComponentArray = (c: ComponentRenderProps): c is ArrayRenderProps => c.field.array === true;
-export const isComponentObject = (c: ComponentRenderProps): c is ObjectRenderProps => c.field.type === 'object';
+export const isComponentObject = (c: ComponentRenderProps): c is ObjectRenderProps => isObject(c.field);
 export const isComponentControl = (c: ComponentRenderProps): c is ControlRenderProps => !isComponentObject(c) && !isComponentArray(c);
 
 export default (props: IProps) => {
@@ -106,9 +107,7 @@ export default (props: IProps) => {
           const v = validateField(formikValues, f);
           return setIn(acc, name, v);
         }, {})
-
-        console.log(vals);
-
+        
         return vals;
       }}
       onSubmit={(values, formikHelpers) =>

@@ -10,7 +10,7 @@ export const columnBuilder = () => {
                 type: "string",
                 label: options.label,
                 filterForm: options.filterForm,
-                sortForm: options.withSortForm ? [ { name, type: "sort"} ] : undefined
+                sortForm: options.withSortForm ? [ { name, type: "sort"} as any ] : undefined //todo - divny type=sort
             }
             return {...columnBuilder(), columns }
         },
@@ -19,7 +19,7 @@ export const columnBuilder = () => {
                 type: 'boolean',
                 label: options.label,
                 filterForm: options.filterForm,
-                sortForm: options.withSortForm ? [ { name, type: "sort"} ] : undefined
+                sortForm: options.withSortForm ? [ { name, type: "sort"} as any ] : undefined //todo? - divny type=sort
             }
             return {...columnBuilder(), columns }
         },
@@ -28,7 +28,7 @@ export const columnBuilder = () => {
                 type: 'number',
                 label: options.label,
                 filterForm: options.filterForm,
-                sortForm: options.withSortForm ? [ { name, type: "sort"} ] : undefined
+                sortForm: options.withSortForm ? [ { name, type: "sort"} as any ] : undefined //todo? - divny type=sort
             }
             return {...columnBuilder(), columns }
         }

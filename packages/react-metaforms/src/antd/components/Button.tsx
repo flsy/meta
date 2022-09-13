@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import React from 'react';
 import {SubmitMetaProps} from "metaforms";
 
-interface ISubmitProps extends SubmitMetaProps {
+interface ISubmitProps extends Omit<SubmitMetaProps, 'type'> {
   onClick?: () => void;
   disabled?: boolean;
   isLoading?: boolean;
