@@ -5,7 +5,6 @@ import React from 'react';
 import { ArrayRenderProps } from '../../core/Form';
 import styled from 'styled-components';
 import { isRequired } from 'metaforms';
-import FormItem from "./FormItem";
 
 const Child = styled.div`
   display: flex; 
