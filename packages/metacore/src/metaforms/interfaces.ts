@@ -184,7 +184,7 @@ export interface ButtonGroupMetaProps extends CommonProps {
 export interface ObjectMetaProps extends CommonProps {
   type: 'object';
   fields: MetaField[];
-  layout?: 'tabs'
+  layout?: 'tabs' | 'horizontal';
 }
 
 export interface AutocompleteMetaProps extends CommonProps {

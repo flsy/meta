@@ -1,5 +1,5 @@
 import React from 'react';
-import {AutoComplete, DatePicker as $DatePicker, Input as $Input, Divider, Form} from 'antd';
+import {AutoComplete, DatePicker as $DatePicker, Input as $Input } from 'antd';
 import moment from 'moment';
 import { IProps, isComponentArray, isComponentObject } from '../core/Form';
 import { Submit } from './components/Button';
@@ -19,7 +19,7 @@ import {
   isFile,
   isImage,
   isMultiselect,
-  isNumber,
+  isNumber, isObject,
   isPassword,
   isSelect,
   isSubmit,
@@ -39,22 +39,21 @@ export const getComponent: IProps['components'] = (props) => {
   }
 
   const { ref, input, meta, helpers, form } = props;
-  const errorMessage = props.field.errorMessage || meta.error;
-  const disabled = props.field.disabled || form.isSubmitting;
+  // submit does not have errorMessage props
+  const errorMessage = !isSubmit(props.field) && props.field.errorMessage || meta.error;
+  // todo better types
+  const disabled = (props.field as any).disabled || form.isSubmitting;
 
-  // TODO: this type assignment is a hack because MetaField is poorly typed
-  const field: unknown = props.field;
-
-  if(isText(field)) {
+  if(isText(props.field)) {
     return (
-      <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
+      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
         <Input
           ref={ref}
           type="text"
-          name={field.name}
+          name={props.field.name}
           value={input.value}
           disabled={disabled}
-          placeholder={field.placeholder}
+          placeholder={props.field.placeholder}
           onChange={input.onChange}
           onBlur={input.onBlur}
         />
@@ -62,16 +61,16 @@ export const getComponent: IProps['components'] = (props) => {
     )
   }
 
-  if(isNumber(field)) {
+  if(isNumber(props.field)) {
     return (
-      <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
+      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
         <Input
           ref={ref}
           type="number"
-          name={field.name}
+          name={props.field.name}
           value={input.value}
           disabled={disabled}
-          placeholder={field.placeholder}
+          placeholder={props.field.placeholder}
           onChange={input.onChange}
           onBlur={input.onBlur}
         />
@@ -79,16 +78,16 @@ export const getComponent: IProps['components'] = (props) => {
     )
   }
 
-  if(isPassword(field)) {
+  if(isPassword(props.field)) {
     return (
-      <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
+      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
         <Input
           ref={ref}
           type="password"
-          name={field.name}
+          name={props.field.name}
           value={input.value}
           disabled={disabled}
-          placeholder={field.placeholder}
+          placeholder={props.field.placeholder}
           onChange={input.onChange}
           onBlur={input.onBlur}
         />
@@ -96,31 +95,31 @@ export const getComponent: IProps['components'] = (props) => {
     )
   }
 
-  if(isSelect(field)) {
+  if(isSelect(props.field)) {
     return (
       <Select
         ref={ref}
-        label={field.label}
+        label={props.field.label}
         error={errorMessage}
         disabled={disabled}
-        placeholder={field.placeholder}
-        options={field.options}
+        placeholder={props.field.placeholder}
+        options={props.field.options}
         {...input}
         onChange={helpers.setValue}
       />
     )
   }
 
-  if(isTextarea(field)) {
+  if(isTextarea(props.field)) {
     return (
-      <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
+      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
         <$Input.TextArea
           ref={ref}
-          rows={field.rows}
-          name={field.name}
+          rows={props.field.rows}
+          name={props.field.name}
           value={input.value}
           disabled={disabled}
-          placeholder={field.placeholder}
+          placeholder={props.field.placeholder}
           onChange={input.onChange}
           onBlur={input.onBlur}
         />
@@ -128,48 +127,48 @@ export const getComponent: IProps['components'] = (props) => {
     );
   }
 
-  if(isCheckbox(field)) {
+  if(isCheckbox(props.field)) {
     return (
-      <FormItem label="" errorMessage={errorMessage} validation={field.validation}>
-        <Checkbox ref={ref} label={field.label} disabled={disabled} {...input} onChange={helpers.setValue} />
+      <FormItem label="" errorMessage={errorMessage} validation={props.field.validation}>
+        <Checkbox ref={ref} label={props.field.label} disabled={disabled} {...input} onChange={helpers.setValue} />
       </FormItem>
     );
   }
 
-  if(isSubmit(field)) {
-    return <Submit label={field.label} isLoading={form.isSubmitting} fullWidth={field.fullWidth} name={field.name}/>;
+  if(isSubmit(props.field)) {
+    return <Submit label={props.field.label} isLoading={form.isSubmitting} fullWidth={props.field.fullWidth} name={props.field.name}/>;
   }
 
 
-  if(isDate(field)) {
+  if(isDate(props.field)) {
     return (
-      <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
-        <DatePicker ref={ref} disabled={disabled} placeholder={field.placeholder} withTimePicker={field.withTimePicker} {...input} onChange={helpers.setValue} />
+      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
+        <DatePicker ref={ref} disabled={disabled} placeholder={props.field.placeholder} withTimePicker={props.field.withTimePicker} {...input} onChange={helpers.setValue} />
       </FormItem>
     );
   }
 
-  if(isImage(field)) {
-    return <ImageUpload label={field.label} error={errorMessage} {...input} onChange={helpers.setValue} multiple={field.multiple} />;
+  if(isImage(props.field)) {
+    return <ImageUpload label={props.field.label} error={errorMessage} {...input} onChange={helpers.setValue} multiple={props.field.multiple} />;
   }
 
-  if(isFile(field)) {
-    return <FileUpload label={field.label} accept={field.accept} error={errorMessage} {...input} onChange={helpers.setValue} />;
+  if(isFile(props.field)) {
+    return <FileUpload label={props.field.label} accept={props.field.accept} error={errorMessage} {...input} onChange={helpers.setValue} />;
   }
 
-  if(isDateRange(field)) {
+  if(isDateRange(props.field)) {
     return (
-      <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
+      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
         <$DatePicker.RangePicker
           ref={ref}
           {...input}
-          format={field.withTimePicker ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY'}
-          showTime={field.withTimePicker}
+          format={props.field.withTimePicker ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY'}
+          showTime={props.field.withTimePicker}
           style={{ width: '100%' }}
           ranges={{
-            ...field.presets?.lastDay && { [field.presets?.lastDay]: [moment().subtract(1, 'day'), moment()] },
-            ...field.presets?.lastWeek && { [field.presets?.lastWeek]: [moment().subtract(1, 'week'), moment()] },
-            ...field.presets?.lastMonth && { [field.presets?.lastMonth]: [moment().subtract(1, 'month'), moment()] }
+            ...props.field.presets?.lastDay && { [props.field.presets?.lastDay]: [moment().subtract(1, 'day'), moment()] },
+            ...props.field.presets?.lastWeek && { [props.field.presets?.lastWeek]: [moment().subtract(1, 'week'), moment()] },
+            ...props.field.presets?.lastMonth && { [props.field.presets?.lastMonth]: [moment().subtract(1, 'month'), moment()] }
           }}
           value={input.value ? [moment.unix(input.value[0]), moment.unix(input.value[1])] : undefined}
           onChange={(v) => helpers.setValue([v?.[0]?.unix(), v?.[1]?.unix()])}
@@ -178,35 +177,35 @@ export const getComponent: IProps['components'] = (props) => {
     )
   }
 
-  if(isMultiselect(field)) {
+  if(isMultiselect(props.field)) {
     return (
-      <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
+      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
         <Multiselect
           ref={ref}
           name={input.name}
-          placeholder={field.placeholder}
-          options={field.options}
+          placeholder={props.field.placeholder}
+          options={props.field.options}
           onChange={helpers.setValue}
           value={input.value}
           disabled={disabled}
           onBlur={input.onBlur}
-          showFilterInput={field.showFilterInput}
-          showSelectedCounter={field.showSelectedCounter}
+          showFilterInput={props.field.showFilterInput}
+          showSelectedCounter={props.field.showSelectedCounter}
         />
       </FormItem>
     )
   }
 
-  if(isAutocomplete(field)) {
+  if(isAutocomplete(props.field)) {
     return (
-        <FormItem label={field.label} errorMessage={errorMessage} validation={field.validation}>
+        <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
           <AutoComplete
               ref={ref}
               value={input.value}
               disabled={disabled}
-              options={field.options}
+              options={props.field.options}
               onBlur={input.onBlur}
-              placeholder={field.placeholder}
+              placeholder={props.field.placeholder}
               onChange={(v) => helpers.setValue(v)}
           />
         </FormItem>
