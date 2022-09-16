@@ -9,11 +9,12 @@ export interface IProps {
   onSubmit: ReactMetaformProps['onSubmit'];
   formikProps?: Partial<ReactMetaformProps['formikProps']>;
   size?: 'small' | 'middle' | 'large';
+  onAction?: ReactMetaformProps['onAction'];
 }
 
-const Form = ({ fields, onSubmit, formikProps, size, initialValues }: IProps) => (
+const Form = ({ fields, onSubmit, formikProps, size, initialValues, onAction }: IProps) => (
   <$Form layout="vertical" size={size} component="div">
-    <MetaForm values={initialValues} onSubmit={onSubmit} fields={fields} formikProps={formikProps} components={getComponent} />
+    <MetaForm values={initialValues} onSubmit={onSubmit} fields={fields} formikProps={formikProps} components={getComponent} onAction={onAction} />
   </$Form>
 );
 

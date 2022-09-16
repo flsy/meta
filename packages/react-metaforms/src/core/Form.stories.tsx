@@ -1,4 +1,4 @@
-import MetaForm  from './Form'
+import MetaForm, { isComponentAction } from './Form';
 import React from 'react';
 import {getObjectMeta, getSubmitMeta, getTextMeta, isRequired, required} from 'metaforms'
 import { MetaField } from '@falsy/metacore'
@@ -90,6 +90,10 @@ export const Basic = () => {
         if(isComponentObject(componentProps)) {
           const { children } = componentProps;
           return <div style={{ border: '2px solid lightblue', padding: '1em 0', marginBottom: '1em' }}>{children}</div>
+        }
+
+        if(isComponentAction(componentProps)) {
+          return <button>{componentProps.field.label}</button>
         }
 
         const { field, meta, ref, form, input } = componentProps;

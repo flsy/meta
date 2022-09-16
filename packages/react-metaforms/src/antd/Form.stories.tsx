@@ -1,7 +1,15 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 import Form from './Form';
-import {getSubmitMeta, getTextMeta, required, minlength, getObjectMeta, getCheckboxMeta} from "metaforms";
+import {
+  getSubmitMeta,
+  getTextMeta,
+  required,
+  minlength,
+  getObjectMeta,
+  getCheckboxMeta,
+  getActionMeta,
+} from 'metaforms';
 
 export const Array = (args) => (
   <Form initialValues={{ user: [{ fname: ['joe'] }]}} fields={[
@@ -73,6 +81,51 @@ export const InteractiveVisibility = (args) => (
     {...args}
   />
 );
+
+export const ActionCallback = (args) => (
+  <Form
+    initialValues={{}}
+    onAction={(p, e) => {
+      if(p.field.id === 'prefill') {
+        p.form.setValues({ ...p.form.values, search: { username: "John" }})
+      }
+
+      action('onAction')(p, e)
+    }}
+    fields={[
+      getTextMeta({
+        name: 'title',
+        label: 'Title'
+      }),
+      getObjectMeta({
+        name: 'search',
+        label: 'Search',
+        layout: 'horizontal',
+        fields: [
+          getTextMeta({
+            name: 'username',
+            label: 'Search by username',
+          }),
+          getActionMeta({
+            id: 'prefill',
+            label: 'Prefill username',
+            control: 'button'
+          }),
+        ]
+      }),
+      getSubmitMeta({
+        name: 'submit',
+        label: 'Login',
+      })
+    ]}
+    onSubmit={(values, helpers) => {
+      action('onSubmit')(values);
+      helpers.setSubmitting(false);
+    }}
+    {...args}
+  />
+);
+
 
 export default {
   title: 'AntdForm',
