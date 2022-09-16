@@ -5,7 +5,7 @@ import React from 'react';
 import { ArrayRenderProps } from '../../core/Form';
 import styled from 'styled-components';
 import { isRequired } from 'metaforms';
-import {isSubmit} from "../utils";
+import { isAction, isSubmit } from '../utils';
 
 const Child = styled.div`
   display: flex; 
@@ -31,7 +31,7 @@ const AddBtn = styled(Form.Item)`
 const LayoutArray = ({ children, arrayHelpers, field, form, meta }: ArrayRenderProps) => {
   const hasError = meta.error && typeof meta.error === 'string';
   // submit does not have validation
-  const required = !isSubmit(field) && isRequired(field.validation)
+  const required = !isAction(field) && !isSubmit(field) && isRequired(field.validation)
   return (
     <>
       {children?.map((c, index) => (
