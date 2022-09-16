@@ -1,4 +1,5 @@
 import {
+    ActionMetaProps,
     AutocompleteMetaProps,
     ButtonGroupMetaProps,
     CheckboxMetaProps,
@@ -19,8 +20,8 @@ import {
     SubmitMetaProps,
     TextareaMetaProps,
     TextMetaProps,
-    VariableListMetaProps
-} from "@falsy/metacore";
+    VariableListMetaProps,
+} from '@falsy/metacore';
 
 
 export const getMultiSelectMeta = (props: Omit<MultiSelectMetaProps, 'type'>): MultiSelectMetaProps => ({ ...props, type: 'multiselect' });
@@ -64,3 +65,5 @@ export const getButtonGroupMeta = (props: Omit<ButtonGroupMetaProps, 'type'>): B
 export const getObjectMeta = (props: Omit<ObjectMetaProps, 'type'>): ObjectMetaProps => ({ ...props, type: 'object' })
 
 export const getAutocompleteMeta = (props: Omit<AutocompleteMetaProps, 'type'>): AutocompleteMetaProps => ({ ...props, type: 'autocomplete' })
+
+export const getActionMeta = (props: Omit<ActionMetaProps, 'type' | 'name'>): ActionMetaProps => ({ ...props, type: 'action', name: props.id })

@@ -1,7 +1,7 @@
 import React from 'react';
-import {AutoComplete, DatePicker as $DatePicker, Input as $Input } from 'antd';
+import { AutoComplete, Button, DatePicker as $DatePicker, Input as $Input } from 'antd';
 import moment from 'moment';
-import { IProps, isComponentArray, isComponentObject } from '../core/Form';
+import { IProps, isComponentAction, isComponentArray, isComponentObject } from '../core/Form';
 import { Submit } from './components/Button';
 import Checkbox from './components/Checkbox';
 import DatePicker from './components/DatePicker';
@@ -12,6 +12,7 @@ import Input from './components/Input';
 import Multiselect from './components/Multiselect';
 import Select from './components/Select';
 import {
+  isAction,
   isAutocomplete,
   isCheckbox,
   isDate,
@@ -38,9 +39,19 @@ export const getComponent: IProps['components'] = (props) => {
     return (<LayoutObject {...props} />)
   }
 
+  if(isComponentAction(props)) {
+    if(props.field.control === 'button') {
+      return (
+        <Button onClick={props.onAction}>{props.field.label}</Button>
+      )
+    }
+
+    return null;
+  }
+
   const { ref, input, meta, helpers, form } = props;
   // submit does not have errorMessage props
-  const errorMessage = !isSubmit(props.field) && props.field.errorMessage || meta.error;
+  const errorMessage = !isAction(props.field) && !isSubmit(props.field) && props.field.errorMessage || meta.error;
   // todo better types
   const disabled = (props.field as any).disabled || form.isSubmitting;
 

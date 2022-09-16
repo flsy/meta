@@ -26,8 +26,8 @@ export type MetaField = AutocompleteMetaProps
     | SubmitMetaProps
     | TextMetaProps
     | HiddenMetaProps
-    | MultiSelectMetaProps;
-
+    | MultiSelectMetaProps
+    | ActionMetaProps;
 
 interface CommonProps {
   name: string;
@@ -193,4 +193,13 @@ export interface AutocompleteMetaProps extends CommonProps {
   disabled?: boolean;
   placeholder?: string;
   options: Array<{ value: string; }>;
+}
+
+export interface ActionMetaProps {
+  type: 'action';
+  id: string;
+  name: string;
+  label: string;
+  control: 'button';
+  disabled?: boolean;
 }

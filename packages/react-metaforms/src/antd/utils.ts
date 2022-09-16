@@ -14,7 +14,7 @@ import {
     AutocompleteMetaProps,
     MetaField,
     ObjectMetaProps,
-    HiddenMetaProps
+    HiddenMetaProps, ActionMetaProps,
 } from '@falsy/metacore';
 
 export const isText = (field: MetaField): field is TextMetaProps => field.type === 'text';
@@ -32,3 +32,4 @@ export const isDateRange = (field: MetaField): field is DateRangeMetaProps => fi
 export const isMultiselect = (field: MetaField): field is MultiSelectMetaProps => field.type === 'multiselect';
 export const isAutocomplete = (field: MetaField): field is AutocompleteMetaProps => field.type === 'autocomplete';
 export const isObject = (field: MetaField): field is ObjectMetaProps => field.type === 'object';
+export const isAction = (field: MetaField): field is ActionMetaProps => field.type === 'action';
