@@ -7,6 +7,9 @@ import Tag from './Tag/Tag';
 import DataTable from './DataTable';
 import { renderValue } from './renderValue';
 
+import 'antd/dist/antd.variable.min.css';
+
+
 const columns = {
     createdAtFormatted: {
         type: 'timestamp',
