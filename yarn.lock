@@ -5308,6 +5308,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/hoist-non-react-statics@npm:*":
+  version: 3.3.1
+  resolution: "@types/hoist-non-react-statics@npm:3.3.1"
+  dependencies:
+    "@types/react": "*"
+    hoist-non-react-statics: ^3.3.0
+  checksum: 2c0778570d9a01d05afabc781b32163f28409bb98f7245c38d5eaf082416fdb73034003f5825eb5e21313044e8d2d9e1f3fe2831e345d3d1b1d20bcd12270719
+  languageName: node
+  linkType: hard
+
 "@types/html-minifier-terser@npm:^5.0.0":
   version: 5.1.2
   resolution: "@types/html-minifier-terser@npm:5.1.2"
@@ -5569,6 +5579,17 @@ __metadata:
   version: 2.0.0
   resolution: "@types/stack-utils@npm:2.0.0"
   checksum: b3fbae25b073116977ecb5c67d22f14567b51a7792403b0bf46e5de8f29bde3bd4ec1626afb22065495ca7f1c699c8bd66720050c94b8f8f9bcefbee79d161fd
+  languageName: node
+  linkType: hard
+
+"@types/styled-components@npm:^5.1.25":
+  version: 5.1.26
+  resolution: "@types/styled-components@npm:5.1.26"
+  dependencies:
+    "@types/hoist-non-react-statics": "*"
+    "@types/react": "*"
+    csstype: ^3.0.2
+  checksum: 84f53b3101739b20d1731554fb7735bc2f3f5d050a8b392e9845403c8c8bbd729737d033978649f9195a97b557875b010d46e35a4538564a2d0dbcce661dbf76
   languageName: node
   linkType: hard
 
@@ -8175,7 +8196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clsx@npm:^1.0.4":
+"clsx@npm:^1.0.4, clsx@npm:^1.1.1":
   version: 1.2.1
   resolution: "clsx@npm:1.2.1"
   checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
@@ -16952,6 +16973,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prop-types@npm:15.x, prop-types@npm:^15.8.1":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
+  dependencies:
+    loose-envify: ^1.4.0
+    object-assign: ^4.1.1
+    react-is: ^16.13.1
+  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
+  languageName: node
+  linkType: hard
+
 "prop-types@npm:^15.0.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
@@ -16960,17 +16992,6 @@ __metadata:
     object-assign: ^4.1.1
     react-is: ^16.8.1
   checksum: 5eef82fdda64252c7e75aa5c8cc28a24bbdece0f540adb60ce67c205cf978a5bd56b83e4f269f91c6e4dcfd80b36f2a2dec24d362e278913db2086ca9c6f9430
-  languageName: node
-  linkType: hard
-
-"prop-types@npm:^15.8.1":
-  version: 15.8.1
-  resolution: "prop-types@npm:15.8.1"
-  dependencies:
-    loose-envify: ^1.4.0
-    object-assign: ^4.1.1
-    react-is: ^16.13.1
-  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
   languageName: node
   linkType: hard
 
@@ -17825,6 +17846,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-draggable@npm:^4.0.3":
+  version: 4.4.5
+  resolution: "react-draggable@npm:4.4.5"
+  dependencies:
+    clsx: ^1.1.1
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ">= 16.3.0"
+    react-dom: ">= 16.3.0"
+  checksum: 21c3775db086e13020967627c20acd41d1ddbc7c7d7fca51491a5bbb54a0aa7e1730a4bc9af17141eb50a4954e547a5e25b2368f5f54b70db6f2686a897bacf2
+  languageName: node
+  linkType: hard
+
 "react-element-to-jsx-string@npm:^14.3.4":
   version: 14.3.4
   resolution: "react-element-to-jsx-string@npm:14.3.4"
@@ -17894,7 +17928,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-metaforms@workspace:packages/react-metaforms":
+"react-metaforms@^5.1.1, react-metaforms@workspace:packages/react-metaforms":
   version: 0.0.0-use.local
   resolution: "react-metaforms@workspace:packages/react-metaforms"
   dependencies:
@@ -17929,10 +17963,53 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"react-metatable@workspace:packages/react-metatable":
+  version: 0.0.0-use.local
+  resolution: "react-metatable@workspace:packages/react-metatable"
+  dependencies:
+    "@babel/core": ^7.18.13
+    "@falsy/metacore": ^5.1.1
+    "@storybook/addon-actions": ^6.5.10
+    "@storybook/addon-essentials": ^6.5.10
+    "@storybook/addon-interactions": ^6.5.10
+    "@storybook/addon-links": ^6.5.10
+    "@storybook/builder-webpack4": ^6.5.10
+    "@storybook/manager-webpack4": ^6.5.10
+    "@storybook/react": ^6.5.10
+    "@storybook/testing-library": ^0.0.13
+    "@types/node": ^16.7.2
+    "@types/react": ^17.0.19
+    "@types/react-dom": ^17.0.9
+    "@types/styled-components": ^5.1.25
+    babel-loader: ^8.2.2
+    react: ^16.14.0
+    react-dom: ^16.14.0
+    react-metaforms: ^5.1.1
+    react-resizable: ^3.0.4
+    styled-components: ^5.3.5
+    typescript: ~4.8.2
+  peerDependencies:
+    react: ^16.14.0 || 17.0.2
+    react-dom: ^16.14.0 || 17.0.2
+  languageName: unknown
+  linkType: soft
+
 "react-refresh@npm:^0.11.0":
   version: 0.11.0
   resolution: "react-refresh@npm:0.11.0"
   checksum: 112178a05b1e0ffeaf5d9fb4e56b4410a34a73adeb04dbf13abdc50d9ac9df2ada83e81485156cca0b3fa296aa3612751b3d6cd13be4464642a43679b819cbc7
+  languageName: node
+  linkType: hard
+
+"react-resizable@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "react-resizable@npm:3.0.4"
+  dependencies:
+    prop-types: 15.x
+    react-draggable: ^4.0.3
+  peerDependencies:
+    react: ">= 16.3"
+  checksum: cbf86ad04be0f073102489ad25a2ba101779f0f00e580d48e1be73c4057c36a4e8ee8308b020ad3dd91555bb24082ceeef674d5035a38d33a2d43aed192db7fa
   languageName: node
   linkType: hard
 

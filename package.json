@@ -18,6 +18,7 @@
     "packages/metacore",
     "packages/metaforms",
     "packages/metatable",
+    "packages/react-metatable",
     "packages/metafilters",
     "packages/react-metaforms"
   ],
