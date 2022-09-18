@@ -21,7 +21,7 @@ const LayoutTabs = ({ field, form, children }: ObjectRenderProps) => {
   return (
     <Tabs onChange={handleChange} defaultActiveKey={head(Object.keys(getIn(form.values, field.name) ?? {}))}>
       {children.map((c, i) =>
-        <Tabs.TabPane key={field.fields[i].name} tab={field.fields[i].label}><NoLabel>{c}</NoLabel></Tabs.TabPane>
+        <Tabs.TabPane key={field.fields[i].name} tab={field.fields[i]['label']}><NoLabel>{c}</NoLabel></Tabs.TabPane>
       )}
     </Tabs>
   )

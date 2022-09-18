@@ -8,7 +8,7 @@ import {
   minlength,
   getObjectMeta,
   getCheckboxMeta,
-  getActionMeta,
+  getActionMeta, getLayoutMeta,
 } from 'metaforms';
 
 export const Array = (args) => (
@@ -87,7 +87,49 @@ export const ActionCallback = (args) => (
     initialValues={{}}
     onAction={(p, e) => {
       if(p.field.id === 'prefill') {
-        p.form.setValues({ ...p.form.values, search: { username: "John" }})
+        p.form.setFieldValue('username', 'John')
+      }
+
+      action('onAction')(p, e)
+    }}
+    fields={[
+      getTextMeta({
+        name: 'title',
+        label: 'Title'
+      }),
+      getLayoutMeta({
+        flow: 'horizontal',
+        fields: [
+          getTextMeta({
+            name: 'username',
+            label: 'Search by username',
+          }),
+          getActionMeta({
+            id: 'prefill',
+            label: 'Prefill username',
+            control: 'button'
+          }),
+        ]
+      }),
+      getSubmitMeta({
+        name: 'submit',
+        label: 'Login',
+      })
+    ]}
+    onSubmit={(values, helpers) => {
+      action('onSubmit')(values);
+      helpers.setSubmitting(false);
+    }}
+    {...args}
+  />
+);
+
+export const NestedLayout = (args) => (
+  <Form
+    initialValues={{}}
+    onAction={(p, e) => {
+      if(p.field.id === 'prefill') {
+        p.form.setFieldValue('search.username', 'John')
       }
 
       action('onAction')(p, e)
@@ -100,16 +142,20 @@ export const ActionCallback = (args) => (
       getObjectMeta({
         name: 'search',
         label: 'Search',
-        layout: 'horizontal',
         fields: [
-          getTextMeta({
-            name: 'username',
-            label: 'Search by username',
-          }),
-          getActionMeta({
-            id: 'prefill',
-            label: 'Prefill username',
-            control: 'button'
+          getLayoutMeta({
+            flow: 'horizontal',
+            fields: [
+              getTextMeta({
+                name: 'username',
+                label: 'Search by username',
+              }),
+              getActionMeta({
+                id: 'prefill',
+                label: 'Prefill username',
+                control: 'button'
+              }),
+            ]
           }),
         ]
       }),

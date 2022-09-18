@@ -27,7 +27,8 @@ export type MetaField = AutocompleteMetaProps
     | TextMetaProps
     | HiddenMetaProps
     | MultiSelectMetaProps
-    | ActionMetaProps;
+    | ActionMetaProps
+    | LayoutMetaProps
 
 interface CommonProps {
   name: string;
@@ -184,7 +185,7 @@ export interface ButtonGroupMetaProps extends CommonProps {
 export interface ObjectMetaProps extends CommonProps {
   type: 'object';
   fields: MetaField[];
-  layout?: 'tabs' | 'horizontal';
+  layout?: 'tabs';
 }
 
 export interface AutocompleteMetaProps extends CommonProps {
@@ -202,4 +203,13 @@ export interface ActionMetaProps {
   label: string;
   control: 'button';
   disabled?: boolean;
+  visible?: CommonProps['visible']
+}
+
+export interface LayoutMetaProps {
+  type: 'layout';
+  name: string;
+  flow: 'horizontal';
+  fields: MetaField[];
+  visible?: CommonProps['visible']
 }

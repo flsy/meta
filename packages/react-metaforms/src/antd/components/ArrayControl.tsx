@@ -5,7 +5,8 @@ import React from 'react';
 import { ArrayRenderProps } from '../../core/Form';
 import styled from 'styled-components';
 import { isRequired } from 'metaforms';
-import { isAction, isSubmit } from '../utils';
+import { has } from 'ramda';
+import { Validation } from '@falsy/metacore';
 
 const Child = styled.div`
   display: flex; 
@@ -28,10 +29,10 @@ const AddBtn = styled(Form.Item)`
   padding: 1em;
 `
 
-const LayoutArray = ({ children, arrayHelpers, field, form, meta }: ArrayRenderProps) => {
+const ArrayControl = ({ children, arrayHelpers, field, form, meta }: ArrayRenderProps) => {
   const hasError = meta.error && typeof meta.error === 'string';
-  // submit does not have validation
-  const required = !isAction(field) && !isSubmit(field) && isRequired(field.validation)
+  const required = has('validation', field) && isRequired(field.validation as Validation[]);
+
   return (
     <>
       {children?.map((c, index) => (
@@ -48,11 +49,11 @@ const LayoutArray = ({ children, arrayHelpers, field, form, meta }: ArrayRenderP
           help={hasError ? meta.error : undefined}
         >
           <Button size="small" style={hasError ? { borderColor: '#ff4d4f', color: '#ff4d4f' } : undefined} onClick={() => arrayHelpers.push(null)} icon={<PlusOutlined />} disabled={form.isSubmitting}>
-            {field.label}
+            {has('label', field) ? field.label : null}
           </Button>
         </AddBtn>
     </>
   )
 }
 
-export default LayoutArray;
+export default ArrayControl;
