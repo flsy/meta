@@ -30,6 +30,7 @@ import {
 import ArrayControl from './components/ArrayControl';
 import ObjectControl from './components/ObjectControl';
 import HorizontalLayout from './layout/HorizontalLayout';
+import TabsLayout from './layout/TabsLayout';
 
 export const getComponent: IProps['components'] = (props) => {
   if(isControlArray(props)) {
@@ -51,11 +52,15 @@ export const getComponent: IProps['components'] = (props) => {
   }
 
   if(isControlLayout(props)) {
-    if(props.field.flow === 'horizontal') {
+    if(props.field.render === 'horizontal') {
       return <HorizontalLayout>{props.children}</HorizontalLayout>
     }
 
-    return null;
+    if(props.field.render === 'tabs') {
+      return <TabsLayout field={props.field} form={props.form}>{props.children}</TabsLayout>
+    }
+
+    return <>{props.children}</>;
   }
 
   const { ref, input, meta, helpers, form } = props;

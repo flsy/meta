@@ -98,7 +98,7 @@ export const ActionCallback = (args) => (
         label: 'Title'
       }),
       getLayoutMeta({
-        flow: 'horizontal',
+        render: 'horizontal',
         fields: [
           getTextMeta({
             name: 'username',
@@ -144,7 +144,7 @@ export const NestedLayout = (args) => (
         label: 'Search',
         fields: [
           getLayoutMeta({
-            flow: 'horizontal',
+            render: 'horizontal',
             fields: [
               getTextMeta({
                 name: 'username',

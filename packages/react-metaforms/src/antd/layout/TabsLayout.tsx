@@ -1,6 +1,6 @@
 import { Tabs } from 'antd';
 import React from 'react';
-import { ObjectRenderProps } from '../../core/Form';
+import { LayoutRenderProps } from '../../core/Form';
 import styled from 'styled-components';
 import { getIn } from 'formik';
 import { head } from 'ramda';
@@ -11,11 +11,11 @@ const NoLabel = styled.div`
     }
 `
 
-const LayoutTabs = ({ field, form, children }: ObjectRenderProps) => {
+const LayoutTabs = ({ field, form, children }: LayoutRenderProps) => {
   const handleChange = (activeFieldName: string) => {
     field.fields
       .filter(childrenField => childrenField.name !== activeFieldName)
-      .map(childrenField => form.setFieldValue(`${field.name}.${childrenField.name}`, undefined))
+      .map(childrenField => form.setFieldValue(childrenField.name, undefined))
   }
 
   return (

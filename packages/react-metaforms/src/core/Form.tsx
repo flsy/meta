@@ -31,7 +31,7 @@ export interface ActionRenderProps { onAction: (e: React.MouseEvent<HTMLElement>
 export interface ControlRenderProps { ref: any, form: FormContext, field: MetaField, input: FieldInputProps<MetaFieldValue>, meta: FieldMetaProps<MetaFieldValue>, helpers: FieldHelperProps<MetaFieldValue> }
 export interface ObjectRenderProps { children: JSX.Element[], field: ObjectMetaProps, form: FormContext, meta: FieldMetaProps<MetaFieldValue> }
 export interface ArrayRenderProps { children: JSX.Element[], field: MetaField, arrayHelpers: ArrayHelpers, form: FormContext, meta: FieldMetaProps<MetaFieldValue> }
-export interface LayoutRenderProps { children: JSX.Element[], field: LayoutMetaProps }
+export interface LayoutRenderProps { children: JSX.Element[], field: LayoutMetaProps, form: FormContext }
 
 export type ComponentRenderProps = ControlRenderProps | ObjectRenderProps | ArrayRenderProps | ActionRenderProps | LayoutRenderProps;
 
@@ -91,7 +91,7 @@ export default (props: IProps) => {
     if(field.type === 'layout') {
       const children = field?.fields?.map((f: MetaField) => <Field key={f.name} field={{ ...f, name: `${field.name}${f.name}` }} />)
 
-      return props.components({ children, field })
+      return props.components({ children, field, form })
     }
 
     if(field.array) {

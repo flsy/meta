@@ -2,7 +2,6 @@ import { Divider } from 'antd';
 import React from 'react';
 import { ObjectRenderProps } from '../../core/Form';
 import { isRequired } from 'metaforms';
-import LayoutTabs from './LayoutTabs';
 
 const ObjectControl = (props: ObjectRenderProps) => {
   const { meta, field, children } = props;
@@ -18,8 +17,7 @@ const ObjectControl = (props: ObjectRenderProps) => {
           {hasError && <span className="ant-form-item-explain-error">{meta.error}</span>}
         </div>
       </Divider>
-      {field.layout === 'tabs' && <LayoutTabs {...props} />}
-      {!field.layout && <>{children}</>}
+      <>{children}</>
     </>
   )
 }
