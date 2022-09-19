@@ -1,7 +1,7 @@
 import React from 'react';
 import { AutoComplete, Button, DatePicker as $DatePicker, Input as $Input } from 'antd';
 import moment from 'moment';
-import { IProps, isComponentAction, isComponentArray, isComponentObject } from '../core/Form';
+import { IProps, isControlAction, isControlArray, isControlLayout, isControlObject } from '../core/Form';
 import { Submit } from './components/Button';
 import Checkbox from './components/Checkbox';
 import DatePicker from './components/DatePicker';
@@ -27,19 +27,21 @@ import {
   isText,
   isTextarea,
 } from './utils';
-import LayoutArray from './components/LayoutArray';
-import LayoutObject from './components/LayoutObject';
+import ArrayControl from './components/ArrayControl';
+import ObjectControl from './components/ObjectControl';
+import HorizontalLayout from './layout/HorizontalLayout';
+import TabsLayout from './layout/TabsLayout';
 
 export const getComponent: IProps['components'] = (props) => {
-  if(isComponentArray(props)) {
-    return <LayoutArray {...props} />
+  if(isControlArray(props)) {
+    return <ArrayControl {...props} />
   }
 
-  if(isComponentObject(props)) {
-    return (<LayoutObject {...props} />)
+  if(isControlObject(props)) {
+    return (<ObjectControl {...props} />)
   }
 
-  if(isComponentAction(props)) {
+  if(isControlAction(props)) {
     if(props.field.control === 'button') {
       return (
         <Button onClick={props.onAction}>{props.field.label}</Button>
@@ -49,15 +51,25 @@ export const getComponent: IProps['components'] = (props) => {
     return null;
   }
 
+  if(isControlLayout(props)) {
+    if(props.field.render === 'horizontal') {
+      return <HorizontalLayout>{props.children}</HorizontalLayout>
+    }
+
+    if(props.field.render === 'tabs') {
+      return <TabsLayout field={props.field} form={props.form}>{props.children}</TabsLayout>
+    }
+
+    return <>{props.children}</>;
+  }
+
   const { ref, input, meta, helpers, form } = props;
-  // submit does not have errorMessage props
-  const errorMessage = !isAction(props.field) && !isSubmit(props.field) && props.field.errorMessage || meta.error;
   // todo better types
   const disabled = (props.field as any).disabled || form.isSubmitting;
 
   if(isText(props.field)) {
     return (
-      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
+      <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
         <Input
           ref={ref}
           type="text"
@@ -74,7 +86,7 @@ export const getComponent: IProps['components'] = (props) => {
 
   if(isNumber(props.field)) {
     return (
-      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
+      <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
         <Input
           ref={ref}
           type="number"
@@ -91,7 +103,7 @@ export const getComponent: IProps['components'] = (props) => {
 
   if(isPassword(props.field)) {
     return (
-      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
+      <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
         <Input
           ref={ref}
           type="password"
@@ -111,7 +123,7 @@ export const getComponent: IProps['components'] = (props) => {
       <Select
         ref={ref}
         label={props.field.label}
-        error={errorMessage}
+        error={meta.error}
         disabled={disabled}
         placeholder={props.field.placeholder}
         options={props.field.options}
@@ -123,7 +135,7 @@ export const getComponent: IProps['components'] = (props) => {
 
   if(isTextarea(props.field)) {
     return (
-      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
+      <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
         <$Input.TextArea
           ref={ref}
           rows={props.field.rows}
@@ -140,7 +152,7 @@ export const getComponent: IProps['components'] = (props) => {
 
   if(isCheckbox(props.field)) {
     return (
-      <FormItem label="" errorMessage={errorMessage} validation={props.field.validation}>
+      <FormItem label="" errorMessage={meta.error} validation={props.field.validation}>
         <Checkbox ref={ref} label={props.field.label} disabled={disabled} {...input} onChange={helpers.setValue} />
       </FormItem>
     );
@@ -153,23 +165,23 @@ export const getComponent: IProps['components'] = (props) => {
 
   if(isDate(props.field)) {
     return (
-      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
+      <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
         <DatePicker ref={ref} disabled={disabled} placeholder={props.field.placeholder} withTimePicker={props.field.withTimePicker} {...input} onChange={helpers.setValue} />
       </FormItem>
     );
   }
 
   if(isImage(props.field)) {
-    return <ImageUpload label={props.field.label} error={errorMessage} {...input} onChange={helpers.setValue} multiple={props.field.multiple} />;
+    return <ImageUpload label={props.field.label} error={meta.error} {...input} onChange={helpers.setValue} multiple={props.field.multiple} />;
   }
 
   if(isFile(props.field)) {
-    return <FileUpload label={props.field.label} accept={props.field.accept} error={errorMessage} {...input} onChange={helpers.setValue} />;
+    return <FileUpload label={props.field.label} accept={props.field.accept} error={meta.error} {...input} onChange={helpers.setValue} />;
   }
 
   if(isDateRange(props.field)) {
     return (
-      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
+      <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
         <$DatePicker.RangePicker
           ref={ref}
           {...input}
@@ -190,7 +202,7 @@ export const getComponent: IProps['components'] = (props) => {
 
   if(isMultiselect(props.field)) {
     return (
-      <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
+      <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
         <Multiselect
           ref={ref}
           name={input.name}
@@ -209,7 +221,7 @@ export const getComponent: IProps['components'] = (props) => {
 
   if(isAutocomplete(props.field)) {
     return (
-        <FormItem label={props.field.label} errorMessage={errorMessage} validation={props.field.validation}>
+        <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
           <AutoComplete
               ref={ref}
               value={input.value}

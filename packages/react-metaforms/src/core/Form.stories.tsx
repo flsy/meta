@@ -1,9 +1,9 @@
-import MetaForm, { isComponentAction } from './Form';
+import MetaForm, { isControlLayout } from './Form';
 import React from 'react';
 import {getObjectMeta, getSubmitMeta, getTextMeta, isRequired, required} from 'metaforms'
 import { MetaField } from '@falsy/metacore'
 import { action } from '@storybook/addon-actions';
-import { isComponentArray, isComponentObject } from './Form';
+import { isControlArray, isControlObject, isControlAction } from './Form';
 
 const values = {
   user: {
@@ -82,18 +82,22 @@ export const Basic = () => {
       }}
       fields={fields}
       components={(componentProps) => {
-        if(isComponentArray(componentProps)) {
+        if(isControlArray(componentProps)) {
           const { children, arrayHelpers } = componentProps;
           return <>{children?.map((c, idx) => <React.Fragment key={idx}>{c} <button type="button" onClick={() => arrayHelpers.remove(idx)}>Remove</button></React.Fragment>)}<br /><button type="button" onClick={() => arrayHelpers.push(null)}>Add</button><br /><br /></>
         }
 
-        if(isComponentObject(componentProps)) {
+        if(isControlObject(componentProps)) {
           const { children } = componentProps;
           return <div style={{ border: '2px solid lightblue', padding: '1em 0', marginBottom: '1em' }}>{children}</div>
         }
 
-        if(isComponentAction(componentProps)) {
+        if(isControlAction(componentProps)) {
           return <button>{componentProps.field.label}</button>
+        }
+
+        if(isControlLayout(componentProps)) {
+          return null;
         }
 
         const { field, meta, ref, form, input } = componentProps;

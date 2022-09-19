@@ -10,7 +10,7 @@ import {
     HiddenMetaProps,
     ImageMetaProps,
     IThreeStateSwitch,
-    JsonMetaProps,
+    JsonMetaProps, LayoutMetaProps,
     MultiSelectMetaProps,
     MultistringMetaProps,
     NumberMetaProps,
@@ -67,3 +67,5 @@ export const getObjectMeta = (props: Omit<ObjectMetaProps, 'type'>): ObjectMetaP
 export const getAutocompleteMeta = (props: Omit<AutocompleteMetaProps, 'type'>): AutocompleteMetaProps => ({ ...props, type: 'autocomplete' })
 
 export const getActionMeta = (props: Omit<ActionMetaProps, 'type' | 'name'>): ActionMetaProps => ({ ...props, type: 'action', name: props.id })
+
+export const getLayoutMeta = (props: Omit<LayoutMetaProps, 'type' | 'name'>): LayoutMetaProps => ({ ...props, type: 'layout', name: '' })

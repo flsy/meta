@@ -13,7 +13,14 @@ import {
   ArrayHelpers,
 } from 'formik';
 import { FieldHelperProps, FieldInputProps, FieldMetaProps } from 'formik/dist/types'
-import { MetaField, MetaFormValues, MetaFieldValue, ObjectMetaProps, ActionMetaProps } from '@falsy/metacore';
+import {
+  MetaField,
+  MetaFormValues,
+  MetaFieldValue,
+  ObjectMetaProps,
+  ActionMetaProps,
+  LayoutMetaProps,
+} from '@falsy/metacore';
 import { validateField } from 'metaforms/lib/validate/validate';
 import {isObject} from "../antd/utils";
 
@@ -24,8 +31,9 @@ export interface ActionRenderProps { onAction: (e: React.MouseEvent<HTMLElement>
 export interface ControlRenderProps { ref: any, form: FormContext, field: MetaField, input: FieldInputProps<MetaFieldValue>, meta: FieldMetaProps<MetaFieldValue>, helpers: FieldHelperProps<MetaFieldValue> }
 export interface ObjectRenderProps { children: JSX.Element[], field: ObjectMetaProps, form: FormContext, meta: FieldMetaProps<MetaFieldValue> }
 export interface ArrayRenderProps { children: JSX.Element[], field: MetaField, arrayHelpers: ArrayHelpers, form: FormContext, meta: FieldMetaProps<MetaFieldValue> }
+export interface LayoutRenderProps { children: JSX.Element[], field: LayoutMetaProps, form: FormContext }
 
-export type ComponentRenderProps = ControlRenderProps | ObjectRenderProps | ArrayRenderProps | ActionRenderProps;
+export type ComponentRenderProps = ControlRenderProps | ObjectRenderProps | ArrayRenderProps | ActionRenderProps | LayoutRenderProps;
 
 
 export interface IProps {
@@ -37,10 +45,10 @@ export interface IProps {
   onAction?: (p: { field: ActionMetaProps, form: FormContext }, e: React.MouseEvent<HTMLElement>) => void;
 }
 
-export const isComponentAction = (c: ComponentRenderProps): c is ActionRenderProps => c.field.type === 'action';
-export const isComponentArray = (c: ComponentRenderProps): c is ArrayRenderProps =>  c.field.type !== 'action' && c.field.array === true;
-export const isComponentObject = (c: ComponentRenderProps): c is ObjectRenderProps => isObject(c.field);
-export const isComponentControl = (c: ComponentRenderProps): c is ControlRenderProps => !isComponentObject(c) && !isComponentArray(c);
+export const isControlAction = (c: ComponentRenderProps): c is ActionRenderProps => c.field.type === 'action';
+export const isControlArray = (c: ComponentRenderProps): c is ArrayRenderProps =>  c.field.type !== 'action' && c.field.type !== 'layout' && c.field.array === true;
+export const isControlObject = (c: ComponentRenderProps): c is ObjectRenderProps => isObject(c.field);
+export const isControlLayout = (c: ComponentRenderProps): c is LayoutRenderProps => c.field.type === 'layout';
 
 export default (props: IProps) => {
   const firstEl = useRef<any>();
@@ -64,6 +72,13 @@ export default (props: IProps) => {
       }
     }, [])
 
+    if(field.visible) {
+      if(getIn(form.values, field.visible.targetName) !== field.visible.value) {
+        fields.current.delete(field.name)
+        return null;
+      }
+    }
+
     if(field.type === 'action') {
       return props.components({
         onAction: (e) => {
@@ -73,11 +88,10 @@ export default (props: IProps) => {
       })
     }
 
-    if(field.visible) {
-      if(getIn(form.values, field.visible.targetName) !== field.visible.value) {
-        fields.current.delete(field.name)
-        return null;
-      }
+    if(field.type === 'layout') {
+      const children = field?.fields?.map((f: MetaField) => <Field key={f.name} field={{ ...f, name: `${field.name}${f.name}` }} />)
+
+      return props.components({ children, field, form })
     }
 
     if(field.array) {
@@ -118,13 +132,11 @@ export default (props: IProps) => {
       {...props.formikProps}
       initialValues={props.values || {}}
       validate={(formikValues) => {
-        const vals = Array.from(fields.current.entries()).reduce((acc, [name, field]) => {
+        return Array.from(fields.current.entries()).reduce((acc, [name, field]) => {
           const f = {...field, value: getIn(formikValues, name)};
           const v = validateField(formikValues, f);
           return setIn(acc, name, v);
         }, {})
-
-        return vals;
       }}
       onSubmit={(values, formikHelpers) =>
         props.onSubmit(values, formikHelpers)}
