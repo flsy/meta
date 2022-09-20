@@ -1,49 +1,40 @@
-import { MetaField } from 'metaforms';
-import { lensProp, set } from 'ramda';
 import React from 'react';
 import styled from 'styled-components';
-import type { InternalColumn } from './types';
-import Form from "react-metaforms";
-import FormButtonGroup from "react-metaforms/lib/antd/components/FormButtonGroup";
+import type {MetaColumn, Filters} from '@falsy/metacore';
+import Form from 'react-metaforms';
+import {toFormValues, toFilters, FilterValues } from 'metatable';
 
 interface IProps {
-  column: InternalColumn;
-  onFilter: (column: InternalColumn) => void;
+  column: MetaColumn;
+  filters: Filters;
+  onFilter: (filters: Filters) => void;
 }
 
 const Wrapper = styled.div`
   padding: 1em 0.5em;
 `;
 
-const FilterDropdown = ({ column, onFilter }: IProps) => {
-  const handleSubmitFilter = (fields: MetaField[]) => {
-    onFilter(set(lensProp('filterForm'), fields, column));
-  };
 
+const FilterDropdown = ({ column, onFilter, filters }: IProps) => {
   return (
     <Wrapper>
       <Form
         size="small"
+        initialValues={toFormValues(column, filters)}
         fields={column.filterForm}
-        onSubmit={({ fields }) => handleSubmitFilter(fields)}
-        // components={({ form, field }) => {
-        //   if (field?.type === 'buttonGroup') {
-        //     return (
-        //       <FormButtonGroup
-        //         items={field.items}
-        //         isSubmitting={field.isSubmitting}
-        //         onClick={async (button) => {
-        //           if (button.type === 'reset') {
-        //             form.setFieldValue(`${column.flatName}.filters`, undefined);
-        //             await form.submitForm();
-        //           }
-        //         }}
-        //       />
-        //     );
-        //   }
-        //
-        //   return;
-        // }}
+        onAction={({field, form}) => {
+            if (field.id === 'reset') {
+                form.resetForm({
+                    values: {}
+                });
+                return form.submitForm()
+            }
+        }}
+        onSubmit={(values) => {
+            const filters = toFilters(column, values as FilterValues)
+            onFilter(filters);
+        }
+        }
       />
     </Wrapper>
   );

@@ -12,7 +12,6 @@ import Input from './components/Input';
 import Multiselect from './components/Multiselect';
 import Select from './components/Select';
 import {
-  isAction,
   isAutocomplete,
   isCheckbox,
   isDate,
@@ -25,12 +24,13 @@ import {
   isSelect,
   isSubmit,
   isText,
-  isTextarea,
+  isTextarea, isThreeStateSwitch,
 } from './utils';
 import ArrayControl from './components/ArrayControl';
 import ObjectControl from './components/ObjectControl';
 import HorizontalLayout from './layout/HorizontalLayout';
 import TabsLayout from './layout/TabsLayout';
+import ThreeStateSwitch from "./components/ThreeStateSwitch";
 
 export const getComponent: IProps['components'] = (props) => {
   if(isControlArray(props)) {
@@ -231,6 +231,14 @@ export const getComponent: IProps['components'] = (props) => {
               placeholder={props.field.placeholder}
               onChange={(v) => helpers.setValue(v)}
           />
+        </FormItem>
+    )
+  }
+
+  if (isThreeStateSwitch(props.field)) {
+    return (
+        <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
+          <ThreeStateSwitch value={input.value} name={input.name} onChange={helpers.setValue} />
         </FormItem>
     )
   }

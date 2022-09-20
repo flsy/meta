@@ -8,10 +8,8 @@ export type MetaFormValues = { [key: string]: MetaFieldValue | MetaFormValues }
 
 export type MetaField = AutocompleteMetaProps
     | ObjectMetaProps
-    | ButtonGroupMetaProps
     | IThreeStateSwitch
     | DateRangeMetaProps
-    | DateRangeCalendarMetaProps
     | MultistringMetaProps
     | JsonMetaProps
     | CheckboxMetaProps
@@ -158,28 +156,9 @@ export interface MultistringMetaProps extends CommonProps {
   value?: string;
 }
 
-export interface DateRangeCalendarMetaProps extends CommonProps {
-  type: 'dateRangeCalendar'
-  value?: [number, number];
-  withTimePicker?: boolean;
-  dateInputPlaceholder?: string;
-  format?: string;
-}
 export interface IThreeStateSwitch extends CommonProps {
   type: 'threeStateSwitch'
   value?: boolean;
-}
-
-export interface IButtonGroupItem {
-  type: 'submit' | 'reset' | 'button';
-  label: string;
-  name: string;
-  primary?: boolean;
-  size?: 'small' | 'middle' | 'large';
-}
-export interface ButtonGroupMetaProps extends CommonProps {
-  type: 'buttonGroup'
-  items: IButtonGroupItem[];
 }
 
 export interface ObjectMetaProps extends CommonProps {

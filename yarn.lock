@@ -2074,7 +2074,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@falsy/metacore@^5.1.1, @falsy/metacore@workspace:packages/metacore":
+"@falsy/metacore@^5.1.1, @falsy/metacore@workspace:^, @falsy/metacore@workspace:packages/metacore":
   version: 0.0.0-use.local
   resolution: "@falsy/metacore@workspace:packages/metacore"
   dependencies:
@@ -5228,21 +5228,21 @@ __metadata:
   linkType: hard
 
 "@types/cheerio@npm:*":
-  version: 0.22.26
-  resolution: "@types/cheerio@npm:0.22.26"
+  version: 0.22.31
+  resolution: "@types/cheerio@npm:0.22.31"
   dependencies:
     "@types/node": "*"
-  checksum: 2c052f3897cff05a01be6d53d201503dd2b91a8ac7fe5fd1a7947beaf69a05054c75559d7b34174b6edc4463f88cb0b2ee4c7b8ed03b907e523dd14231298092
+  checksum: 8d73d22fdd384c290514dad6f9f4a436f5a90bc836bbe9b46fe4f557041a03484f0547291d0347185a806149f465355fc225dc87477b8cf5af5be307bb75e6a4
   languageName: node
   linkType: hard
 
 "@types/enzyme@npm:^3.10.8":
-  version: 3.10.9
-  resolution: "@types/enzyme@npm:3.10.9"
+  version: 3.10.12
+  resolution: "@types/enzyme@npm:3.10.12"
   dependencies:
     "@types/cheerio": "*"
     "@types/react": "*"
-  checksum: d04a0345bb87a1127a3a4ce7c29258083e00e02eb9937d36ecf63bd5748211ffdef990e63e99ec00e6ad631ba029ab5168324bc6f4c671a6934f9a025bb78d93
+  checksum: 356e9142566b68c9b324ae71a7b93f03512a1c009a1d337a25ce4f495590f3e79de08aa4a0016d6224cb228c27832d92b6d7d3276ba5962302c41d0577e8a912
   languageName: node
   linkType: hard
 
@@ -14644,7 +14644,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"metatable@workspace:packages/metatable":
+"metatable@workspace:^, metatable@workspace:packages/metatable":
   version: 0.0.0-use.local
   resolution: "metatable@workspace:packages/metatable"
   dependencies:
@@ -14654,8 +14654,6 @@ __metadata:
     "@types/ramda": ^0.28.15
     enzyme: ^3.11.0
     jest: ^27.0.6
-    metaforms: ^5.1.1
-    ramda: ^0.28.0
     ts-jest: ^27.0.4
     typescript: ~4.8.2
   languageName: unknown
@@ -17928,7 +17926,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-metaforms@^5.1.1, react-metaforms@workspace:packages/react-metaforms":
+"react-metaforms@workspace:^, react-metaforms@workspace:packages/react-metaforms":
   version: 0.0.0-use.local
   resolution: "react-metaforms@workspace:packages/react-metaforms"
   dependencies:
@@ -17968,7 +17966,7 @@ __metadata:
   resolution: "react-metatable@workspace:packages/react-metatable"
   dependencies:
     "@babel/core": ^7.18.13
-    "@falsy/metacore": ^5.1.1
+    "@falsy/metacore": "workspace:^"
     "@storybook/addon-actions": ^6.5.10
     "@storybook/addon-essentials": ^6.5.10
     "@storybook/addon-interactions": ^6.5.10
@@ -17982,9 +17980,10 @@ __metadata:
     "@types/react-dom": ^17.0.9
     "@types/styled-components": ^5.1.25
     babel-loader: ^8.2.2
+    metatable: "workspace:^"
     react: ^16.14.0
     react-dom: ^16.14.0
-    react-metaforms: ^5.1.1
+    react-metaforms: "workspace:^"
     react-resizable: ^3.0.4
     styled-components: ^5.3.5
     typescript: ~4.8.2

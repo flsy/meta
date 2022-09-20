@@ -1,48 +1,46 @@
-import FilterFilled from '@ant-design/icons/FilterFilled';
+import FilterTwoTone from '@ant-design/icons/FilterTwoTone';
 import FilterOutlined from '@ant-design/icons/FilterOutlined';
 import { Table, TableProps } from 'antd';
-import { SortOrder } from 'antd/lib/table/interface';
-import { getValues } from 'metaforms';
-import { getColumnPaths, unsetAllSortFormValues } from 'metatable';
-import { compose, isNil, lensPath, set, view } from 'ramda';
+import {ColumnType, SortOrder} from 'antd/lib/table/interface';
+import { compose, lensPath, set } from 'ramda';
 import React, { ReactElement, useMemo } from 'react';
 import { Resizable } from 'react-resizable';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 import { useSelection } from './useSelection';
 import Loader from './Loader';
 import DataTableActions from './DataTableActions';
 import FilterDropdown from './FilterDropdown';
 import { renderValue } from './renderValue';
-import { Columns, InternalColumn } from './types';
 import { useResizableTableStyles } from './useResizableTableStyles';
+import { Filters, Sort, SortOrder as MetaSortOrder, MetaColumn } from "@falsy/metacore";
+import {isFiltered} from "metatable";
 
 interface IDataTableProps<TRow> {
-  columns?: Columns;
+  columns?: MetaColumn[];
   data?: TRow[];
   dataTestTableId?: string;
   isLoading?: boolean;
   rowKey?: string;
   rowActions?: (p: { row: TRow }) => ReactElement;
   isRowSelected?: (row: TRow) => boolean;
-  render?: (value: any, column: InternalColumn, row: TRow) => any;
+  render?: (value: any, column: MetaColumn, row: TRow) => any;
   onRowSelect?: (row: TRow) => void;
-  onColumnsChange?: (columns: Columns) => void;
+  onColumnsChange?: (columns: MetaColumn[]) => void;
+
+
+  sort?: Sort;
+  onSortChange?: (sort: Sort) => void;
+  filters?: Filters;
+  onFilterChange?: (filters?: Filters) => void;
+
   isResizable?: boolean;
   components?: TableProps<TRow>['components'];
   expandable?: TableProps<TRow>['expandable'];
 }
 
-const mapToInternalColumns = (columns): InternalColumn[] => {
-  return getColumnPaths(columns).map((path) => ({
-    ...view(lensPath(path), columns),
-    flatName: path.join('.'),
-    name: path,
-  }));
-};
+const getKeyColumn = (columns: MetaColumn[]): MetaColumn => columns.find((c) => c.key);
 
-const getKeyColumn = (columns: InternalColumn[]): InternalColumn => columns.find((c) => c.key);
-
-const makeAntOrder = (order: 'ASC' | 'DESC'): SortOrder => {
+const makeAntOrder = (order?: MetaSortOrder): SortOrder => {
   if (order === 'ASC') {
     return 'ascend';
   }
@@ -51,7 +49,7 @@ const makeAntOrder = (order: 'ASC' | 'DESC'): SortOrder => {
   }
 };
 
-const makeBafOrder = (sortOrder: SortOrder): 'ASC' | 'DESC' | undefined => {
+const makeMetaOrder = (sortOrder: SortOrder): MetaSortOrder | undefined => {
   if (sortOrder === 'ascend') {
     return 'ASC';
   }
@@ -141,10 +139,10 @@ const ResizableTitle = (props) => {
 
 type ColumnWidths = { [key: string]: number };
 
-const getWidthFromColumns = (internalColumns: InternalColumn[]): ColumnWidths => {
+const getWidthFromColumns = (internalColumns: MetaColumn[]): ColumnWidths => {
   return internalColumns.reduce((widths, ic, index) => {
     if (index < internalColumns.length - 1) {
-      return { ...widths, [ic.flatName]: ic.width || MIN_COL_WIDTH };
+      return { ...widths, [ic.name]: ic.width || MIN_COL_WIDTH };
     }
 
     return widths;
@@ -155,7 +153,7 @@ const sumColumnWidths = (columnWidths: ColumnWidths): number => {
   return Object.values(columnWidths).reduce((sum, width) => sum + width, 0);
 };
 
-const setWidthsToColumns = (widths: ColumnWidths, columns: Columns): Columns => {
+const setWidthsToColumns = (widths: ColumnWidths, columns: MetaColumn[]): MetaColumn[] => {
   const sets = Object.entries(widths).map(([key, value]) => {
     return set(lensPath([...key.split('.'), 'width']), value);
   });
@@ -174,6 +172,10 @@ const DataTable = <TRow extends {}>({
   onRowSelect,
   isLoading,
   onColumnsChange,
+  sort,
+  onSortChange,
+  filters,
+  onFilterChange,
   dataTestTableId,
   isResizable,
   components,
@@ -181,29 +183,25 @@ const DataTable = <TRow extends {}>({
   ...props
 }: IDataTableProps<TRow>) => {
   const openFilters = useSelection([]);
-  const theme = useTheme();
 
-  const internalColumns = useMemo(() => mapToInternalColumns(columns), [columns]);
-
-  const [columnWidths, setColumnWidths] = React.useState<ColumnWidths>(getWidthFromColumns(internalColumns));
+  const [columnWidths, setColumnWidths] = React.useState<ColumnWidths>(getWidthFromColumns(columns));
   const { ref } = useResizableTableStyles({ isResizable, columnWidthSum: sumColumnWidths(columnWidths) });
 
-  const onFilter = (changedColumn: InternalColumn) => {
-    if (onColumnsChange) {
-      const columnLens = lensPath(changedColumn.name);
-      onColumnsChange(set(columnLens, changedColumn, columns));
+  const onFilter = (filters: Filters) => {
+    if (onFilterChange) {
+      onFilterChange(filters)
+      openFilters.clear();
     }
-
-    openFilters.clear();
   };
 
-  const onChange = (pagination, filters, sorter, extra) => {
-    if (extra.action === 'sort') {
-      const column = view<any, any>(lensPath(sorter.field), columns);
-      const bafOrder = makeBafOrder(sorter.order);
+  const onTableChange = (pagination, filters, sorter, extra) => {
+    if (extra.action === 'sort' && onSortChange) {
+      if (sorter?.column?.flatName) {
+        onSortChange({ [sorter.column.flatName]: makeMetaOrder(sorter.order) });
+      } else{
+        onSortChange({});
 
-      const updatedSortForm = column.sortForm.map((sf) => (sf.type === 'sort' ? { ...sf, value: bafOrder } : sf));
-      onColumnsChange(set(lensPath([...sorter.field, 'sortForm']), updatedSortForm, unsetAllSortFormValues(columns as any) as any));
+      }
     }
   };
 
@@ -221,37 +219,39 @@ const DataTable = <TRow extends {}>({
 
   const mappedColumns = useMemo(
     () =>
-      internalColumns.map((c) => {
+      columns.map((c) => {
+
+        const sortOrder = c.isSortable ? makeAntOrder(sort[c.name]) : undefined;
+
         return {
           title: c.label,
           dataIndex: c.name,
-          flatName: c.flatName,
-          filterDropdownVisible: openFilters.isSelected(c.flatName),
-          filterDropdown: c.filterForm ? () => (openFilters.isSelected(c.flatName) ? <FilterDropdown column={c} onFilter={onFilter} /> : null) : undefined,
+          flatName: c.name,
+          filterDropdownVisible: openFilters.isSelected(c.name),
+          filterDropdown: c.filterForm ? () => (openFilters.isSelected(c.name) ? <FilterDropdown column={c} filters={filters} onFilter={onFilter} /> : null) : undefined,
           render: (colValue, rowValue) => (props.render ? props.render(colValue, c, rowValue) : renderValue(colValue, c)),
-          onFilterDropdownVisibleChange: (v) => (v ? openFilters.add(c.flatName) : openFilters.remove(c.flatName)),
-          sortOrder: c.sortForm ? makeAntOrder((c.sortForm as any).find((sf) => sf.type === 'sort' as any)?.value) : undefined,
-          sorter: !!c.sortForm,
+          onFilterDropdownVisibleChange: (v) => (v ? openFilters.add(c.name) : openFilters.remove(c.name)),
+          sortOrder,
+          sorter: c.isSortable,
           filterIcon: () => {
             if (c.filterForm) {
-              const isFiltered = view(lensPath([...c.name, 'filters']), getValues(c.filterForm));
-              return isNil(isFiltered) ? <FilterOutlined /> : <FilterFilled  />;
+              return isFiltered(filters, c) ? <FilterTwoTone  /> : <FilterOutlined />;
             }
           },
-        };
+        } as ColumnType<TRow>;
       }),
-    [internalColumns, openFilters.list],
+    [columns, openFilters.list, sort],
   );
 
   const columnsWithWidth = isResizable
-    ? mappedColumns.map((c) => ({
+    ? mappedColumns.map((c: any) => ({
         ...c,
         width: columnWidths[c.flatName],
         onHeaderCell: () => ({ width: columnWidths[c.flatName], onResize: handleResize(c.flatName), onResizeStop: handleResizeStop }),
       }))
     : mappedColumns;
 
-  const keyColumn: string = props.rowKey ? props.rowKey : getKeyColumn(internalColumns)?.flatName;
+  const keyColumn: string = props.rowKey ? props.rowKey : getKeyColumn(columns)?.name;
   const selectedRow = data.find((row) => isRowSelected?.(row));
 
   return (
@@ -269,7 +269,7 @@ const DataTable = <TRow extends {}>({
       rowKey={keyColumn}
       dataSource={data}
       columns={columnsWithWidth}
-      onChange={onChange}
+      onChange={onTableChange}
       showSorterTooltip={false}
       pagination={false}
       onRow={(record: TRow) => ({

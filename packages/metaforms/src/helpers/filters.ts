@@ -1,41 +1,36 @@
 import {
-  getButtonGroupMeta,
-  getHiddenMeta,
+  getActionMeta,
+  getLayoutMeta,
   getMultiSelectMeta,
+  getSubmitMeta,
   getThreeStateSwitch,
+  getSelectMeta,
+  getTextMeta, getDateRangeMeta
 } from './fields';
-import {getDateRangeCalendarMeta, getSelectMeta, getTextMeta} from './fields';
 import {
-  ButtonGroupMetaProps, DateRangeCalendarMetaProps,
-  HiddenMetaProps,
-  IThreeStateSwitch, MultiSelectMetaProps, Operator,
+  DateRangeMetaProps,
+  IThreeStateSwitch,
+  LayoutMetaProps,
+  MultiSelectMetaProps,
   SelectMetaProps,
   TextMetaProps
 } from "@falsy/metacore";
 
-export const getColumnFilterTypePath = (columnPath: string[]) => `${columnPath.join('.')}.type`;
-export const getColumnFilterValuePath = (columnPath: string[]) => `${columnPath.join('.')}.value`;
-export const getColumnFilterFiltersPath = (columnPath: string[]) => `${columnPath.join('.')}.filters`;
-export const getColumnFilterOptionsPath = (columnPath: string[]) => `${columnPath.join('.')}.options`;
+const actions = getLayoutMeta({
+  render: 'horizontal',
+  fields: [
+      getActionMeta({
+        label: 'Reset',
+        control: 'button',
+        id: 'reset'
+      }),
+      getSubmitMeta({
+        name: 'submit',
+        label: 'Filtrovat'
+      })
+  ]
 
-const actions = getButtonGroupMeta({
-  name: 'actions',
-  items: [
-    {
-      name: 'reset',
-      type: 'reset',
-      size: 'small',
-      label: 'Reset',
-    },
-    {
-      name: 'submit',
-      type: 'submit',
-      size: 'small',
-      label: 'Filtrovat',
-      primary: true,
-    },
-  ],
-});
+})
 
 const add = <T, A, R>(index: number, value: T, array: A[]): R => {
   const e = [...array];
@@ -43,116 +38,42 @@ const add = <T, A, R>(index: number, value: T, array: A[]): R => {
   return e as any;
 }
 
-type FilterResult = [TextMetaProps, HiddenMetaProps, ButtonGroupMetaProps] | [TextMetaProps, SelectMetaProps, HiddenMetaProps, ButtonGroupMetaProps];
+type FilterResult = [TextMetaProps, LayoutMetaProps] | [TextMetaProps, SelectMetaProps, LayoutMetaProps];
 
-export const getTextFilter = (path: string[], options?: { value?: string; label?: string, withOptions?: boolean, defaultOption?: 'EQ' | 'LIKE' }): FilterResult => {
+export const getTextFilter = (options: { label?: string, withOperator?: boolean, operatorLabel?: string } = {}): FilterResult => {
   const result: FilterResult = [
     getTextMeta({
-      name: getColumnFilterFiltersPath(path),
-      label: options?.label,
-      value: options?.value,
-    }),
-    getHiddenMeta({
-      name: getColumnFilterTypePath(path),
-      value: 'string',
+      name: 'value',
+      label: options.label,
     }),
     actions,
   ];
 
-  if(options?.withOptions) {
+  if(options?.withOperator) {
     return add(1, getSelectMeta({
-      name: getColumnFilterOptionsPath(path),
+      name: 'operator',
+      label: options.operatorLabel,
       options: [
           { value: 'EQ', label: 'Přesná shoda' },
           { value: 'LIKE', label: 'Fulltext' }
       ],
-      value: options?.defaultOption,
     }), result)
   }
 
   return result;
 }
 
-type GetTernaryFilter = (
-  path: string[],
-  config?: {
-    value?: boolean;
-    label?: string;
-  },
-) => [IThreeStateSwitch, HiddenMetaProps, ButtonGroupMetaProps];
-export const getTernaryFilter: GetTernaryFilter = (path, options) => [
-  getThreeStateSwitch({
-    name: getColumnFilterFiltersPath(path),
-    label: options?.label,
-    value: options?.value,
-  }),
-  getHiddenMeta({
-    name: getColumnFilterTypePath(path),
-    value: 'boolean',
-  }),
+export const getThreeStateFilter = (options: Omit<IThreeStateSwitch, 'type'| 'name'> = {}): [IThreeStateSwitch, LayoutMetaProps] => [
+  getThreeStateSwitch({...options, name: 'value'}),
   actions,
 ];
 
-type GetEnumFilter = (
-  path: string[],
-  config: {
-    value?: Array<{ value?: string; operator?: Operator }>;
-    label?: string;
-    options: Array<{ value: string; label: string }>;
-  },
-) => [SelectMetaProps, HiddenMetaProps, ButtonGroupMetaProps];
-export const getEnumFilter: GetEnumFilter = (path, options) => [
-  getSelectMeta({
-    name: getColumnFilterFiltersPath(path),
-    label: options?.label,
-    options: options?.options,
-  }),
-  getHiddenMeta({
-    name: getColumnFilterTypePath(path),
-    value: 'string',
-  }),
+export const getMultiSelectFilter = (options: Omit<MultiSelectMetaProps, 'type'| 'name'> = {}): [MultiSelectMetaProps, LayoutMetaProps] => [
+  getMultiSelectMeta({...options, name: 'value'}),
   actions,
 ];
 
-type GetMultiValueFilter = (
-  path: string[],
-  config: {
-    value?: MultiSelectMetaProps['value'];
-    label?: string;
-    options: MultiSelectMetaProps['options'];
-  },
-) => [MultiSelectMetaProps, HiddenMetaProps, ButtonGroupMetaProps];
-export const getMultiValueFilter: GetMultiValueFilter = (path, options) => [
-  getMultiSelectMeta({
-    name: getColumnFilterFiltersPath(path),
-    label: options.label,
-    value: options?.value,
-    options: options?.options,
-  }),
-  getHiddenMeta({
-    name: getColumnFilterTypePath(path),
-    value: 'multiselect',
-  }),
-  actions,
-];
-
-type GetDateRangeFilter = (
-  path: string[],
-  config: {
-    value?: [number, number];
-    label?: string;
-    withTimePicker?: boolean;
-  },
-) => [DateRangeCalendarMetaProps, HiddenMetaProps, ButtonGroupMetaProps];
-export const getDateRangeFilter: GetDateRangeFilter = (path: string[], config) => [
-  getDateRangeCalendarMeta({
-    name: getColumnFilterFiltersPath(path),
-    label: config.label,
-    withTimePicker: config.withTimePicker,
-  }),
-  getHiddenMeta({
-    name: getColumnFilterTypePath(path),
-    value: 'number',
-  }),
+export const getDateRangeFilter = (options: Omit<DateRangeMetaProps, 'type'| 'name'> = {}): [DateRangeMetaProps, LayoutMetaProps] => [
+  getDateRangeMeta({...options, name: 'value'}),
   actions,
 ];

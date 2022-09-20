@@ -1,77 +1,67 @@
 import { action } from '@storybook/addon-actions';
 import { Menu } from 'antd';
-import {getDateRangeFilter, getMultiValueFilter, getTernaryFilter, getTextFilter} from "metaforms";
-import { toMetaFilters } from 'metatable';
+import {getDateRangeFilter, getMultiSelectFilter, getThreeStateFilter, getTextFilter} from "metaforms";
 import React, { useState } from 'react';
-import Tag from './Tag/Tag';
 import DataTable from './DataTable';
 import { renderValue } from './renderValue';
 
 import 'antd/dist/antd.variable.min.css';
+import {MetaColumn} from '@falsy/metacore';
 
 
-const columns = {
-    createdAtFormatted: {
-        type: 'timestamp',
-        label: 'CreatedAt',
-        filterForm: getDateRangeFilter(['createdAtFormatted'], { label: 'Čas vytvoření', withTimePicker: true }),
+const columns: MetaColumn[] = [
+    {
+        name: 'createdAtFormatted',
+        type: 'dateRange',
+        label: 'Čas vytvoření',
+        filterForm: getDateRangeFilter({ label: 'Čas vytvoření', withTimePicker: true }),
     },
-    longText: {
+    {
+        name: 'longText',
         type: 'string',
         label: 'Dlouhý text',
-        name: 'longText',
-        filterForm: getTextFilter(['longText'], { label: 'Label', defaultOption: 'LIKE' }),
-        sortForm: [
-            {
-                name: 'longText',
-                type: 'sort',
-            },
-        ],
+        isSortable: true,
+        filterForm: getTextFilter({ label: 'Label', withOperator: true }),
     },
-    threeStateSwitch: {
-        type: 'threeStateSwitch',
+    {
         name: 'threeStateSwitch',
+        type: 'threeStateSwitch',
         label: 'Je povoleno',
-        filterForm: getTernaryFilter(['threeStateSwitch']),
+        filterForm: getThreeStateFilter(),
     },
-    multiSelect: {
-        type: 'string',
+    {
+        name: 'multiSelect',
+        type: 'multiselect',
         label: 'Multiselect',
-        filterForm: getMultiValueFilter(['multiSelect'], {
+        filterForm: getMultiSelectFilter({
             options: Array(50)
                 .fill(undefined)
                 .map((_, i) => ({ label: `label ${i}`, value: `${i}` })),
         }),
     },
-    createdBy: {
-        name: {
-            type: 'string',
-            label: 'CreatedBy',
-            sortForm: [
-                {
-                    name: 'createdBy.name',
-                    type: 'sort',
-                    value: 'ASC',
-                },
-            ],
-            filterForm: getTextFilter(['createdBy', 'name'], { value: 'XX' }),
-        },
+    {
+        name: 'createdBy',
+        type: 'string',
+        label: 'CreatedBy',
+        isSortable: true,
+        filterForm: getTextFilter(),
     },
-    groups: {
-        name: {
-            type: 'string',
-            label: 'Groups',
-        },
+    {
+        name: 'groups',
+        type: 'string',
+        label: 'Groups',
     },
-    isPublished: {
-        type: 'boolean',
+    {
+        name: 'isPublished',
+        type: 'threeStateSwitch',
         label: 'Is published',
     },
-    content: {
+    {
+        name: 'content',
         type: 'string',
         label: 'Content',
     },
-};
+];
 
 const LongTextNested = () => {
     return <div>This is a note for longtext</div>;
@@ -143,7 +133,6 @@ export const Basic = (args) => {
 
     const handleColumnChange = (cols) => {
         action('onColumnsChange')(cols);
-        action('toMetaFilters')(toMetaFilters(cols));
         setColState(cols);
     };
 
@@ -158,13 +147,15 @@ export const Basic = (args) => {
             data={data}
             columns={colState}
             onColumnsChange={handleColumnChange}
+            onFilterChange={action('onFilterChange')}
+            onSortChange={action('onSortChange')}
             isResizable={args.isResizable}
             rowActions={args.hasActions ? Actions : undefined}
             render={(value, column, row) => {
-                if (row.id === 2 && column.flatName === 'createdAtFormatted') {
+                if (row.id === 2 && column.name === 'createdAtFormatted') {
                     return (
                         <>
-                            <Tag label="custom cell render" type="warning" />
+                            <div>custom cell render</div>
                             {renderValue(value, column)}
                         </>
                     );

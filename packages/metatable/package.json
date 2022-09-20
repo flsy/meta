@@ -30,8 +30,6 @@
   },
   "dependencies": {
     "@falsy/metacore": "^5.1.1",
-    "metaforms": "^5.1.1",
-    "ramda": "^0.28.0",
     "typescript": "~4.8.2"
   },
   "devDependencies": {
