@@ -1,10 +1,8 @@
 import {
     ActionMetaProps,
     AutocompleteMetaProps,
-    ButtonGroupMetaProps,
     CheckboxMetaProps,
     DateMetaProps,
-    DateRangeCalendarMetaProps,
     DateRangeMetaProps,
     FileMetaProps,
     HiddenMetaProps,
@@ -56,11 +54,7 @@ export const getDateRangeMeta = (props: Omit<DateRangeMetaProps, 'type'>): DateR
 
 export const getMultistringMeta = (props: Omit<MultistringMetaProps, 'type'>): MultistringMetaProps => ({ ...props, type: 'multistring' });
 
-export const getDateRangeCalendarMeta = (props: Omit<DateRangeCalendarMetaProps, 'type'>): DateRangeCalendarMetaProps => ({ ...props, type: 'dateRangeCalendar' });
-
 export const getThreeStateSwitch = (props: Omit<IThreeStateSwitch, 'type'>): IThreeStateSwitch => ({ ...props, type: 'threeStateSwitch' });
-
-export const getButtonGroupMeta = (props: Omit<ButtonGroupMetaProps, 'type'>): ButtonGroupMetaProps => ({ ...props, type: 'buttonGroup' });
 
 export const getObjectMeta = (props: Omit<ObjectMetaProps, 'type'>): ObjectMetaProps => ({ ...props, type: 'object' })
 

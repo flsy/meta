@@ -1,0 +1,57 @@
+{
+  "name": "react-metatable",
+  "version": "5.1.1",
+  "main": "lib/export",
+  "typings": "lib/export",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flsy/meta.git"
+  },
+  "keywords": [
+    "react",
+    "table"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flsy/meta/issues"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "rm -rf ./lib && tsc -b",
+    "prepare": "yarn build",
+    "start": "start-storybook -p 9009",
+    "prepublishOnly": "yarn build"
+  },
+  "peerDependencies": {
+    "react": "^16.14.0 || 17.0.2",
+    "react-dom": "^16.14.0 || 17.0.2"
+  },
+  "dependencies": {
+    "@falsy/metacore": "workspace:^",
+    "metatable": "workspace:^",
+    "react-metaforms": "workspace:^",
+    "react-resizable": "^3.0.4",
+    "styled-components": "^5.3.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.13",
+    "@storybook/addon-actions": "^6.5.10",
+    "@storybook/addon-essentials": "^6.5.10",
+    "@storybook/addon-interactions": "^6.5.10",
+    "@storybook/addon-links": "^6.5.10",
+    "@storybook/builder-webpack4": "^6.5.10",
+    "@storybook/manager-webpack4": "^6.5.10",
+    "@storybook/react": "^6.5.10",
+    "@storybook/testing-library": "^0.0.13",
+    "@types/node": "^16.7.2",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "@types/styled-components": "^5.1.25",
+    "babel-loader": "^8.2.2",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "typescript": "~4.8.2"
+  }
+}

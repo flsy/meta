@@ -60,6 +60,12 @@ export const setValues = (values: any, fields: MetaField[]): any =>
     return { ...f, value: view(nameLens, values) };
   });
 
+/**
+ * @Deprecatred values are not part form definition any more
+ *
+ * @param {MetaField[]} fields
+ * @return {MetaFormValues}
+ */
 export const getValues = (fields: MetaField[]): MetaFormValues =>
   fields.reduce((acc, f) => {
     const nameLens = lensPath(f.name.split('.'));

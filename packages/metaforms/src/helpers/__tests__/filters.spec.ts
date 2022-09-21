@@ -3,123 +3,111 @@ import { getTextFilter } from '../filters';
 describe('filters', () => {
   describe('getTextFilter', () => {
     it('gets string filter without value, label and submit', () => {
-      expect(getTextFilter(['a', 'b'])).toEqual([
+      expect(getTextFilter()).toEqual([
         {
-          name: 'a.b.filters',
-          type: 'text',
+          "name": "value",
+          "type": "text"
         },
         {
-          name: 'a.b.type',
-          type: 'hidden',
-          value: 'string',
-        },
-        {
-          name: 'actions',
-          type: 'buttonGroup',
-          items: [
+          "fields": [
             {
-              name: 'reset',
-              type: 'reset',
-              size: 'small',
-              label: 'Reset',
+              "control": "button",
+              "id": "reset",
+              "label": "Reset",
+              "name": "reset",
+              "type": "action"
             },
             {
-              name: 'submit',
-              type: 'submit',
-              size: 'small',
-              primary: true,
-              label: 'Filtrovat',
-            },
+              "label": "Filtrovat",
+              "name": "submit",
+              "type": "submit"
+            }
           ],
-        },
+          "name": "",
+          "render": "horizontal",
+          "type": "layout"
+        }
       ]);
     });
 
     it('gets string filter', async () => {
       expect(
-        getTextFilter(['customer', 'id'], {
-          value: 'CUST_ID',
+        getTextFilter({
           label: 'Customer id',
         }),
       ).toEqual([
         {
-          name: 'customer.id.filters',
-          label: 'Customer id',
-          type: 'text',
-          value: 'CUST_ID',
+          "label": "Customer id",
+          "name": "value",
+          "type": "text"
         },
         {
-          name: 'customer.id.type',
-          type: 'hidden',
-          value: 'string',
-        },
-        {
-          name: 'actions',
-          type: 'buttonGroup',
-          items: [
+          "fields": [
             {
-              name: 'reset',
-              type: 'reset',
-              size: 'small',
-              label: 'Reset',
+              "control": "button",
+              "id": "reset",
+              "label": "Reset",
+              "name": "reset",
+              "type": "action"
             },
             {
-              name: 'submit',
-              type: 'submit',
-              size: 'small',
-              primary: true,
-              label: 'Filtrovat',
-            },
+              "label": "Filtrovat",
+              "name": "submit",
+              "type": "submit"
+            }
           ],
-        },
+          "name": "",
+          "render": "horizontal",
+          "type": "layout"
+        }
       ]);
     });
 
     it('gets string filter with select options', async () => {
       expect(
-          getTextFilter(['customer', 'id'], {
-            value: 'CUST_ID',
+          getTextFilter({
             label: 'Customer id',
-            withOptions: true
+            withOperator: true
           }),
       ).toEqual([
         {
-          name: 'customer.id.filters',
-          label: 'Customer id',
-          type: 'text',
-          value: 'CUST_ID',
+          "label": "Customer id",
+          "name": "value",
+          "type": "text"
         },
         {
-          name: 'customer.id.options',
-          type: 'select',
-          options: [
-              { value: 'EQ', label: 'Přesná shoda' },
-              { value: 'LIKE', label: 'Fulltext' }]
-        },
-        {
-          name: 'customer.id.type',
-          type: 'hidden',
-          value: 'string',
-        },
-        {
-          name: 'actions',
-          type: 'buttonGroup',
-          items: [
+          "name": "operator",
+          "options": [
             {
-              name: 'reset',
-              type: 'reset',
-              size: 'small',
-              label: 'Reset',
+              "label": "Přesná shoda",
+              "value": "EQ"
             },
             {
-              name: 'submit',
-              type: 'submit',
-              size: 'small',
-              primary: true,
-              label: 'Filtrovat',
-            },
+              "label": "Fulltext",
+              "value": "LIKE"
+            }
           ],
+          "type": "select"
         },
+        {
+          "fields": [
+            {
+              "control": "button",
+              "id": "reset",
+              "label": "Reset",
+              "name": "reset",
+              "type": "action"
+            },
+            {
+              "label": "Filtrovat",
+              "name": "submit",
+              "type": "submit"
+            }
+          ],
+          "name": "",
+          "render": "horizontal",
+          "type": "layout"
+        }
       ]);
     });
   });
