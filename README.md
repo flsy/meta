@@ -14,8 +14,7 @@
 - Vymyslet lepší strukturu fields
 - Opravit preview, release do github pages, CI
 
-
-## Release proces
+## Release proces
 - Otevřít releases, editovat poslední draft
 - Vytvořit semver tag např. 5.0.0
 - Titulek YYYY.MM.DD.X
