@@ -9,16 +9,16 @@ interface IProps {
 }
 
 const BoolIcon = ({ value, showIndeterminate }: IProps) => {
-  if (showIndeterminate && value === undefined) {
-    return <MinusCircleOutlined />;
-  }
+    if (showIndeterminate && value === undefined) {
+        return <MinusCircleOutlined />;
+    }
 
-  return value ? <CheckCircleOutlined /> : <CloseCircleOutlined />;
+    return value ? <CheckCircleOutlined /> : <CloseCircleOutlined />;
 };
 
 BoolIcon.defaultProps = {
-  value: undefined,
-  showIndeterminate: false,
+    value: undefined,
+    showIndeterminate: false,
 };
 
 export default BoolIcon;

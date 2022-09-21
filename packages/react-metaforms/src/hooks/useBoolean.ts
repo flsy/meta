@@ -9,15 +9,15 @@ export interface IUseBoolean {
 }
 
 const useBoolean = (initial?: boolean): IUseBoolean => {
-  const [value, setValue] = useState<boolean>(!!initial);
+    const [value, setValue] = useState<boolean>(!!initial);
 
-  return {
-    value,
-    setValue,
-    setFalse: () => setValue(false),
-    setTrue: () => setValue(true),
-    toggle: () => setValue(!value),
-  };
+    return {
+        value,
+        setValue,
+        setFalse: () => setValue(false),
+        setTrue: () => setValue(true),
+        toggle: () => setValue(!value),
+    };
 };
 
 export default useBoolean;

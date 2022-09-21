@@ -1,7 +1,7 @@
 import { Input as $Input, InputRef as $InputRef } from 'antd';
 import React from 'react';
-import {TextMetaProps} from "metaforms";
-import {NumberMetaProps, PasswordMetaProps} from "@falsy/metacore";
+import {TextMetaProps} from 'metaforms';
+import {NumberMetaProps, PasswordMetaProps} from '@falsy/metacore';
 
 export type InputRef = $InputRef;
 
@@ -15,23 +15,26 @@ export type InputProps = (TextMetaProps & { value: string } | NumberMetaProps & 
 
 // TODO: ref here is a bit tricky to type
 const Input = React.forwardRef((props: InputProps, ref: any) => {
-  const inputProps = {
-    ref: ref,
-    name: props.name,
-    disabled: props.disabled,
-    placeholder: props.placeholder,
-    value: props.value,
-    type: props.type,
-    onBlur: props.onBlur,
-    onFocus: props.onFocus,
-    onChange: props.onChange,
-  };
+    const inputProps = {
+        ref: ref,
+        name: props.name,
+        disabled: props.disabled,
+        placeholder: props.placeholder,
+        value: props.value,
+        type: props.type,
+        onBlur: props.onBlur,
+        onFocus: props.onFocus,
+        onChange: props.onChange,
+    };
 
-  if (props.type === 'password') {
-    return <$Input.Password {...inputProps} />;
-  }
+    if (props.type === 'password') {
+        return <$Input.Password {...inputProps} />;
+    }
 
-  return <$Input {...inputProps} />;
+    return <$Input {...inputProps} />;
 });
+
+Input.displayName = 'Input';
+
 
 export default Input;

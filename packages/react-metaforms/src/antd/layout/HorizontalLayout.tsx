@@ -9,11 +9,11 @@ const Wrapper = styled.div`
   & > .ant-form-item {
     width: 100%;
   }
-`
+`;
 
 
-const HorizontalLayout = ({ children }) => {
-  return <Wrapper>{children}</Wrapper>
+const HorizontalLayout: React.FC = ({ children }) => {
+    return <Wrapper>{children}</Wrapper>;
 };
 
 export default HorizontalLayout;

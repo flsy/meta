@@ -56,10 +56,10 @@ export const getMultistringMeta = (props: Omit<MultistringMetaProps, 'type'>): M
 
 export const getThreeStateSwitch = (props: Omit<IThreeStateSwitch, 'type'>): IThreeStateSwitch => ({ ...props, type: 'threeStateSwitch' });
 
-export const getObjectMeta = (props: Omit<ObjectMetaProps, 'type'>): ObjectMetaProps => ({ ...props, type: 'object' })
+export const getObjectMeta = (props: Omit<ObjectMetaProps, 'type'>): ObjectMetaProps => ({ ...props, type: 'object' });
 
-export const getAutocompleteMeta = (props: Omit<AutocompleteMetaProps, 'type'>): AutocompleteMetaProps => ({ ...props, type: 'autocomplete' })
+export const getAutocompleteMeta = (props: Omit<AutocompleteMetaProps, 'type'>): AutocompleteMetaProps => ({ ...props, type: 'autocomplete' });
 
-export const getActionMeta = (props: Omit<ActionMetaProps, 'type' | 'name'>): ActionMetaProps => ({ ...props, type: 'action', name: props.id })
+export const getActionMeta = (props: Omit<ActionMetaProps, 'type' | 'name'>): ActionMetaProps => ({ ...props, type: 'action', name: props.id });
 
-export const getLayoutMeta = (props: Omit<LayoutMetaProps, 'type' | 'name'>): LayoutMetaProps => ({ ...props, type: 'layout', name: '' })
+export const getLayoutMeta = (props: Omit<LayoutMetaProps, 'type' | 'name'>): LayoutMetaProps => ({ ...props, type: 'layout', name: '' });

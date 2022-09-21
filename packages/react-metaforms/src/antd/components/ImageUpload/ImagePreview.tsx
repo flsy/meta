@@ -35,19 +35,19 @@ const Container = styled.div`
 `;
 
 const ImagePreview = ({ base64, onRemove }: ImagePreviewProps) => (
-  <div style={{ display: 'flex' }}>
-    {base64.map((b64, index) => (
-      <Container key={b64}>
-        <ImageWrapper url={b64}>
-          <ButtonWrapper>
-            <Button danger={true} onClick={() => onRemove(index)}>
+    <div style={{ display: 'flex' }}>
+        {base64.map((b64, index) => (
+            <Container key={b64}>
+                <ImageWrapper url={b64}>
+                    <ButtonWrapper>
+                        <Button danger={true} onClick={() => onRemove(index)}>
               Odstranit
-            </Button>
-          </ButtonWrapper>
-        </ImageWrapper>
-      </Container>
-    ))}
-  </div>
+                        </Button>
+                    </ButtonWrapper>
+                </ImageWrapper>
+            </Container>
+        ))}
+    </div>
 );
 
 export default ImagePreview;

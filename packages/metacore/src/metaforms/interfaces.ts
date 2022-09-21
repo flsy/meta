@@ -1,4 +1,4 @@
-import { Validation } from "./validation";
+import { Validation } from './validation';
 
 export type MetaFieldValue = any;
 export type MetaFieldErrorMessage = string;

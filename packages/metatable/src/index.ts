@@ -8,9 +8,9 @@ import {
     isThreeStateSwitchFilterForm,
     IStringInput, IStringsInput,
     MetaColumn
-} from "@falsy/metacore";
+} from '@falsy/metacore';
 
-const isNumberValue = (values: StringsFilterValues | NumberFilterValues): values is NumberFilterValues => values.value.map(value => typeof value === 'number').find((_, i) => i === 0) ?? false
+const isNumberValue = (values: StringsFilterValues | NumberFilterValues): values is NumberFilterValues => values.value.map(value => typeof value === 'number').find((_, i) => i === 0) ?? false;
 
 export type FilterValues = StringFilterValues | BooleanFilterValues | StringsFilterValues | NumberFilterValues;
 type StringFilterValues = {
@@ -31,29 +31,29 @@ const getValue = (filters: Filters): { [columnName: string]: FilterValues } => {
     return Object.entries(filters).reduce((all, [key, field]) => {
         if (field.type === 'string') {
             const { value, operator } = field.filters[0];
-            return {...all, [key]: { operator, value} }
+            return {...all, [key]: { operator, value} };
         }
         if (field.type === 'boolean') {
-            return {...all, [key]:{ value: field.value} }
+            return {...all, [key]:{ value: field.value} };
         }
         if (field.type === 'strings') {
-            return {...all,  [key]: {value: field.filters.map(f => f.value) }}
+            return {...all,  [key]: {value: field.filters.map(f => f.value) }};
         }
 
         if (field.type === 'number') {
-            return {...all,  [key]: {value: field.filters.map(f => f.value) } }
+            return {...all,  [key]: {value: field.filters.map(f => f.value) } };
         }
-    }, {})
-}
+    }, {});
+};
 
 export const isFiltered = (filters: Filters, column: MetaColumn): boolean => {
-    const values = getValue(filters)
-    const value = values[column.name]?.value
+    const values = getValue(filters);
+    const value = values[column.name]?.value;
     if (value && Array.isArray(value) && value.length === 0) {
-        return false
+        return false;
     }
-    return !!value
-}
+    return !!value;
+};
 
 export const toFilters = (column: MetaColumn, values: FilterValues): Filters => {
     if (isStringFilterForm(column)) {
@@ -68,8 +68,8 @@ export const toFilters = (column: MetaColumn, values: FilterValues): Filters => 
                     }
                 ]
             } as IStringInput
-        }
-        return filter
+        };
+        return filter;
     }
     if (isThreeStateSwitchFilterForm(column)) {
         const value = values as BooleanFilterValues;
@@ -78,8 +78,8 @@ export const toFilters = (column: MetaColumn, values: FilterValues): Filters => 
                 type: 'boolean',
                 value: value.value
             } as IBooleanInput
-        }
-        return filter
+        };
+        return filter;
     }
 
     if (isDateRangeFilterForm(column)) {
@@ -93,17 +93,17 @@ export const toFilters = (column: MetaColumn, values: FilterValues): Filters => 
             },
             {
                 value: to,
-                operator: "LT"
+                operator: 'LT'
             }
-        ] : []
+        ] : [];
 
         const filter = {
             [column.name]: {
                 type: 'number',
                 filters
             } as INumberInput
-        }
-        return filter
+        };
+        return filter;
     }
 
     if(isMultiselectFilterForm(column)) {
@@ -114,23 +114,23 @@ export const toFilters = (column: MetaColumn, values: FilterValues): Filters => 
                     type: 'number',
                     filters: value.value?.map((value) => ({ value })) ?? []
                 } as INumberInput
-            }
+            };
         }
         return {
             [column.name]: {
                 type: 'strings',
                 filters: value.value?.map((value) => ({ value })) ?? []
             } as IStringsInput
-        }
+        };
     }
-}
+};
 
 export const toFormValues = (column: MetaColumn, filters: Filters): FilterValues => {
-    const values = getValue(filters)
+    const values = getValue(filters);
     return Object.keys(filters).reduce((all, key) => {
         if (column.name !== key) {
-            return all
+            return all;
         }
-        return {...all, ...values[key] }
+        return {...all, ...values[key] };
     }, {});
-}
+};

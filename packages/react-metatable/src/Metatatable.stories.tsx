@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { Menu } from 'antd';
-import {getDateRangeFilter, getMultiSelectFilter, getThreeStateFilter, getTextFilter} from "metaforms";
+import {getDateRangeFilter, getMultiSelectFilter, getThreeStateFilter, getTextFilter} from 'metaforms';
 import React, { useState } from 'react';
 import DataTable from './DataTable';
 import { renderValue } from './renderValue';
@@ -67,8 +67,13 @@ const LongTextNested = () => {
     return <div>This is a note for longtext</div>;
 };
 
-const data = [...Array(10)].map((_, i) => ({
-    id: `${i}`,
+interface IRow {
+    id: number;
+    content: string;
+}
+
+const data: IRow[] = [...Array(10)].map((_, i) => ({
+    id: i,
     children: [
         {
             longText: <LongTextNested />,
@@ -114,7 +119,7 @@ const data = [...Array(10)].map((_, i) => ({
     longText: 'Of course, lager! The only thing that can kill a vindaloo!',
 }));
 
-const Actions = ({ row }) => (
+const Actions = ({ row }: { row: IRow }) => (
     <Menu
         onClick={(e) => {
             e.domEvent.preventDefault();
@@ -128,7 +133,7 @@ const Actions = ({ row }) => (
 );
 
 export const Basic = (args) => {
-    const [colState, setColState] = useState<any>(columns);
+    const [colState, setColState] = useState<MetaColumn[]>(columns);
     const [selected, setSelected] = useState<number>();
 
     const handleColumnChange = (cols) => {

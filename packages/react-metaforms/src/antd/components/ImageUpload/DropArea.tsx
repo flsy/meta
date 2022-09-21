@@ -11,7 +11,7 @@ const Wrapper = styled.div<{ hovered?: boolean }>`
   justify-content: center;
 
   ${(props) =>
-    props.hovered &&
+        props.hovered &&
     `
     border-color: #007fff;
   `}
@@ -31,65 +31,65 @@ interface DropAreaProps {
 }
 
 const preventDragDefault = (e: React.DragEvent<HTMLDivElement>) => {
-  e.preventDefault();
-  e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 };
 
 const DropArea = ({ name, multiple, disabled, label, accept, ...props }: DropAreaProps) => {
-  const inputEl = useRef<HTMLInputElement>(null);
-  const [hovered, setHovered] = useState<boolean>(false);
+    const inputEl = useRef<HTMLInputElement>(null);
+    const [hovered, setHovered] = useState<boolean>(false);
 
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    preventDragDefault(e);
-    if (disabled) {
-      return;
-    }
-    setHovered(true);
-  };
+    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+        preventDragDefault(e);
+        if (disabled) {
+            return;
+        }
+        setHovered(true);
+    };
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    preventDragDefault(e);
-    if (disabled) {
-      return;
-    }
-    setHovered(false);
-  };
+    const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+        preventDragDefault(e);
+        if (disabled) {
+            return;
+        }
+        setHovered(false);
+    };
 
-  const onChange = async (fileList?: FileList) => props.onChange(fileList);
+    const onChange = async (fileList?: FileList) => props.onChange(fileList);
 
-  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-    preventDragDefault(e);
-    if (disabled) {
-      return;
-    }
+    const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+        preventDragDefault(e);
+        if (disabled) {
+            return;
+        }
 
-    const fileList = e.dataTransfer.files;
-    await onChange(fileList);
-    setHovered(false);
-  };
+        const fileList = e.dataTransfer.files;
+        await onChange(fileList);
+        setHovered(false);
+    };
 
-  const handleSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    await onChange(e?.target?.files || undefined);
-    if (inputEl?.current?.value) {
-      inputEl.current.value = '';
-    }
-  };
+    const handleSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        await onChange(e?.target?.files || undefined);
+        if (inputEl?.current?.value) {
+            inputEl.current.value = '';
+        }
+    };
 
-  const handleClick = () => inputEl.current?.click();
+    const handleClick = () => inputEl.current?.click();
 
-  return (
-    <Wrapper hovered={hovered} onDragEnter={handleDragEnter} onDrop={handleDrop} onDragLeave={handleDragLeave} onDragOver={preventDragDefault}>
-      <Button size="small" onClick={handleClick} disabled={disabled}>
-        {label}
-      </Button>
-      <input ref={inputEl} onChange={handleSelectFile} accept={accept} type="file" name={name} multiple={multiple} />
-    </Wrapper>
-  );
+    return (
+        <Wrapper hovered={hovered} onDragEnter={handleDragEnter} onDrop={handleDrop} onDragLeave={handleDragLeave} onDragOver={preventDragDefault}>
+            <Button size="small" onClick={handleClick} disabled={disabled}>
+                {label}
+            </Button>
+            <input ref={inputEl} onChange={handleSelectFile} accept={accept} type="file" name={name} multiple={multiple} />
+        </Wrapper>
+    );
 };
 
 DropArea.defaultProps = {
-  multiple: false,
-  accept: undefined,
+    multiple: false,
+    accept: undefined,
 };
 
 export default DropArea;
