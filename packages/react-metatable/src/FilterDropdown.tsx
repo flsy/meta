@@ -16,28 +16,28 @@ const Wrapper = styled.div`
 
 
 const FilterDropdown = ({ column, onFilter, filters }: IProps) => {
-    return (
-        <Wrapper>
-            <Form
-                size="small"
-                initialValues={toFormValues(column, filters)}
-                fields={column.filterForm}
-                onAction={({field, form}) => {
-                    if (field.id === 'reset') {
-                        form.resetForm({
-                            values: {}
-                        });
-                        return form.submitForm();
-                    }
-                }}
-                onSubmit={(values) => {
-                    const filters = toFilters(column, values as FilterValues);
-                    onFilter(filters);
-                }
-                }
-            />
-        </Wrapper>
-    );
+  return (
+    <Wrapper>
+      <Form
+        size="small"
+        initialValues={toFormValues(column, filters)}
+        fields={column.filterForm}
+        onAction={({field, form}) => {
+          if (field.id === 'reset') {
+            form.resetForm({
+              values: {}
+            });
+            return form.submitForm();
+          }
+        }}
+        onSubmit={(values) => {
+          const filters = toFilters(column, values as FilterValues);
+          onFilter(filters);
+        }
+        }
+      />
+    </Wrapper>
+  );
 };
 
 export default FilterDropdown;

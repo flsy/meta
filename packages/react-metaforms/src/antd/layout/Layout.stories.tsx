@@ -4,80 +4,80 @@ import Form from '../Form';
 import { getSubmitMeta, getTextMeta, getCheckboxMeta, getLayoutMeta } from 'metaforms';
 
 export const Default = () => (
-    <Form fields={[
-        getLayoutMeta({
-            fields: [
-                getTextMeta({
-                    name: 'term',
-                    label: 'Search term'
-                }),
-                getCheckboxMeta({
-                    name: 'valid',
-                    label: 'Valid'
-                })
-            ]
+  <Form fields={[
+    getLayoutMeta({
+      fields: [
+        getTextMeta({
+          name: 'term',
+          label: 'Search term'
         }),
-        getSubmitMeta({
-            name: 'submit',
-            label: 'Login',
+        getCheckboxMeta({
+          name: 'valid',
+          label: 'Valid'
         })
-    ]} onSubmit={(values, helpers) => {
-        action('onSubmit')(values);
-        helpers.setSubmitting(false);
-    }} />
+      ]
+    }),
+    getSubmitMeta({
+      name: 'submit',
+      label: 'Login',
+    })
+  ]} onSubmit={(values, helpers) => {
+    action('onSubmit')(values);
+    helpers.setSubmitting(false);
+  }} />
 );
 
 export const Horizontal = () => (
-    <Form fields={[
-        getLayoutMeta({
-            render: 'horizontal',
-            fields: [
-                getTextMeta({
-                    name: 'term',
-                    label: 'Search term'
-                }),
-                getCheckboxMeta({
-                    name: 'valid',
-                    label: 'Valid'
-                })
-            ]
+  <Form fields={[
+    getLayoutMeta({
+      render: 'horizontal',
+      fields: [
+        getTextMeta({
+          name: 'term',
+          label: 'Search term'
         }),
-        getSubmitMeta({
-            name: 'submit',
-            label: 'Login',
+        getCheckboxMeta({
+          name: 'valid',
+          label: 'Valid'
         })
-    ]} onSubmit={(values, helpers) => {
-        action('onSubmit')(values);
-        helpers.setSubmitting(false);
-    }} />
+      ]
+    }),
+    getSubmitMeta({
+      name: 'submit',
+      label: 'Login',
+    })
+  ]} onSubmit={(values, helpers) => {
+    action('onSubmit')(values);
+    helpers.setSubmitting(false);
+  }} />
 );
 
 export const Tabs = () => (
-    <Form fields={[
-        getLayoutMeta({
-            render: 'tabs',
-            fields: [
-                getTextMeta({
-                    name: 'term',
-                    label: 'Search term'
-                }),
-                getCheckboxMeta({
-                    name: 'valid',
-                    label: 'Valid'
-                })
-            ]
+  <Form fields={[
+    getLayoutMeta({
+      render: 'tabs',
+      fields: [
+        getTextMeta({
+          name: 'term',
+          label: 'Search term'
         }),
-        getSubmitMeta({
-            name: 'submit',
-            label: 'Login',
+        getCheckboxMeta({
+          name: 'valid',
+          label: 'Valid'
         })
-    ]} onSubmit={(values, helpers) => {
-        action('onSubmit')(values);
-        helpers.setSubmitting(false);
-    }} />
+      ]
+    }),
+    getSubmitMeta({
+      name: 'submit',
+      label: 'Login',
+    })
+  ]} onSubmit={(values, helpers) => {
+    action('onSubmit')(values);
+    helpers.setSubmitting(false);
+  }} />
 );
 
 
 export default {
-    title: 'AntdForm/Layout',
+  title: 'AntdForm/Layout',
 };

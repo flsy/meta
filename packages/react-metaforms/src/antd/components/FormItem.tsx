@@ -12,9 +12,9 @@ interface IProps {
 }
 
 const FormItem = ({ children, label, errorMessage, validation }: IProps) => (
-    <Form.Item required={isRequired(validation)} validateStatus={errorMessage ? 'error' : undefined} help={errorMessage} label={label}>
-        {children}
-    </Form.Item>
+  <Form.Item required={isRequired(validation)} validateStatus={errorMessage ? 'error' : undefined} help={errorMessage} label={label}>
+    {children}
+  </Form.Item>
 );
 
 export default FormItem;

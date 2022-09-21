@@ -8,15 +8,15 @@ interface IProps {
 }
 
 const ThreeStateSwitch = ({ name, value, onChange }: IProps) => {
-    const options = [
-        { label: 'Vše', value: undefined },
-        { label: 'Ano', value: true },
-        { label: 'Ne', value: false },
-    ];
+  const options = [
+    { label: 'Vše', value: undefined },
+    { label: 'Ano', value: true },
+    { label: 'Ne', value: false },
+  ];
 
-    return (
-        <Radio.Group name={name} options={options} onChange={(e) => onChange(e.target.value)} value={value} optionType="button" buttonStyle="solid" />
-    );
+  return (
+    <Radio.Group name={name} options={options} onChange={(e) => onChange(e.target.value)} value={value} optionType="button" buttonStyle="solid" />
+  );
 };
 
 export default ThreeStateSwitch;

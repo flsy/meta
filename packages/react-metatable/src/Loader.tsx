@@ -9,9 +9,9 @@ interface IProps {
 }
 
 const Loader: React.FC<IProps> = ({ text, size, isLoading = false, children }) => (
-    <Spin spinning={isLoading} tip={text} size={size} indicator={<LoadingOutlined spin={true} />}>
-        {children}
-    </Spin>
+  <Spin spinning={isLoading} tip={text} size={size} indicator={<LoadingOutlined spin={true} />}>
+    {children}
+  </Spin>
 );
 
 export default Loader;

@@ -3,17 +3,17 @@ import { minlength } from '../rules';
 import { validateField } from '../validate';
 
 describe('minlength', () => {
-    const validation: Validation[] = [minlength('min 3 characters', 3)];
+  const validation: Validation[] = [minlength('min 3 characters', 3)];
 
-    it('should return an error if value has too few characters', () => {
-        const errorMessage = validateField({}, { value: 'x', validation });
+  it('should return an error if value has too few characters', () => {
+    const errorMessage = validateField({}, { value: 'x', validation });
 
-        expect(errorMessage).toEqual('min 3 characters');
-    });
+    expect(errorMessage).toEqual('min 3 characters');
+  });
 
-    it('should not return an error if value has enough characters', () => {
-        const errorMessage = validateField({}, { value: 'name', validation });
+  it('should not return an error if value has enough characters', () => {
+    const errorMessage = validateField({}, { value: 'name', validation });
 
-        expect(errorMessage).toEqual(undefined);
-    });
+    expect(errorMessage).toEqual(undefined);
+  });
 });

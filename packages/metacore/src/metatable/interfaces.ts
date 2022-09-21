@@ -1,10 +1,10 @@
 import {
-    LayoutMetaProps,
-    IThreeStateSwitch,
-    MultiSelectMetaProps,
-    SelectMetaProps,
-    TextMetaProps,
-    DateRangeMetaProps
+  LayoutMetaProps,
+  IThreeStateSwitch,
+  MultiSelectMetaProps,
+  SelectMetaProps,
+  TextMetaProps,
+  DateRangeMetaProps
 } from '../metaforms/interfaces';
 
 interface Column {
