@@ -47,6 +47,15 @@ const columns: MetaColumn[] = [
         filterForm: getThreeStateFilter(),
     },
     {
+        name: 'system',
+        type: 'multiselect',
+        label: 'System',
+        filterForm: getMultiSelectFilter({
+            showFilterInput: false,
+            options: new Array(8).fill(null).map((_, index) => ({ label: `System #${index}`, value: index })),
+        }),
+    },
+    {
         name: 'level',
         type: 'multiselect',
         label: 'Level',
@@ -76,6 +85,7 @@ const data = new Array(daysAgo).fill(null).map((d, index) => getDateDaysAgo(inde
     createdBy: { id: 1, name: 'Joe' },
     isPublished: randomBoolean(),
     threeStateSwitch: randomBoolean(),
+    system: 'system',
     level: randomInArray( [
         'error',
         'warning',

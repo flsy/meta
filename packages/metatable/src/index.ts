@@ -10,6 +10,8 @@ import {
     MetaColumn
 } from "@falsy/metacore";
 
+const isNumberValue = (values: StringsFilterValues | NumberFilterValues): values is NumberFilterValues => values.value.map(value => typeof value === 'number').find((_, i) => i === 0) ?? false
+
 export type FilterValues = StringFilterValues | BooleanFilterValues | StringsFilterValues | NumberFilterValues;
 type StringFilterValues = {
     operator?: string;
@@ -105,14 +107,21 @@ export const toFilters = (column: MetaColumn, values: FilterValues): Filters => 
     }
 
     if(isMultiselectFilterForm(column)) {
-        const value = values as StringsFilterValues;
-        const filter = {
+        const value = values as StringsFilterValues | NumberFilterValues;
+        if (isNumberValue(value)) {
+            return {
+                [column.name]: {
+                    type: 'number',
+                    filters: value.value?.map((value) => ({ value })) ?? []
+                } as INumberInput
+            }
+        }
+        return {
             [column.name]: {
                 type: 'strings',
                 filters: value.value?.map((value) => ({ value })) ?? []
             } as IStringsInput
         }
-        return filter
     }
 }
 
