@@ -39,27 +39,23 @@ interface CommonProps {
   visible?: { targetName: string, value: any };
 }
 
-export type MultiSelectMetaValue = string | number;
 export interface MultiSelectMetaProps extends CommonProps {
   type: 'multiselect';
-  value?: MultiSelectMetaValue[];
   disabled?: boolean;
   placeholder?: string;
-  options?: Array<{ value: MultiSelectMetaValue; label: string }>;
+  options?: Array<{ value: string | number; label: string }>;
   showSelectedCounter?: boolean;
   showFilterInput?: boolean;
 }
 
 export interface TextMetaProps extends CommonProps {
   type: 'text';
-  value?: string;
   disabled?: boolean;
   placeholder?: string;
 }
 
 export interface HiddenMetaProps extends CommonProps {
   type: 'hidden';
-  value?: string;
 }
 
 export interface SubmitMetaProps extends Omit<CommonProps, 'errorMessage' | 'validation'> {
@@ -69,7 +65,6 @@ export interface SubmitMetaProps extends Omit<CommonProps, 'errorMessage' | 'val
 
 export interface VariableListMetaProps extends CommonProps {
   type: 'variable-list';
-  value: string;
   disabled?: boolean;
   placeholder?: string;
   variables: { name: string; description: string }[];
@@ -77,33 +72,28 @@ export interface VariableListMetaProps extends CommonProps {
 
 export interface ImageMetaProps extends CommonProps {
   type: 'image';
-  value: string | string[];
   multiple?: boolean;
 }
 
 export interface FileMetaProps extends CommonProps {
   type: 'file';
-  value?: { name: string; data: string };
   accept?: string;
 }
 
 export interface PasswordMetaProps extends CommonProps {
   type: 'password';
-  value: string;
   disabled?: boolean;
   placeholder?: string;
 }
 
 export interface TextareaMetaProps extends CommonProps {
   type: 'textarea'
-  value: string;
   disabled?: boolean;
   placeholder?: string;
   rows?: number;
 }
 export interface DateMetaProps extends CommonProps {
   type: 'date'
-  value: string;
   disabled?: boolean;
   placeholder?: string;
   withTimePicker?: boolean;
@@ -111,7 +101,6 @@ export interface DateMetaProps extends CommonProps {
 
 export interface NumberMetaProps extends CommonProps {
   type: 'number'
-  value?: number;
   disabled?: boolean;
   placeholder?: string;
 }
@@ -120,7 +109,6 @@ export interface SelectMetaProps extends CommonProps {
   type: 'select';
   disabled?: boolean;
   placeholder?: string;
-  value?: string;
   options: {
     value: string;
     label?: string;
@@ -130,19 +118,16 @@ export interface SelectMetaProps extends CommonProps {
 export interface CheckboxMetaProps extends CommonProps {
   type: 'checkbox';
   disabled?: boolean;
-  value?: boolean;
 }
 
 
 export interface JsonMetaProps extends CommonProps {
   type: 'json'
-  value?: string;
   disabled?: boolean;
 }
 
 export interface DateRangeMetaProps extends CommonProps {
   type: 'dateRange';
-  value?: [number, number];
   withTimePicker?: boolean;
   presets?: {
     lastDay?: string;
@@ -153,12 +138,10 @@ export interface DateRangeMetaProps extends CommonProps {
 
 export interface MultistringMetaProps extends CommonProps {
   type: 'multistring'
-  value?: string;
 }
 
 export interface IThreeStateSwitch extends CommonProps {
   type: 'threeStateSwitch'
-  value?: boolean;
 }
 
 export interface ObjectMetaProps extends CommonProps {
@@ -168,7 +151,6 @@ export interface ObjectMetaProps extends CommonProps {
 
 export interface AutocompleteMetaProps extends CommonProps {
   type: 'autocomplete',
-  value?: string;
   disabled?: boolean;
   placeholder?: string;
   options: Array<{ value: string; }>;

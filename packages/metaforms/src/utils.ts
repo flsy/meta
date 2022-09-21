@@ -1,7 +1,6 @@
 import { find, isRight, Left, Maybe, propEq, Right } from 'fputils'
-import { MetaFieldValue, Validation } from '@falsy/metacore'
-import { validateField } from './validate/validate';
-import { MetaFormErrorMessages, MetaField, MetaFormValues } from '@falsy/metacore'
+import { Validation } from '@falsy/metacore'
+import { MetaFormErrorMessages, MetaField } from '@falsy/metacore'
 import { lensPath, set, view, Lens, curry } from 'ramda'
 
 export const isRequired = (validationRules: Validation[] = []): boolean => !!find(propEq('type', 'required'), validationRules);
@@ -45,49 +44,8 @@ export const setFieldValidation = curry((fieldName: string, value: Validation[],
   setFieldProperty('validation', fieldName, value, fields)
 )
 
-export const setFieldValue = curry((fieldName: string, value: MetaFieldValue, fields: MetaField[]): MetaField[] =>
-  setFieldProperty('value', fieldName, value, fields)
-)
-
-export const setValues = (values: any, fields: MetaField[]): any =>
-  fields.map((f) => {
-    const nameLens = lensPath(f.name.split('.'));
-
-    if ((f as any).fields) {
-      return { ...f, value: view(nameLens, values), fields: setValues(values, (f as any).fields) };
-    }
-
-    return { ...f, value: view(nameLens, values) };
-  });
-
-/**
- * @Deprecatred values are not part form definition any more
- *
- * @param {MetaField[]} fields
- * @return {MetaFormValues}
- */
-export const getValues = (fields: MetaField[]): MetaFormValues =>
-  fields.reduce((acc, f) => {
-    const nameLens = lensPath(f.name.split('.'));
-
-    if ((f as any).fields) {
-      return {...acc, ...getValues((f as any).fields)}
-    }
-
-    return set(nameLens, (f as any).value, acc);
-  }, {});
-
 export const getErrorMessages = (fields: MetaField[]): MetaFormErrorMessages =>
   fields.reduce((acc, f) => {
     const nameLens = lensPath(f.name.split('.'));
     return (f as any).errorMessage ? set(nameLens, (f as any).errorMessage, acc) : acc;
   }, {});
-
-export const validateForm = (fields: MetaField[]): MetaField[] => {
-  const values = getValues(fields);
-  return fields.map((field) => {
-    const errorMessage = validateField(values, field);
-    return { ...field, errorMessage }
-  })
-}
-

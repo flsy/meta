@@ -89,7 +89,6 @@ export const Password = (args) => (
         label: args.label,
         disabled: args.disabled,
         placeholder: args.placeholder,
-        value: '',
         validation: [
             required('Required field'),
             minlength('Enter at least 2 characters', 2)
@@ -119,7 +118,6 @@ export const Textarea = (args) => (
         disabled: args.disabled,
         placeholder: args.placeholder,
         rows: args.rows,
-        value: '',
         validation: [
           required('Required field'),
           minlength('Enter at least 2 characters', 2)
@@ -147,7 +145,6 @@ export const Image = (args) => (
       getImageMeta({
         name: 'image',
         label: args.label,
-        value: '',
         validation: [
           required('Required field'),
         ],
@@ -196,7 +193,6 @@ export const Date = (args) => (
       getDateMeta({
         name: 'date',
         label: args.label,
-        value: '',
         disabled: args.disabled,
         placeholder: args.placeholder,
         withTimePicker: args.withTimePicker,
