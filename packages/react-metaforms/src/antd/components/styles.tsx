@@ -12,9 +12,9 @@ const AsteriskStyled = styled.span`
 `;
 
 const Asterisk: React.FC = () => (
-  <AsteriskStyled>
-    <Tooltip title="Required field">*</Tooltip>
-  </AsteriskStyled>
+    <AsteriskStyled>
+        <Tooltip title="Required field">*</Tooltip>
+    </AsteriskStyled>
 );
 
 type Props = {
@@ -25,11 +25,11 @@ type Props = {
 };
 
 export const Label: React.FC<Props> = ({ hasError, fieldId, label, isRequired, children }) => (
-  <LabelStyled hasError={hasError} htmlFor={fieldId} data-test-id={`form-label-for-${fieldId}`}>
-    {label}
-    {isRequired && <Asterisk />}
-    {children}
-  </LabelStyled>
+    <LabelStyled hasError={hasError} htmlFor={fieldId} data-test-id={`form-label-for-${fieldId}`}>
+        {label}
+        {isRequired && <Asterisk />}
+        {children}
+    </LabelStyled>
 );
 
 export const InputWrapper = styled.div`
@@ -48,5 +48,5 @@ const ErrorMessageStyled = styled.div`
 `;
 
 export const ErrorMessage: React.FC<{ message?: string; name: string }> = ({ message, name }) => (
-  <ErrorMessageStyled data-test-id={`form-error-message-${name}`}>{message}</ErrorMessageStyled>
+    <ErrorMessageStyled data-test-id={`form-error-message-${name}`}>{message}</ErrorMessageStyled>
 );

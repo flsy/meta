@@ -13,9 +13,9 @@ export interface IProps {
 }
 
 const Form = ({ fields, onSubmit, formikProps, size, initialValues, onAction }: IProps) => (
-  <$Form layout="vertical" size={size} component="div">
-    <MetaForm values={initialValues} onSubmit={onSubmit} fields={fields} formikProps={formikProps} components={getComponent} onAction={onAction} />
-  </$Form>
+    <$Form layout="vertical" size={size} component="div">
+        <MetaForm values={initialValues} onSubmit={onSubmit} fields={fields} formikProps={formikProps} components={getComponent} onAction={onAction} />
+    </$Form>
 );
 
 export default Form;

@@ -3,11 +3,11 @@ import {
     getMultiSelectFilter,
     getThreeStateFilter,
     getTextFilter
-} from "metaforms";
+} from 'metaforms';
 import React, { useState } from 'react';
 import DataTable from './DataTable';
-import {Filters, Sort, MetaColumn} from "@falsy/metacore";
-import {renderValue} from "./renderValue";
+import {Filters, Sort, MetaColumn} from '@falsy/metacore';
+import {renderValue} from './renderValue';
 
 import 'antd/dist/antd.variable.min.css';
 
@@ -15,7 +15,7 @@ const getDateDaysAgo = (days: number): Date => {
     const now = new Date();
 
     return new Date(now.getFullYear(), now.getMonth(), now.getDate() - days);
-}
+};
 const randomNumber = (min: number, max: number): number => Math.floor(Math.random() * (max - min) + min);
 const randomInArray = (array: string[]): string => array[randomNumber(0, array.length)];
 const randomBoolean = (): boolean => Math.random() < 0.5;
@@ -28,7 +28,7 @@ const columns: MetaColumn[] = [
         isSortable: true,
         filterForm: getDateRangeFilter({ label: 'Čas vytvoření', withTimePicker: true,
             presets: {
-             lastMonth: 'Minuly mesic'
+                lastMonth: 'Minuly mesic'
             }
         }),
     },
@@ -114,13 +114,13 @@ export const WithFilters = () => {
                 onFilterChange={(f) => setFilters((filters) => ({...filters, ...f}))}
                 render={(value, column) => {
                     if (column.name === 'createdAt') {
-                        return value.readable
+                        return value.readable;
                     }
                     if (column.name === 'createdBy') {
-                        return value.name
+                        return value.name;
                     }
 
-                    return  renderValue(value, column)
+                    return  renderValue(value, column);
                 }}
             />
         </>

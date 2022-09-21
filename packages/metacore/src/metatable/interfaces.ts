@@ -5,7 +5,7 @@ import {
     SelectMetaProps,
     TextMetaProps,
     DateRangeMetaProps
-} from "../metaforms/interfaces";
+} from '../metaforms/interfaces';
 
 interface Column {
     name: string;
