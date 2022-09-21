@@ -28,36 +28,36 @@ const getImage = async (file: File) => imageReader(file);
 const isMultiple = (p: ImageUploadProps): p is IImageUploadMultipleProps => p.multiple;
 
 const ImageUpload = (props: ImageUploadProps) => {
-    const { name, label, error, multiple } = props;
+  const { name, label, error, multiple } = props;
 
-    const handleRemove = (index: number) => {
-        if (isMultiple(props)) {
-            const f = props.value.filter((_, i) => index === i);
-            return props.onChange(f);
-        }
+  const handleRemove = (index: number) => {
+    if (isMultiple(props)) {
+      const f = props.value.filter((_, i) => index === i);
+      return props.onChange(f);
+    }
 
-        props.onChange(undefined);
-    };
+    props.onChange(undefined);
+  };
 
-    const handleChange = async (fileList?: FileList) => {
-        const multiImages = await Promise.all(Array.from(fileList || []).map(async (file) => getImage(file)));
-        const filteredMi: string[] = multiImages.filter((mi): mi is string => mi !== undefined);
+  const handleChange = async (fileList?: FileList) => {
+    const multiImages = await Promise.all(Array.from(fileList || []).map(async (file) => getImage(file)));
+    const filteredMi: string[] = multiImages.filter((mi): mi is string => mi !== undefined);
 
-        if (isMultiple(props)) {
-            return props.onChange(filteredMi);
-        } else if (filteredMi) {
-            return props.onChange(filteredMi[0]);
-        }
-    };
+    if (isMultiple(props)) {
+      return props.onChange(filteredMi);
+    } else if (filteredMi) {
+      return props.onChange(filteredMi[0]);
+    }
+  };
 
-    return (
-        <InputWrapper>
-            {label && <Label fieldId={name} label={label} hasError={!!error} />}
-            <DropArea name={name} onChange={handleChange} multiple={multiple} label="Vybrat" accept="image/*" />
-            {props.value && <ImagePreview onRemove={handleRemove} base64={isMultiple(props) ? props.value : [props.value]} />}
-            {error && <ErrorMessage message={error} name={name} />}
-        </InputWrapper>
-    );
+  return (
+    <InputWrapper>
+      {label && <Label fieldId={name} label={label} hasError={!!error} />}
+      <DropArea name={name} onChange={handleChange} multiple={multiple} label="Vybrat" accept="image/*" />
+      {props.value && <ImagePreview onRemove={handleRemove} base64={isMultiple(props) ? props.value : [props.value]} />}
+      {error && <ErrorMessage message={error} name={name} />}
+    </InputWrapper>
+  );
 };
 
 export default ImageUpload;

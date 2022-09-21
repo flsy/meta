@@ -17,9 +17,9 @@ const SSubmit = styled.div`
 `;
 
 export const Submit = ({ fullWidth, isLoading, ...props }: ISubmitProps) => (
-    <SSubmit>
-        <Button {...props} htmlType="submit" type="primary" loading={isLoading} style={fullWidth ? { width: '100%' } : {}}>
-            {props.label}
-        </Button>
-    </SSubmit>
+  <SSubmit>
+    <Button {...props} htmlType="submit" type="primary" loading={isLoading} style={fullWidth ? { width: '100%' } : {}}>
+      {props.label}
+    </Button>
+  </SSubmit>
 );

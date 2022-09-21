@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 
 
 const HorizontalLayout: React.FC = ({ children }) => {
-    return <Wrapper>{children}</Wrapper>;
+  return <Wrapper>{children}</Wrapper>;
 };
 
 export default HorizontalLayout;

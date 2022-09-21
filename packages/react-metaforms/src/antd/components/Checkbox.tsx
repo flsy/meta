@@ -10,9 +10,9 @@ interface ICheckBoxProps {
 }
 
 const Checkbox = React.forwardRef(({ name, label, onChange, value, disabled }: ICheckBoxProps, ref: React.Ref<HTMLInputElement>) => (
-    <$Checkbox disabled={disabled} name={name} ref={ref} checked={value} onChange={(event) => onChange?.(event.target.checked)}>
-        {label}
-    </$Checkbox>
+  <$Checkbox disabled={disabled} name={name} ref={ref} checked={value} onChange={(event) => onChange?.(event.target.checked)}>
+    {label}
+  </$Checkbox>
 ));
 
 Checkbox.displayName = 'Checkbox';
