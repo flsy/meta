@@ -11,7 +11,7 @@ interface InputEvents {
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-export type InputProps = (TextMetaProps | NumberMetaProps | PasswordMetaProps) & InputEvents;
+export type InputProps = (TextMetaProps & { value: string } | NumberMetaProps & { value: number } | PasswordMetaProps & { value: string }) & InputEvents;
 
 // TODO: ref here is a bit tricky to type
 const Input = React.forwardRef((props: InputProps, ref: any) => {

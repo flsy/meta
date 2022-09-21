@@ -11,8 +11,10 @@ import {
   getIn,
   FieldArray,
   ArrayHelpers,
+  FieldHelperProps,
+  FieldInputProps,
+  FieldMetaProps
 } from 'formik';
-import { FieldHelperProps, FieldInputProps, FieldMetaProps } from 'formik/dist/types'
 import {
   MetaField,
   MetaFormValues,
@@ -21,8 +23,8 @@ import {
   ActionMetaProps,
   LayoutMetaProps,
 } from '@falsy/metacore';
-import { validateField } from 'metaforms/lib/validate/validate';
-import {isObject} from "../antd/utils";
+import { validateField } from 'metaforms';
+import {isAction, isLayout, isObject} from "../antd/utils";
 
 type FormContext = FormikContextType<MetaFormValues>;
 type FormHelpers = FormikHelpers<MetaFormValues>
@@ -45,10 +47,10 @@ export interface IProps {
   onAction?: (p: { field: ActionMetaProps, form: FormContext }, e: React.MouseEvent<HTMLElement>) => void;
 }
 
-export const isControlAction = (c: ComponentRenderProps): c is ActionRenderProps => c.field.type === 'action';
-export const isControlArray = (c: ComponentRenderProps): c is ArrayRenderProps =>  c.field.type !== 'action' && c.field.type !== 'layout' && c.field.array === true;
+export const isControlAction = (c: ComponentRenderProps): c is ActionRenderProps => isAction(c.field);
+export const isControlArray = (c: ComponentRenderProps): c is ArrayRenderProps => !isAction(c.field) && !isLayout(c.field) && c.field.array === true;
 export const isControlObject = (c: ComponentRenderProps): c is ObjectRenderProps => isObject(c.field);
-export const isControlLayout = (c: ComponentRenderProps): c is LayoutRenderProps => c.field.type === 'layout';
+export const isControlLayout = (c: ComponentRenderProps): c is LayoutRenderProps => isLayout(c.field);
 
 export default (props: IProps) => {
   const firstEl = useRef<any>();
