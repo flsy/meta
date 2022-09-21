@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 import Form from '../Form';
-import { getSubmitMeta, getTextMeta, required, getObjectMeta, getCheckboxMeta, getLayoutMeta } from 'metaforms';
+import { getSubmitMeta, getTextMeta, getCheckboxMeta, getLayoutMeta } from 'metaforms';
 
 export const Default = () => (
   <Form fields={[
