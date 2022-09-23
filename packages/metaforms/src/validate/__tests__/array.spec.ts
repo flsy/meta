@@ -1,42 +1,43 @@
-import { array, isNumber, required } from '../rules';
-import { validateField } from '../validate';
+import { arrayRule, isNumberRule, requiredRule } from '../rules';
+import { validateField } from '../validateForm';
+import {getTextMeta} from '../../helpers';
 
-describe('array validation', () => {
+describe('arrayRule validation', () => {
   const validation = [
-    array(
-      [required('This is required'), isNumber('This doesn\'t look like a number')],
-      [required('This is also required')],
-      [required('Third item is also required')],
+    arrayRule(
+      [requiredRule('This is required'), isNumberRule('This doesn\'t look like a number')],
+      [requiredRule('This is also required')],
+      [requiredRule('Third item is also required')],
     ),
   ];
 
   it('should return an error message when field value is undefined', () => {
-    const errorMessage = validateField({}, { type: 'text', value: undefined, validation });
+    const errorMessage = validateField(getTextMeta({ name: 'a', validation }), { a: undefined });
     expect(errorMessage).toEqual('This is required');
   });
 
-  it('should return an error message when the first array value is empty', () => {
-    const errorMessage = validateField({}, { type: 'text', value: [], validation });
+  it('should return an error message when the first arrayRule value is empty', () => {
+    const errorMessage = validateField(getTextMeta({ name: 'a', validation }), { a: [] });
     expect(errorMessage).toEqual('This is required');
   });
 
-  it('should return an error message when the first array value is not number', () => {
-    const errorMessage = validateField({}, { type: 'text', value: ['x'], validation });
+  it('should return an error message when the first arrayRule value is not number', () => {
+    const errorMessage = validateField(getTextMeta({ name: 'a', validation }), { a: ['x'] });
     expect(errorMessage).toEqual('This doesn\'t look like a number');
   });
 
-  it('should return an error message when the second array value is empty', () => {
-    const errorMessage = validateField({}, { type: 'text', value: [1], validation });
+  it('should return an error message when the second arrayRule value is empty', () => {
+    const errorMessage = validateField(getTextMeta({ name: 'a', validation }), { a: [1] });
     expect(errorMessage).toEqual('This is also required');
   });
 
-  it('should return an error message when the third array value is empty', () => {
-    const errorMessage = validateField({}, { type: 'text', value: [1, 2], validation });
+  it('should return an error message when the third arrayRule value is empty', () => {
+    const errorMessage = validateField(getTextMeta({ name: 'a', validation }), { a: [1, 2] });
     expect(errorMessage).toEqual('Third item is also required');
   });
 
   it('should succeed', () => {
-    const errorMessage = validateField({}, { type: 'text', value: [1, 2, 3], validation });
+    const errorMessage = validateField(getTextMeta({ name: 'a',  validation }), { a: [1, 2, 3] });
     expect(errorMessage).toEqual(undefined);
   });
 });

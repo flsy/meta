@@ -18,10 +18,7 @@ import {
   MetaFieldValue,
   MetaFormValues,
   IsTruthy,
-  MetaField
 } from '@falsy/metacore';
-import {isAction, isLayout, isSubmit} from '../utils';
-import * as console from 'console';
 
 const isString = (value: any): value is string => typeof value === 'string';
 const isBoolean = (value: any): value is boolean => typeof value === 'boolean';
@@ -178,7 +175,7 @@ const mustMatchCaseInsensitive = (
   return isString(value) && isString(target) && !equalIgnoreCase(target, value) ? rule.message : undefined;
 };
 
-export const validate = (fieldValue: unknown, rule: Validation, formData: any): Optional<string> => {
+export const validate = (fieldValue: unknown, rule: Validation, values: any): Optional<string> => {
   switch (rule.type) {
   case 'required':
     return isEmpty(fieldValue, rule);
@@ -202,13 +199,13 @@ export const validate = (fieldValue: unknown, rule: Validation, formData: any): 
     return getErrorIfMatchesRegEx(fieldValue, rule);
 
   case 'mustmatch':
-    return mustMatch(fieldValue, rule, formData);
+    return mustMatch(fieldValue, rule, values);
 
   case 'mustmatchcaseinsensitive':
-    return mustMatchCaseInsensitive(fieldValue, rule, formData);
+    return mustMatchCaseInsensitive(fieldValue, rule, values);
 
   case 'mustnotcontain':
-    return mustNotContain(fieldValue, rule, formData);
+    return mustNotContain(fieldValue, rule, values);
 
   case 'min':
     return isLessThanMin(fieldValue, rule);
@@ -232,7 +229,7 @@ export const validate = (fieldValue: unknown, rule: Validation, formData: any): 
       }
 
       const errorMessages = curr
-        .map((r) => validate(fieldValue ? (fieldValue as unknown[])[index] : undefined, r, formData))
+        .map((r) => validate(fieldValue ? (fieldValue as unknown[])[index] : undefined, r, values))
         .filter((error) => error);
       return errorMessages.length > 0 ? errorMessages[0] : acc;
     }, undefined);
@@ -240,10 +237,4 @@ export const validate = (fieldValue: unknown, rule: Validation, formData: any): 
   default:
     return undefined;
   }
-};
-
-export const validateField = <T>(formData: MetaFieldValue | undefined, field: MetaField, value: T): Optional<string> => {
-  // submit does  not have validation field
-  const errorMessages = (!isSubmit(field) && !isAction(field) && !isLayout(field) && field.validation || []).map((rule) => validate(value, rule, formData)).filter((error) => error);
-  return errorMessages.length > 0 ? errorMessages[0] : undefined;
 };

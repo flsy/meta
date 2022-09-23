@@ -1,6 +1,6 @@
 import {validateForm} from '../validateForm';
 import {getCheckboxMeta, getObjectMeta, getSubmitMeta, getTextMeta} from '../../helpers';
-import {requiredRule} from '../rules';
+import {requiredRule, isTruthyRule} from '../rules';
 
 describe('validateForm', () => {
 
@@ -48,7 +48,7 @@ describe('validateForm', () => {
         name: 'search',
         label: 'Search',
         validation: [
-          requiredRule('Object field is required'),
+          isTruthyRule('Object field is required'),
         ],
         fields: [
           getTextMeta({

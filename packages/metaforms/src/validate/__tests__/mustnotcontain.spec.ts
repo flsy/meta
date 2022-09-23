@@ -1,30 +1,31 @@
-import { mustnotcontain } from '../rules';
-import { validateField } from '../validate';
+import { mustnotcontainRule } from '../rules';
+import { validateField } from '../validateForm';
+import {getTextMeta} from '../../helpers';
 
 describe('mustnotcontain', () => {
   const message = 'Please enter a valid password, it can`t contain your username';
-  const validation = [mustnotcontain(message, 'username')];
+  const validation = [mustnotcontainRule(message, 'username')];
 
   it('returns error when it contains', () => {
-    const errorMessage = validateField({ username: 'Honza' }, { type: 'text', value: 'MyHonza', validation });
+    const errorMessage = validateField(getTextMeta({ name: 'a', validation }), { username: 'Honza', a: 'MyHonza' });
 
     expect(errorMessage).toEqual(message);
   });
 
   it('returns error when it equals', () => {
-    const errorMessage = validateField({ username: 'Honza' }, { type: 'text', value: 'HonzA', validation });
+    const errorMessage = validateField(getTextMeta({ name: 'a', validation }), { username: 'Honza', a: 'HonzA', });
 
     expect(errorMessage).toEqual(message);
   });
 
   it('dos not return error when different value', () => {
-    const errorMessage = validateField({ username: 'Honza' }, { type: 'text', value: 'Frank', validation });
+    const errorMessage = validateField(getTextMeta({ name: 'a', validation }), { username: 'Honza', a: 'Frank' });
 
     expect(errorMessage).toEqual(undefined);
   });
 
   it('dos not return error when no form field in form', () => {
-    const errorMessage = validateField({ myName: 'Bob' }, { type: 'text', value: 'email@domain.com', validation });
+    const errorMessage = validateField(getTextMeta({ name: 'a', validation }), { myName: 'Bob', a: 'email@domain.com' });
 
     expect(errorMessage).toEqual(undefined);
   });
