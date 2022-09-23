@@ -79,7 +79,7 @@ const MetaForm = (props: IProps) => {
       }
     }
 
-    if(field.type === 'action') {
+    if (isAction(field)) {
       return props.components({
         onAction: (e) => {
           props.onAction({ form, field }, e);
@@ -88,7 +88,7 @@ const MetaForm = (props: IProps) => {
       });
     }
 
-    if(field.type === 'layout') {
+    if(isLayout(field)) {
       const children = field?.fields?.map((f: MetaField) => <Field key={f.name} field={{ ...f, name: `${field.name}${f.name}` }} />);
 
       return props.components({ children, field, form });
@@ -108,7 +108,7 @@ const MetaForm = (props: IProps) => {
       );
     }
 
-    if(field.type === 'object') {
+    if(isObject(field)) {
       const children = field?.fields?.map((f: MetaField) => {
         const name = `${field.name}.${f.name}`;
         return <Field key={name} field={{ ...f, name }} />;
