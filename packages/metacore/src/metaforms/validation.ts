@@ -84,6 +84,10 @@ export interface IsJson {
   type: 'isJson';
   message: string;
 }
+export interface IsTruthy {
+  type: 'isTruthy';
+  message: string;
+}
 
 export type Validation =
   | ArrayValidation
@@ -100,4 +104,5 @@ export type Validation =
   | Min
   | Max
   | IsNumber
-  | IsJson;
+  | IsJson
+  | IsTruthy;

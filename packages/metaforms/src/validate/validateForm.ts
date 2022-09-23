@@ -1,17 +1,11 @@
-// todo: nahradit tu fci v metaforms
+import {MetaField, MetaFieldValue, MetaFormErrorMessages, Validation} from '@falsy/metacore';
+import { validateField} from './validate';
+import { find, propEq} from 'fputils';
+import {isAction, isLayout, isObject} from '../utils';
 
-import {MetaField, MetaFieldValue, MetaFormErrorMessages} from '@falsy/metacore';
-import { validate } from './validate';
-import {Optional} from 'fputils';
-import {isSubmit, isAction, isLayout} from 'react-metaforms/lib/antd/utils';
+export const isRequired = (validationRules: Validation[] = []): boolean => !!find(propEq('type', 'required'), validationRules);
 
-const getErrorMessage = (formData: MetaFieldValue | undefined, field: MetaField, value: any): Optional<string> => {
-  // submit does  not have validation field
-  const errorMessages = (!isSubmit(field) && !isAction(field) && !isLayout(field) && field.validation || []).map((rule) => validate(value, rule, formData)).filter((error) => error);
-  return errorMessages.length > 0 ? errorMessages[0] : undefined;
-};
-
-export const validateForm = (formData: any | undefined, fields: MetaField[]): MetaFormErrorMessages => {
+export const validateForm = (fields: MetaField[], formData?: MetaFieldValue): MetaFormErrorMessages => {
   const errors: MetaFormErrorMessages = {};
 
   const [field, ...rest] = fields;
@@ -21,27 +15,34 @@ export const validateForm = (formData: any | undefined, fields: MetaField[]): Me
 
   const path = field.name;
   const value = formData?.[path];
-  if (!isAction(field) && !isLayout(field) && field.array) {
+  if (isObject(field)) {
+    // try to validate root field
+    const error = validateField(formData, field, value);
 
-    const err = (value ? (value.length === 0 ? [undefined]: value) : [undefined]).map((v: any) => getErrorMessage(formData[path], field, v));
-    errors[path] = err;
-  } else if (field.type === 'object') {
-    //try to validate root field
-    const error = getErrorMessage(formData, field, value);
     if (error) {
       errors[path] = error;
     } else {
-      // continue with validation the children
-      const er = validateForm(formData[path], field.fields);
-      if (er) {
-        errors[path] = er;
+      // continue with validation of children
+      if (!isAction(field) && !isLayout(field) && field.array) {
+        errors[path] = value.map((val: any) => validateForm(field.fields, val));
+      } else {
+
+        const er = validateForm(field.fields, value);
+        if (er) {
+          errors[path] = er;
+        }
       }
     }
   } else {
-    const error = getErrorMessage(formData, field, value);
-    if (error) {
-      errors[path] = error;
+    if (!isAction(field) && !isLayout(field) && field.array) {
+      const err = (value ? (value.length === 0 ? [undefined]: value) : [undefined]).map((v: any) => validateField(value, field, v));
+      errors[path] = err;
+    } else {
+      const error = validateField(formData, field, value);
+      if (error) {
+        errors[path] = error;
+      }
     }
   }
-  return {...errors, ...validateForm(formData, rest) };
+  return {...errors, ...validateForm(rest, formData) };
 };

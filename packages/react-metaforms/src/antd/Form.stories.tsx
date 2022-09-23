@@ -4,11 +4,12 @@ import Form from './Form';
 import {
   getSubmitMeta,
   getTextMeta,
-  required,
-  minlength,
+  requiredRule,
+  minlengthRule,
   getObjectMeta,
   getCheckboxMeta,
-  getActionMeta, getLayoutMeta,
+  getActionMeta,
+  getLayoutMeta,
 } from 'metaforms';
 
 export const Array = (args) => (
@@ -34,8 +35,8 @@ export const Array = (args) => (
       array: true,
       label: 'Role',
       validation: [
-        required('This field is required'),
-        minlength('Too short', 2)
+        requiredRule('This field is required'),
+        minlengthRule('Too short', 2)
       ],
     },),
     getSubmitMeta({
@@ -65,7 +66,7 @@ export const InteractiveVisibility = (args) => (
           getTextMeta({
             name: 'term',
             label: 'Search by term',
-            validation: [required('This is required')],
+            validation: [requiredRule('This is required')],
           }),
         ]
       }),

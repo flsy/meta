@@ -24,8 +24,9 @@ import {
   isSelect,
   isSubmit,
   isText,
-  isTextarea, isThreeStateSwitch,
-} from './utils';
+  isTextarea,
+  isThreeStateSwitch,
+} from 'metaforms';
 import ArrayControl from './components/ArrayControl';
 import ObjectControl from './components/ObjectControl';
 import HorizontalLayout from './layout/HorizontalLayout';

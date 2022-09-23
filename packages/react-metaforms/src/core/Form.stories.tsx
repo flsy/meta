@@ -1,6 +1,6 @@
 import MetaForm, { isControlLayout } from './Form';
 import React from 'react';
-import {getObjectMeta, getSubmitMeta, getTextMeta, isRequired, required} from 'metaforms';
+import {getObjectMeta, getSubmitMeta, getTextMeta, isRequired, requiredRule } from 'metaforms';
 import { MetaField } from '@falsy/metacore';
 import { action } from '@storybook/addon-actions';
 import { isControlArray, isControlObject, isControlAction } from './Form';
@@ -18,14 +18,14 @@ const fields: MetaField[] = [
     name: 'roles',
     array: true,
     validation: [
-      required('Please enter at least one role'),
+      requiredRule('Please enter at least one role'),
     ],
     fields: [
       getTextMeta({
         name: 'name',
         label: 'Name',
         validation: [
-          required('Please enter role name')
+          requiredRule('Please enter role name')
         ],
       })
     ],

@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 import Form from '../Form';
-import { getSubmitMeta, getTextMeta, required, getObjectMeta, getCheckboxMeta } from 'metaforms';
+import {getSubmitMeta, getTextMeta, getObjectMeta, getCheckboxMeta, isTruthyRule} from 'metaforms';
 
 export const Default = (args) => (
   <Form initialValues={{ search: { valid: true } }} fields={[
@@ -30,12 +30,12 @@ export const Default = (args) => (
 );
 
 export const Validation = (args) => (
-  <Form initialValues={{ search: { valid: true } }} fields={[
+  <Form fields={[
     getObjectMeta({
       name: 'search',
       label: 'Search',
       validation: [
-        required('One of the fields is required'),
+        isTruthyRule('One of the fields is required'),
       ],
       fields: [
         getTextMeta({

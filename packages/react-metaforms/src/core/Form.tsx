@@ -7,7 +7,6 @@ import {
   FormikProps,
   useField,
   useFormikContext,
-  setIn,
   getIn,
   FieldArray,
   ArrayHelpers,
@@ -23,8 +22,7 @@ import {
   ActionMetaProps,
   LayoutMetaProps,
 } from '@falsy/metacore';
-import { validateField } from 'metaforms';
-import {isAction, isLayout, isObject} from '../antd/utils';
+import { isAction, isLayout, isObject, validateForm} from 'metaforms';
 
 type FormContext = FormikContextType<MetaFormValues>;
 type FormHelpers = FormikHelpers<MetaFormValues>
@@ -134,13 +132,7 @@ const MetaForm = (props: IProps) => {
       {...props.formikProps}
       initialValues={props.values || {}}
       validate={(formikValues) => {
-        // const validated = validateForm(formikValues, props.fields);
-        // console.log({ validated})
-        return Array.from(fields.current.entries()).reduce((acc, [name, field]) => {
-          const f = {...field, value: getIn(formikValues, name)};
-          const v = validateField(formikValues, f);
-          return setIn(acc, name, v);
-        }, {});
+        return validateForm(props.fields, formikValues);
       }}
       onSubmit={(values, formikHelpers) =>
         props.onSubmit(values, formikHelpers)}
