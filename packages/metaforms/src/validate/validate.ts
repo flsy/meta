@@ -17,12 +17,16 @@ import {
   IsJson,
   MetaFieldValue,
   MetaFormValues,
+  IsTruthy,
 } from '@falsy/metacore';
 
 const isString = (value: any): value is string => typeof value === 'string';
+const isBoolean = (value: any): value is boolean => typeof value === 'boolean';
 const isNumber = (value: any): value is number => typeof value === 'number';
 const isArray = (value: any): value is any[] => Array.isArray(value);
 const isObject = (value: any): value is object => typeof value === 'object';
+const isObjectEmpty = (value: any): boolean => Object.keys(value).length === 0;
+
 const parseNumber = (value: any): Optional<number> => {
   if (!value) {
     return undefined;
@@ -49,11 +53,42 @@ const isEmpty = <Value>(value: Value, rule: Required): Optional<string> => {
   if (isArray(value) && !value.length) {
     return rule.message;
   }
-  if (isObject(value) && Object.keys(value).length === 0) {
+  if (isObject(value) && isObjectEmpty(value)) {
     return rule.message;
   }
 
-  return  undefined;
+  return undefined;
+};
+
+const truthy = <Value>(value: Value, rule: IsTruthy): Optional<string> => {
+  if (value === null || value === undefined) {
+    return rule.message;
+  }
+  if (isString(value) && value !== '') {
+    return;
+  }
+
+  if (isNumber(value) && value !== 0) {
+    return;
+  }
+
+  if (isBoolean(value) && value === true) {
+    return;
+  }
+  if (isArray(value) && !value.length) {
+    return rule.message;
+  }
+  if (isObject(value)) {
+    if (isObjectEmpty(value)) {
+      return rule.message;
+    }
+
+    const containsValid = Object.values(value).map(val => truthy(val, rule)).includes(undefined);
+    if (containsValid) {
+      return;
+    }
+  }
+  return rule.message;
 };
 
 const getErrorIfDoesNotMatchRegEx = <Value>(value: Value, rule: Pattern): Optional<string> => {
@@ -140,7 +175,7 @@ const mustMatchCaseInsensitive = (
   return isString(value) && isString(target) && !equalIgnoreCase(target, value) ? rule.message : undefined;
 };
 
-const validate = (fieldValue: unknown, rule: Validation, formData: any): Optional<string> => {
+export const validate = (fieldValue: unknown, rule: Validation, values: any): Optional<string> => {
   switch (rule.type) {
   case 'required':
     return isEmpty(fieldValue, rule);
@@ -164,13 +199,13 @@ const validate = (fieldValue: unknown, rule: Validation, formData: any): Optiona
     return getErrorIfMatchesRegEx(fieldValue, rule);
 
   case 'mustmatch':
-    return mustMatch(fieldValue, rule, formData);
+    return mustMatch(fieldValue, rule, values);
 
   case 'mustmatchcaseinsensitive':
-    return mustMatchCaseInsensitive(fieldValue, rule, formData);
+    return mustMatchCaseInsensitive(fieldValue, rule, values);
 
   case 'mustnotcontain':
-    return mustNotContain(fieldValue, rule, formData);
+    return mustNotContain(fieldValue, rule, values);
 
   case 'min':
     return isLessThanMin(fieldValue, rule);
@@ -184,6 +219,9 @@ const validate = (fieldValue: unknown, rule: Validation, formData: any): Optiona
   case 'isJson':
     return validateIsJson(fieldValue, rule);
 
+  case 'isTruthy':
+    return truthy(fieldValue, rule);
+
   case 'array':
     return rule.value.reduce<Optional<string>>((acc, curr, index) => {
       if (acc) {
@@ -191,7 +229,7 @@ const validate = (fieldValue: unknown, rule: Validation, formData: any): Optiona
       }
 
       const errorMessages = curr
-        .map((r) => validate(fieldValue ? (fieldValue as unknown[])[index] : undefined, r, formData))
+        .map((r) => validate(fieldValue ? (fieldValue as unknown[])[index] : undefined, r, values))
         .filter((error) => error);
       return errorMessages.length > 0 ? errorMessages[0] : acc;
     }, undefined);
@@ -199,13 +237,4 @@ const validate = (fieldValue: unknown, rule: Validation, formData: any): Optiona
   default:
     return undefined;
   }
-};
-
-export const validateField = (formData: MetaFormValues, field: MetaFieldValue): Optional<string> => {
-  if (!field) {
-    return undefined;
-  }
-
-  const errorMessages = (field.validation || []).map((rule: any) => validate(field.value, rule, formData)).filter((error:any) => error);
-  return errorMessages.length > 0 ? errorMessages[0] : undefined;
 };

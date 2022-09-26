@@ -1,9 +1,10 @@
 import { Validation } from './validation';
+import {Optional} from '../interfaces';
 
 export type MetaFieldValue = any;
 export type MetaFieldErrorMessage = string;
 
-export type MetaFormErrorMessages = { [key: string]: MetaFieldErrorMessage | MetaFormErrorMessages }
+export type MetaFormErrorMessages = { [key: string]: MetaFieldErrorMessage | Array<Optional<MetaFieldErrorMessage>> | MetaFormErrorMessages }
 export type MetaFormValues = { [key: string]: MetaFieldValue | MetaFormValues }
 
 export type MetaField = AutocompleteMetaProps

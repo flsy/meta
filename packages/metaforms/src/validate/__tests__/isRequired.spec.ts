@@ -1,37 +1,46 @@
 import { Validation } from '@falsy/metacore';
-import { required } from '../rules';
-import { validateField } from '../validate';
+import { requiredRule } from '../rules';
+import { validateField } from '../validateForm';
+import {getCheckboxMeta, getObjectMeta, getTextMeta} from '../../helpers';
 
 describe('required', () => {
-  const validation: Validation[] = [required('Please enter your name')];
+  const validation: Validation[] = [requiredRule('Please enter your name')];
 
   it('should return an error message when the field value is empty', () => {
-    const errorMessage = validateField({}, { type: 'text', value: '', validation });
+    const errorMessage = validateField(getTextMeta({ name: 'Name', validation }), { Name: ''});
     expect(errorMessage).toEqual('Please enter your name');
   });
 
   it('should not return an error message when the field value is not empty', () => {
-    const errorMessage = validateField({}, { type: 'text', value: 'Jan', validation });
+    const errorMessage = validateField(getTextMeta({ name: 'Name', validation }), { Name: 'Jan' });
     expect(errorMessage).toEqual(undefined);
   });
 
   it('should work for numbers', () => {
-    expect(validateField({}, { type: 'text', value: 0, validation })).toEqual(undefined);
-    expect(validateField({}, { type: 'text', value: 5, validation })).toEqual(undefined);
+    expect(validateField(getTextMeta({ name: 'Name', validation }), { Name: 0 })).toEqual(undefined);
+    expect(validateField(getTextMeta({ name: 'Name', validation }), { Name: 5 })).toEqual(undefined);
   });
 
   it('should return an error message when the field value is empty array', () => {
-    const errorMessage = validateField({}, { type: 'text', value: [], validation });
+    const errorMessage = validateField(getTextMeta({ name: 'Name', validation }), { Name: [] });
     expect(errorMessage).toEqual('Please enter your name');
+  });
+
+  describe('boolean value', () => {
+    it('validates checkbox fields', () => {
+      expect(validateField(getCheckboxMeta({ name: 'Ch', validation }), { Ch: null })).toEqual('Please enter your name');
+      expect(validateField(getCheckboxMeta({ name: 'Ch', validation }), { Ch: false })).toEqual(undefined);
+      expect(validateField(getCheckboxMeta({ name: 'Ch', validation }), { Ch: true })).toEqual(undefined);
+    });
   });
 
   describe('object value', () => {
     it('should return an error message when the object is empty', () => {
-      const errorMessage = validateField({}, { type: 'object', name: 'test1', validation, fields: [], value: {} });
+      const errorMessage = validateField(getObjectMeta({ name: 'test1', validation, fields: [] }), { test1: null });
       expect(errorMessage).toEqual('Please enter your name');
     });
     it('should not return error when the object has values', () => {
-      const errorMessage = validateField({}, { type: 'object', name: 'test1', validation, fields: [], value: {test1:'value'} });
+      const errorMessage = validateField(getObjectMeta({ name: 'test1', validation, fields: [] }), { test1: 'value '});
       expect(errorMessage).toEqual(undefined);
     });
   });

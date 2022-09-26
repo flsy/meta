@@ -7,7 +7,6 @@ import {
   FormikProps,
   useField,
   useFormikContext,
-  setIn,
   getIn,
   FieldArray,
   ArrayHelpers,
@@ -23,8 +22,7 @@ import {
   ActionMetaProps,
   LayoutMetaProps,
 } from '@falsy/metacore';
-import { validateField } from 'metaforms';
-import {isAction, isLayout, isObject} from '../antd/utils';
+import { isAction, isLayout, isObject, validateForm} from 'metaforms';
 
 type FormContext = FormikContextType<MetaFormValues>;
 type FormHelpers = FormikHelpers<MetaFormValues>
@@ -81,7 +79,7 @@ const MetaForm = (props: IProps) => {
       }
     }
 
-    if(field.type === 'action') {
+    if (isAction(field)) {
       return props.components({
         onAction: (e) => {
           props.onAction({ form, field }, e);
@@ -90,7 +88,7 @@ const MetaForm = (props: IProps) => {
       });
     }
 
-    if(field.type === 'layout') {
+    if(isLayout(field)) {
       const children = field?.fields?.map((f: MetaField) => <Field key={f.name} field={{ ...f, name: `${field.name}${f.name}` }} />);
 
       return props.components({ children, field, form });
@@ -110,7 +108,7 @@ const MetaForm = (props: IProps) => {
       );
     }
 
-    if(field.type === 'object') {
+    if(isObject(field)) {
       const children = field?.fields?.map((f: MetaField) => {
         const name = `${field.name}.${f.name}`;
         return <Field key={name} field={{ ...f, name }} />;
@@ -134,11 +132,7 @@ const MetaForm = (props: IProps) => {
       {...props.formikProps}
       initialValues={props.values || {}}
       validate={(formikValues) => {
-        return Array.from(fields.current.entries()).reduce((acc, [name, field]) => {
-          const f = {...field, value: getIn(formikValues, name)};
-          const v = validateField(formikValues, f);
-          return setIn(acc, name, v);
-        }, {});
+        return validateForm(props.fields, formikValues);
       }}
       onSubmit={(values, formikHelpers) =>
         props.onSubmit(values, formikHelpers)}
