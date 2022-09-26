@@ -17,5 +17,5 @@
 ## Release proces
 - Otevřít releases, editovat poslední draft
 - Vytvořit semver tag např. 5.0.0
-- Titulek YYYY.MM.DD.X
+- Titulek semver
 - Vytvořit releases
