@@ -139,9 +139,9 @@ const ResizableTitle = (props: any) => {
 
 type ColumnWidths = { [key: string]: number };
 
-const getWidthFromColumns = (internalColumns: MetaColumn[]): ColumnWidths => {
-  return internalColumns.reduce((widths, ic, index) => {
-    if (index < internalColumns.length - 1) {
+const getWidthFromColumns = (columns: MetaColumn[]): ColumnWidths => {
+  return columns.reduce((widths, ic, index) => {
+    if (index < columns.length - 1) {
       return { ...widths, [ic.name]: ic.width || MIN_COL_WIDTH };
     }
 
@@ -184,7 +184,7 @@ const DataTable = <TRow extends object>({
 }: IDataTableProps<TRow>) => {
   const openFilters = useSelection([]);
 
-  const [columnWidths, setColumnWidths] = React.useState<ColumnWidths>(getWidthFromColumns(columns));
+  const [columnWidths, setColumnWidths] = React.useState<ColumnWidths>(columns ? getWidthFromColumns(columns) : {});
   const { ref } = useResizableTableStyles({ isResizable, columnWidthSum: sumColumnWidths(columnWidths) });
 
   const onFilter = (filters: Filters) => {
@@ -221,7 +221,7 @@ const DataTable = <TRow extends object>({
     () =>
       columns.map((c) => {
 
-        const sortOrder = c.isSortable ? makeAntOrder(sort[c.name]) : undefined;
+        const sortOrder = c.isSortable && sort ? makeAntOrder(sort[c.name]) : undefined;
 
         return {
           title: c.label,
@@ -234,7 +234,7 @@ const DataTable = <TRow extends object>({
           sortOrder,
           sorter: c.isSortable,
           filterIcon: () => {
-            if (c.filterForm) {
+            if (c.filterForm && filters) {
               return isFiltered(filters, c) ? <FilterTwoTone  /> : <FilterOutlined />;
             }
           },

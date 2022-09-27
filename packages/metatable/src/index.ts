@@ -29,24 +29,24 @@ type NumberFilterValues = {
 
 const getValue = (filters: Filters): { [columnName: string]: FilterValues } => {
   return Object.entries(filters).reduce((all, [key, field]) => {
-    if (field.type === 'string') {
+    if (field?.type === 'string') {
       const { value, operator } = field.filters[0];
       return {...all, [key]: { operator, value} };
     }
-    if (field.type === 'boolean') {
+    if (field?.type === 'boolean') {
       return {...all, [key]:{ value: field.value} };
     }
-    if (field.type === 'strings') {
+    if (field?.type === 'strings') {
       return {...all,  [key]: {value: field.filters.map(f => f.value) }};
     }
 
-    if (field.type === 'number') {
+    if (field?.type === 'number') {
       return {...all,  [key]: {value: field.filters.map(f => f.value) } };
     }
   }, {});
 };
 
-export const isFiltered = (filters: Filters, column: MetaColumn): boolean => {
+export const isFiltered = (filters, column: MetaColumn): boolean => {
   const values = getValue(filters);
   const value = values[column.name]?.value;
   if (value && Array.isArray(value) && value.length === 0) {
