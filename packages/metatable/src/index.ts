@@ -27,7 +27,7 @@ type NumberFilterValues = {
     value?: number[];
 };
 
-const getValue = (filters: Filters): { [columnName: string]: FilterValues } => {
+export const getValue = (filters: Filters): { [columnName: string]: FilterValues } => {
   return Object.entries(filters).reduce((all, [key, field]) => {
     if (field?.type === 'string') {
       const { value, operator } = field.filters[0];
