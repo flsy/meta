@@ -1,6 +1,6 @@
 {
   "name": "react-metatable",
-  "version": "5.1.1",
+  "version": "5.2.1",
   "main": "lib/export",
   "typings": "lib/export",
   "repository": {
@@ -29,9 +29,9 @@
     "react-dom": "^16.14.0 || 17.0.2"
   },
   "dependencies": {
-    "@falsy/metacore": "workspace:^",
-    "metatable": "workspace:^",
-    "react-metaforms": "workspace:^",
+    "@falsy/metacore": "^5.2.1",
+    "metatable": "^5.2.1",
+    "react-metaforms": "^5.2.1",
     "react-resizable": "^3.0.4",
     "styled-components": "^5.3.5"
   },

@@ -1,6 +1,6 @@
 {
   "name": "react-metaforms",
-  "version": "5.1.1",
+  "version": "5.2.1",
   "main": "lib/export",
   "typings": "lib/export",
   "repository": {
@@ -32,11 +32,11 @@
     "react-dom": "^16.14.0 || 17.0.2"
   },
   "dependencies": {
-    "@falsy/metacore": "^5.1.1",
+    "@falsy/metacore": "^5.2.1",
     "antd": "^4.21.7",
     "formik": "^2.2.9",
     "fuse.js": "^6.5.3",
-    "metaforms": "^5.1.1",
+    "metaforms": "^5.2.1",
     "moment": "^2.29.4",
     "styled-components": "^5.3.5"
   },
