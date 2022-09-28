@@ -13,7 +13,7 @@ export const isRequired = (validationRules: Validation[] = []): boolean => !!fin
 const head = <T>(array: T[]): Optional<T> =>  array.length > 0 ? array[0] : undefined;
 
 const getErrorMessage = <T>(field: MetaField, values: MetaFieldValue, value: T) : Optional<string>=> {
-  // These does not have validation property
+  // These do not have validation property
   if (isSubmit(field) || isAction(field) || isLayout(field)) {
     return;
   }
@@ -50,7 +50,7 @@ export const validateForm = (fields: MetaField[], values?: MetaFieldValue): Meta
     } else {
       // continue with validation of its children
       if (!isAction(field) && !isLayout(field) && field.array) {
-        errors[path] = value.map((val: any) => validateForm(field.fields, val));
+        errors[path] = value?.map((val: any) => validateForm(field.fields, val));
       } else {
         const er = validateForm(field.fields, value);
         if (er) {
