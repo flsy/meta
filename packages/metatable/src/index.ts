@@ -1,5 +1,5 @@
 import {
-  Filters,
+  Filters, FilterType,
   IBooleanInput,
   INumberInput,
   isDateRangeFilterForm,
@@ -7,41 +7,48 @@ import {
   isStringFilterForm,
   isThreeStateSwitchFilterForm,
   IStringInput, IStringsInput,
-  MetaColumn
+  MetaColumn, Operator
 } from '@falsy/metacore';
 
 const isNumberValue = (values: StringsFilterValues | NumberFilterValues): values is NumberFilterValues => values.value.map(value => typeof value === 'number').find((_, i) => i === 0) ?? false;
 
 export type FilterValues = StringFilterValues | BooleanFilterValues | StringsFilterValues | NumberFilterValues;
-type StringFilterValues = {
-    operator?: string;
+export type StringFilterValues = {
+    operator?: Operator;
     value?: string;
 };
-type BooleanFilterValues = {
+export type BooleanFilterValues = {
     value?: boolean;
 };
-type StringsFilterValues = {
+export type StringsFilterValues = {
     value?: string[];
 };
-type NumberFilterValues = {
+export type NumberFilterValues = {
     value?: number[];
 };
 
+const isFilterType = (filter: FilterType | Filters): filter is FilterType => Object.prototype.hasOwnProperty.call(filter, 'type');
+
+const isIStringInput = (filter?: FilterType | Filters): filter is IStringInput => filter && isFilterType(filter) && filter?.type === 'string';
+const isIStringsInput = (filter?: FilterType | Filters): filter is IStringsInput => filter && isFilterType(filter) && filter?.type === 'strings';
+const isIBooleanInput = (filter?: FilterType | Filters): filter is IBooleanInput => filter && isFilterType(filter) && filter?.type === 'boolean';
+const isINumberInput = (filter?: FilterType | Filters): filter is INumberInput => filter && isFilterType(filter) && filter?.type === 'number';
+
 export const getValue = (filters: Filters): { [columnName: string]: FilterValues } => {
-  return Object.entries(filters).reduce((all, [key, field]) => {
-    if (field?.type === 'string') {
+  return Object.entries(filters).reduce((all, [name, field]) => {
+    if (field && isIStringInput(field)) {
       const { value, operator } = field.filters[0];
-      return {...all, [key]: { operator, value} };
+      return {...all, [name]: { operator, value} };
     }
-    if (field?.type === 'boolean') {
-      return {...all, [key]:{ value: field.value} };
+    if (field && isIBooleanInput(field)) {
+      return {...all, [name]:{ value: field.value} };
     }
-    if (field?.type === 'strings') {
-      return {...all,  [key]: {value: field.filters.map(f => f.value) }};
+    if (field && isIStringsInput(field)) {
+      return {...all,  [name]: {value: field.filters.map(f => f.value) }};
     }
 
-    if (field?.type === 'number') {
-      return {...all,  [key]: {value: field.filters.map(f => f.value) } };
+    if (field && isINumberInput(field)) {
+      return {...all,  [name]: {value: field.filters.map(f => f.value) } };
     }
   }, {});
 };
@@ -55,73 +62,76 @@ export const isFiltered = (filters, column: MetaColumn): boolean => {
   return !!value;
 };
 
+export const toStringsInput = (value: StringsFilterValues): IStringsInput => {
+  return {
+    type: 'strings',
+    filters: value.value?.map((value) => ({ value })) ?? []
+  };
+};
+
+export const toStringInput = (value: StringFilterValues): IStringInput => {
+  return {
+    type: 'string',
+    filters: [
+      {
+        value: value.value,
+        operator: value.operator
+      }
+    ]
+  };
+};
+
+export const toBooleanInput = (value: BooleanFilterValues): IBooleanInput => {
+  return {
+    type: 'boolean',
+    value: value.value
+  };
+};
+
+export const toNumberInput = (value: NumberFilterValues): INumberInput => {
+  return {
+    type: 'number',
+    filters: value.value?.map((value) => ({ value })) ?? []
+  };
+};
+
+export const toRangeInput = (value: NumberFilterValues): INumberInput => {
+  const [from, to] = value.value ?? [];
+
+  const filters = from && to ? [
+    {
+      value: from,
+      operator: 'GT' as Operator
+    },
+    {
+      value: to,
+      operator: 'LT' as Operator
+    }
+  ] : [];
+
+  return {
+    type: 'number',
+    filters
+  };
+};
+
 export const toFilters = (column: MetaColumn, values: FilterValues): Filters => {
   if (isStringFilterForm(column)) {
-    const value = values as StringFilterValues;
-    const filter = {
-      [column.name]: {
-        type: 'string',
-        filters: [
-          {
-            value: value.value,
-            operator: value.operator
-          }
-        ]
-      } as IStringInput
-    };
-    return filter;
+    return { [column.name]: toStringInput(values as StringFilterValues) };
   }
   if (isThreeStateSwitchFilterForm(column)) {
-    const value = values as BooleanFilterValues;
-    const filter = {
-      [column.name]: {
-        type: 'boolean',
-        value: value.value
-      } as IBooleanInput
-    };
-    return filter;
+    return { [column.name]: toBooleanInput(values as BooleanFilterValues) };
   }
 
   if (isDateRangeFilterForm(column)) {
-    const value = values as NumberFilterValues;
-    const [from, to] = value.value ?? [];
-
-    const filters = from && to ? [
-      {
-        value: from,
-        operator: 'GT'
-      },
-      {
-        value: to,
-        operator: 'LT'
-      }
-    ] : [];
-
-    const filter = {
-      [column.name]: {
-        type: 'number',
-        filters
-      } as INumberInput
-    };
-    return filter;
+    return { [column.name]: toRangeInput(values as NumberFilterValues) };
   }
 
   if(isMultiselectFilterForm(column)) {
-    const value = values as StringsFilterValues | NumberFilterValues;
-    if (isNumberValue(value)) {
-      return {
-        [column.name]: {
-          type: 'number',
-          filters: value.value?.map((value) => ({ value })) ?? []
-        } as INumberInput
-      };
+    if (isNumberValue(values as NumberFilterValues | StringsFilterValues)) {
+      return { [column.name]: toNumberInput(values as NumberFilterValues) };
     }
-    return {
-      [column.name]: {
-        type: 'strings',
-        filters: value.value?.map((value) => ({ value })) ?? []
-      } as IStringsInput
-    };
+    return { [column.name]: toStringsInput(values as StringsFilterValues) };
   }
 };
 
@@ -132,5 +142,33 @@ export const toFormValues = (column: MetaColumn, filters: Filters): FilterValues
       return all;
     }
     return {...all, ...values[key] };
+  }, {});
+};
+
+export const toFilterValues = (filters: Filters): FilterValues => {
+  return Object.entries(filters).reduce((all, [name, value]) => {
+    if (isIStringInput(value)) {
+      return {...all, [name]: {
+        value: value.filters[0].value,
+        operator: value.filters[0].operator
+      } as StringFilterValues};
+    }
+    if (isIStringsInput(value)) {
+      return {...all, [name]: {
+        value: value.filters.map(f => f.value),
+      } as StringsFilterValues};
+    }
+    if (isINumberInput(value)) {
+      return {...all, [name]: {
+        value: value.filters.map(f => f.value),
+      } as NumberFilterValues,
+      };
+    }
+    if (isIBooleanInput(value)) {
+      return {...all, [name]: {
+        value: value.value
+      } as BooleanFilterValues};
+    }
+    return all;
   }, {});
 };
