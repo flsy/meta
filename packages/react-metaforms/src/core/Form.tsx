@@ -52,7 +52,6 @@ export const isControlLayout = (c: ComponentRenderProps): c is LayoutRenderProps
 
 const MetaForm = (props: IProps) => {
   const firstEl = useRef<any>();
-  const fields = useRef<Map<string, MetaField>>(new Map());
 
   const Field = ({ field }: { field: MetaField }): JSX.Element => {
     const [input, meta, helpers] = useField(field.name);
@@ -64,17 +63,8 @@ const MetaForm = (props: IProps) => {
       }
     };
 
-    useEffect(() => {
-      fields.current.set(field.name, field);
-
-      return () => {
-        fields.current.delete(field.name);
-      };
-    }, []);
-
     if(field.visible) {
       if(getIn(form.values, field.visible.targetName) !== field.visible.value) {
-        fields.current.delete(field.name);
         return null;
       }
     }

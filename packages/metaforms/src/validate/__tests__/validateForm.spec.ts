@@ -1,5 +1,5 @@
 import {validateForm} from '../validateForm';
-import {getCheckboxMeta, getObjectMeta, getSubmitMeta, getTextMeta} from '../../helpers';
+import {getCheckboxMeta, getLayoutMeta, getObjectMeta, getSubmitMeta, getTextMeta} from '../../helpers';
 import {requiredRule, isTruthyRule} from '../rules';
 
 describe('validateForm', () => {
@@ -87,9 +87,41 @@ describe('validateForm', () => {
           { first: 'first name is required', last: 'last name is required' }
         ]
       });
-      expect(validateForm(fields, { names: [{ first: 'sem tu', last: 'sem tu' }, { first: 'sem tu', last: 'sem tu' }]})).toEqual({
-        names: [{}, {}]
+      expect(validateForm(fields, { names: [{ first: 'sem tu', last: 'sem tu' }, { first: 'sem tu', last: 'sem tu' }]})).toEqual({});
+    });
+
+    it('vaidate compbined field', () =>{
+
+      const catalogFormFields = [
+        getTextMeta({ name: 'title', validation: [requiredRule('Pole je povinné')] }),
+        getObjectMeta({
+          name: 'value',
+          array: true,
+          fields: [
+            getLayoutMeta({
+              render: 'horizontal',
+              fields: [
+                getTextMeta({ name: 'phrase', validation: [requiredRule('Hodnota je povinná')] }),
+                getTextMeta({ name: 'note' }),
+                getCheckboxMeta({ name: 'isEnabled' }),
+              ],
+            }),
+          ],
+        }),
+        getCheckboxMeta({ name: 'isEnabled' }),
+        getTextMeta({ name: 'note', placeholder: 'Poznámka' }),
+        getSubmitMeta({ name: 'submit', label: 'Uložit' }),
+
+      ];
+      expect(validateForm(catalogFormFields, { title: 'title', note: 'xx', isEnabled: false, value: [{phrase: undefined, note: 'note 1', isEnabled: true}, {phrase: '45', note: 'note 2', isEnabled: false}]})).toEqual({
+        'value': [
+          {
+            'phrase': 'Hodnota je povinná'
+          },
+          {}
+        ]
       });
+
     });
   });
 });

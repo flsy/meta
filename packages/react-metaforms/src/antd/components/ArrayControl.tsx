@@ -32,6 +32,7 @@ const AddBtn = styled(Form.Item)`
 const ArrayControl = ({ children, arrayHelpers, field, form, meta }: ArrayRenderProps) => {
   const hasError = meta.error && typeof meta.error === 'string';
   const required = has('validation', field) && isRequired(field.validation as Validation[]);
+  const initialValues = has('arrayInitialValues', field) ? field.arrayInitialValues : null;
 
   return (
     <>
@@ -48,7 +49,7 @@ const ArrayControl = ({ children, arrayHelpers, field, form, meta }: ArrayRender
         validateStatus={hasError ? 'error' : undefined}
         help={hasError ? meta.error : undefined}
       >
-        <Button size="small" style={hasError ? { borderColor: '#ff4d4f', color: '#ff4d4f' } : undefined} onClick={() => arrayHelpers.push(null)} icon={<PlusOutlined />} disabled={form.isSubmitting}>
+        <Button size="small" style={hasError ? { borderColor: '#ff4d4f', color: '#ff4d4f' } : undefined} onClick={() => arrayHelpers.push(initialValues)} icon={<PlusOutlined />} disabled={form.isSubmitting}>
           {has('label', field) ? field.label : null}
         </Button>
       </AddBtn>
