@@ -33,7 +33,7 @@ export const validateArrayField = <T>(field: MetaField, values: MetaFieldValue |
 };
 
 export const validateForm = (fields: MetaField[], values?: MetaFieldValue): MetaFormErrorMessages => {
-  const errors: MetaFormErrorMessages = {};
+  let errors: MetaFormErrorMessages = {};
 
   const [field, ...rest] = fields;
   if (!field) {
@@ -42,7 +42,11 @@ export const validateForm = (fields: MetaField[], values?: MetaFieldValue): Meta
 
   const path = field.name;
   const value = values?.[path];
-  if (isObject(field)) {
+
+  if (isLayout(field)) {
+    const validated = validateForm(field.fields, values);
+    errors = {...errors, ...validated};
+  } else if (isObject(field)) {
     // try to validate root field
     const error = validateField(field, values);
     if (error) {
@@ -50,7 +54,10 @@ export const validateForm = (fields: MetaField[], values?: MetaFieldValue): Meta
     } else {
       // continue with validation of its children
       if (!isAction(field) && !isLayout(field) && field.array) {
-        errors[path] = value?.map((val: any) => validateForm(field.fields, val));
+        const errorMessages = Array.isArray(value) ? value?.map((val) => validateForm(field.fields, val)) : [];
+        if (errorMessages.map(d => Object.keys(d).length === 0 ? undefined : d).filter(r => !!r).length) {
+          errors[path] = errorMessages;
+        }
       } else {
         const er = validateForm(field.fields, value);
         if (er) {
