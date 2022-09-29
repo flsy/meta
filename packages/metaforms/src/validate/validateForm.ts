@@ -11,6 +11,7 @@ import {isAction, isLayout, isObject, isSubmit} from '../utils';
 
 export const isRequired = (validationRules: Validation[] = []): boolean => !!find(propEq('type', 'required'), validationRules);
 const head = <T>(array: T[]): Optional<T> =>  array.length > 0 ? array[0] : undefined;
+const isObjectEmpty = <T extends object>(object: T) => Object.keys(object).length === 0;
 
 const getErrorMessage = <T>(field: MetaField, values: MetaFieldValue, value: T) : Optional<string>=> {
   // These do not have validation property
@@ -60,7 +61,7 @@ export const validateForm = (fields: MetaField[], values?: MetaFieldValue): Meta
         }
       } else {
         const er = validateForm(field.fields, value);
-        if (er) {
+        if (er && !isObjectEmpty(er)) {
           errors[path] = er;
         }
       }

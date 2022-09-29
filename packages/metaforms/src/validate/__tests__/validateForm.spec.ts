@@ -68,8 +68,8 @@ describe('validateForm', () => {
       ];
       expect(validateForm(fields)).toEqual({ search: 'Object field is required' });
       expect(validateForm(fields, { search: { valid: false } })).toEqual({ search: 'Object field is required' });
-      expect(validateForm(fields, { search: { term: 'test' } })).toEqual({ search: {} });
-      expect(validateForm(fields, { search: { valid: true } })).toEqual({ search: {} });
+      expect(validateForm(fields, { search: { term: 'test' } })).toEqual({});
+      expect(validateForm(fields, { search: { valid: true } })).toEqual({});
     });
 
     it('should validate Object field which is array as well', () => {
@@ -90,7 +90,7 @@ describe('validateForm', () => {
       expect(validateForm(fields, { names: [{ first: 'sem tu', last: 'sem tu' }, { first: 'sem tu', last: 'sem tu' }]})).toEqual({});
     });
 
-    it('vaidate compbined field', () =>{
+    it('validate combined field', () => {
 
       const catalogFormFields = [
         getTextMeta({ name: 'title', validation: [requiredRule('Pole je povinné')] }),
@@ -121,7 +121,27 @@ describe('validateForm', () => {
           {}
         ]
       });
-
+    });
+    it('validates nested', () => {
+      const fields = [
+        getObjectMeta({
+          name:'search',
+          label:'Vyhledat',
+          validation:[{'type':'isTruthy','message':'Vyhledat je povinné pole'}],
+          fields:[getLayoutMeta({
+            render: 'tabs',
+            fields: [
+              getTextMeta({'label':'Text','name':'query'}),
+              getCheckboxMeta({'label':'MaP','name':'map'}),
+              getCheckboxMeta({'label':'KD','name':'kd'})
+            ]})
+          ]}), getSubmitMeta({
+          name: 'submit',
+          label: 'Login',
+        })];
+      expect(validateForm(fields, { search: {
+        query: '???'
+      }})).toEqual({});
     });
   });
 });
