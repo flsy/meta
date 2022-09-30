@@ -148,6 +148,7 @@ export interface IThreeStateSwitch extends CommonProps {
 
 export interface ObjectMetaProps extends CommonProps {
   type: 'object';
+  render?: 'tabs',
   fields: MetaField[];
 }
 
@@ -171,7 +172,7 @@ export interface ActionMetaProps {
 export interface LayoutMetaProps {
   type: 'layout';
   name: string;
-  render?: 'horizontal' | 'tabs'
+  render?: 'horizontal'
   fields: MetaField[];
   visible?: CommonProps['visible']
 }

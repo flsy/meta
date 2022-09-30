@@ -30,7 +30,6 @@ import {
 import ArrayControl from './components/ArrayControl';
 import ObjectControl from './components/ObjectControl';
 import HorizontalLayout from './layout/HorizontalLayout';
-import TabsLayout from './layout/TabsLayout';
 import ThreeStateSwitch from './components/ThreeStateSwitch';
 
 export const getComponent: IProps['components'] = (props) => {
@@ -55,10 +54,6 @@ export const getComponent: IProps['components'] = (props) => {
   if(isControlLayout(props)) {
     if(props.field.render === 'horizontal') {
       return <HorizontalLayout>{props.children}</HorizontalLayout>;
-    }
-
-    if(props.field.render === 'tabs') {
-      return <TabsLayout field={props.field} form={props.form}>{props.children}</TabsLayout>;
     }
 
     return <>{props.children}</>;

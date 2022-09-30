@@ -93,6 +93,31 @@ export const ValidationHorizontal = (args) => (
   }} {...args} />
 );
 
+export const Tabs = () => (
+  <Form fields={[
+    getObjectMeta({
+      name: 'tabs',
+      render: 'tabs',
+      fields: [
+        getTextMeta({
+          name: 'term',
+          label: 'Search term'
+        }),
+        getCheckboxMeta({
+          name: 'valid',
+          label: 'Valid'
+        })
+      ]
+    }),
+    getSubmitMeta({
+      name: 'submit',
+      label: 'Login',
+    })
+  ]} onSubmit={(values, helpers) => {
+    action('onSubmit')(values);
+    helpers.setSubmitting(false);
+  }} />
+);
 
 export default {
   title: 'AntdForm/ObjectType',
