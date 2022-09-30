@@ -126,15 +126,13 @@ describe('validateForm', () => {
       const fields = [
         getObjectMeta({
           name:'search',
+          render: 'tabs',
           label:'Vyhledat',
           validation:[{'type':'isTruthy','message':'Vyhledat je povinné pole'}],
-          fields:[getLayoutMeta({
-            render: 'tabs',
-            fields: [
-              getTextMeta({'label':'Text','name':'query'}),
-              getCheckboxMeta({'label':'MaP','name':'map'}),
-              getCheckboxMeta({'label':'KD','name':'kd'})
-            ]})
+          fields:[
+            getTextMeta({'label':'Text','name':'query'}),
+            getCheckboxMeta({'label':'MaP','name':'map'}),
+            getCheckboxMeta({'label':'KD','name':'kd'})
           ]}), getSubmitMeta({
           name: 'submit',
           label: 'Login',
