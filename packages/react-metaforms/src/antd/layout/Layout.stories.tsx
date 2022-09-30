@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import React from 'react';
 import Form from '../Form';
-import { getSubmitMeta, getTextMeta, getCheckboxMeta, getLayoutMeta } from 'metaforms';
+import { getSubmitMeta, getTextMeta, getCheckboxMeta, getLayoutMeta, getObjectMeta } from 'metaforms';
 
 export const Default = () => (
   <Form fields={[
@@ -51,32 +51,6 @@ export const Horizontal = () => (
     helpers.setSubmitting(false);
   }} />
 );
-
-export const Tabs = () => (
-  <Form fields={[
-    getLayoutMeta({
-      render: 'tabs',
-      fields: [
-        getTextMeta({
-          name: 'term',
-          label: 'Search term'
-        }),
-        getCheckboxMeta({
-          name: 'valid',
-          label: 'Valid'
-        })
-      ]
-    }),
-    getSubmitMeta({
-      name: 'submit',
-      label: 'Login',
-    })
-  ]} onSubmit={(values, helpers) => {
-    action('onSubmit')(values);
-    helpers.setSubmitting(false);
-  }} />
-);
-
 
 export default {
   title: 'AntdForm/Layout',
