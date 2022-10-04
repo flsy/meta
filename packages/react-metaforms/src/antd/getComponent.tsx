@@ -176,6 +176,7 @@ export const getComponent: IProps['components'] = (props) => {
   }
 
   if(isDateRange(props.field)) {
+    const value = input.value?.length === 2 ? input.value : undefined;
     return (
       <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
         <$DatePicker.RangePicker
@@ -189,7 +190,7 @@ export const getComponent: IProps['components'] = (props) => {
             ...props.field.presets?.lastWeek && { [props.field.presets?.lastWeek]: [moment().subtract(1, 'week'), moment()] },
             ...props.field.presets?.lastMonth && { [props.field.presets?.lastMonth]: [moment().subtract(1, 'month'), moment()] }
           }}
-          value={input.value ? [moment.unix(input.value[0]), moment.unix(input.value[1])] : undefined}
+          value={value ? [moment.unix(value[0]), moment.unix(value[1])] : undefined}
           onChange={(v) => helpers.setValue([v?.[0]?.unix(), v?.[1]?.unix()])}
         />
       </FormItem>

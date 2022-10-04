@@ -10,7 +10,7 @@ import {
   MetaColumn, Operator
 } from '@falsy/metacore';
 
-const isNumberValue = (values: StringsFilterValues | NumberFilterValues): values is NumberFilterValues => values.value.map(value => typeof value === 'number').find((_, i) => i === 0) ?? false;
+const isNumberValue = (values?: StringsFilterValues | NumberFilterValues): values is NumberFilterValues => values?.value?.map(value => typeof value === 'number').find((_, i) => i === 0) ?? false;
 
 export type FilterValues = StringFilterValues | BooleanFilterValues | StringsFilterValues | NumberFilterValues;
 export type StringFilterValues = {
@@ -37,8 +37,11 @@ const isINumberInput = (filter?: FilterType | Filters): filter is INumberInput =
 export const getValue = (filters: Filters): { [columnName: string]: FilterValues } => {
   return Object.entries(filters).reduce((all, [name, field]) => {
     if (field && isIStringInput(field)) {
-      const { value, operator } = field.filters[0];
-      return {...all, [name]: { operator, value} };
+      const filter = field.filters[0];
+      if (!filter) {
+        return all;
+      }
+      return {...all, [name]: { operator: filter.operator, value: filter.value } };
     }
     if (field && isIBooleanInput(field)) {
       return {...all, [name]:{ value: field.value} };
@@ -50,12 +53,13 @@ export const getValue = (filters: Filters): { [columnName: string]: FilterValues
     if (field && isINumberInput(field)) {
       return {...all,  [name]: {value: field.filters.map(f => f.value) } };
     }
+    return all;
   }, {});
 };
 
-export const isFiltered = (filters, column: MetaColumn): boolean => {
+export const isFiltered = (filters: Filters = {}, column: MetaColumn): boolean => {
   const values = getValue(filters);
-  const value = values[column.name]?.value;
+  const value = values?.[column.name]?.value;
   if (value && Array.isArray(value) && value.length === 0) {
     return false;
   }
@@ -115,7 +119,7 @@ export const toRangeInput = (value: NumberFilterValues): INumberInput => {
   };
 };
 
-export const toFilters = (column: MetaColumn, values: FilterValues): Filters => {
+export const toFilters = (column: MetaColumn, values?: FilterValues): Filters => {
   if (isStringFilterForm(column)) {
     return { [column.name]: toStringInput(values as StringFilterValues) };
   }
@@ -128,7 +132,7 @@ export const toFilters = (column: MetaColumn, values: FilterValues): Filters => 
   }
 
   if(isMultiselectFilterForm(column)) {
-    if (isNumberValue(values as NumberFilterValues | StringsFilterValues)) {
+    if (values && isNumberValue(values as NumberFilterValues | StringsFilterValues)) {
       return { [column.name]: toNumberInput(values as NumberFilterValues) };
     }
     return { [column.name]: toStringsInput(values as StringsFilterValues) };
@@ -138,13 +142,14 @@ export const toFilters = (column: MetaColumn, values: FilterValues): Filters => 
 export const toFormValues = (column: MetaColumn, filters: Filters): FilterValues => {
   const values = getValue(filters);
   return Object.keys(filters).reduce((all, key) => {
-    if (column.name !== key) {
-      return all;
+    if (column.name === key) {
+      return {...all, ...values[key] };
     }
-    return {...all, ...values[key] };
+    return all;
   }, {});
 };
 
+// asi se moc nehodi, lepsi by bylo neco lip otypovanyho
 export const toFilterValues = (filters: Filters): FilterValues => {
   return Object.entries(filters).reduce((all, [name, value]) => {
     if (isIStringInput(value)) {
