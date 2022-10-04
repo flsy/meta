@@ -278,14 +278,14 @@ Checkbox.args = {
   disabled: false,
 };
 
-export const DateRange = () => (
+export const DateRange = (args) => (
   <Form
+    initialValues={{ daterange: [1645686522, 1645686522] }}
     fields={[
       getDateRangeMeta({
         name: 'daterange',
-        label: 'Date Range',
-        withTimePicker: true,
-        // value: [1645686522, 1645686522],
+        label: args.label,
+        withTimePicker: args.withTimePicker,
         presets: {
           lastDay: 'Last day',
           lastWeek: 'Last week'
@@ -303,12 +303,17 @@ export const DateRange = () => (
   />
 );
 
+DateRange.args = {
+  label: 'Date Range',
+  withTimePicker: true,
+};
+
 export const Multiselect = (args) => (
   <Form
     fields={[
       getMultiSelectMeta({
         name: 'multiselect',
-        label:  'Select multiple',
+        label: 'Select multiple',
         showFilterInput: args.showFilterInput,
         showSelectedCounter: args.showSelectedCounter,
         options: [

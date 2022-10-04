@@ -120,7 +120,7 @@ export const WithFilters = () => {
             return value.name;
           }
 
-          return  renderValue(value, column);
+          return renderValue(value, column);
         }}
       />
     </>
