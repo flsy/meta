@@ -12,7 +12,7 @@ import {
   getSelectMeta,
   getSubmitMeta,
   getTextareaMeta,
-  getTextMeta, minlengthRule, requiredRule,
+  getTextMeta, getThreeStateSwitch, minlengthRule, requiredRule,
 } from 'metaforms';
 import React from 'react';
 import Form from './Form';
@@ -372,6 +372,10 @@ export const Autocomplete = () => (
     ]}
     onSubmit={handleSubmit}
   />
+);
+
+export const ThreeStateSwitch = () => (
+  <Form fields={[getThreeStateSwitch({ name: 'threeStateSwitch', label: 'ThreeStateSwitch', options: [{ label: 'TrueVal', value: true }, { label: 'FalseVal', value: false }, { label: 'UndefiendVal', value: undefined }] }), getSubmitMeta({ name: 'submit', label: 'Save' })]} onSubmit={handleSubmit} />
 );
 
 Autocomplete.args = {
