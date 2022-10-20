@@ -1,11 +1,12 @@
 import { Radio } from 'antd';
+import { IThreeStateSwitch } from 'metaforms';
 import React from 'react';
 
 interface IProps {
   name: string;
   value?: boolean;
   onChange: (value?: boolean) => void;
-  options?: [{ value: boolean | undefined; label: string }, { value: boolean | undefined; label: string }, { value: boolean | undefined; label: string }];
+  options?: IThreeStateSwitch['options']
 }
 
 const ThreeStateSwitch = ({ name, value, onChange, options }: IProps) => {
