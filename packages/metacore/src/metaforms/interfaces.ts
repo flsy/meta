@@ -142,9 +142,16 @@ export interface MultistringMetaProps extends CommonProps {
   type: 'multistring'
 }
 
+interface IThreeStateSwitchOption {
+  label: string;
+  value: boolean | undefined;
+  disabled?: boolean
+}
 export interface IThreeStateSwitch extends CommonProps {
-  type: 'threeStateSwitch'
-  options?: [{ value: boolean | undefined; label: string }, { value: boolean | undefined; label: string }, { value: boolean | undefined; label: string }];
+  type: 'threeStateSwitch';
+  disabled?: boolean;
+  size?: 'small' | 'middle' | 'large';
+  options?: [IThreeStateSwitchOption, IThreeStateSwitchOption, IThreeStateSwitchOption];
 }
 
 export interface ObjectMetaProps extends CommonProps {

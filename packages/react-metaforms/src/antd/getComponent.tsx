@@ -235,7 +235,14 @@ export const getComponent: IProps['components'] = (props) => {
   if (isThreeStateSwitch(props.field)) {
     return (
       <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation}>
-        <ThreeStateSwitch value={input.value} name={input.name} onChange={helpers.setValue} options={props.field.options}/>
+        <ThreeStateSwitch
+          value={input.value}
+          name={input.name}
+          onChange={helpers.setValue}
+          options={props.field.options}
+          disabled={props.field.disabled}
+          size={props.field.size}
+        />
       </FormItem>
     );
   }

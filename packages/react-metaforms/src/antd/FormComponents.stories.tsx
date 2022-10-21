@@ -374,13 +374,48 @@ export const Autocomplete = () => (
   />
 );
 
-export const ThreeStateSwitch = () => (
-  <Form fields={[getThreeStateSwitch({ name: 'threeStateSwitch', label: 'ThreeStateSwitch', options: [{ label: 'TrueVal', value: true }, { label: 'FalseVal', value: false }, { label: 'UndefiendVal', value: undefined }] }), getSubmitMeta({ name: 'submit', label: 'Save' })]} onSubmit={handleSubmit} />
-);
-
 Autocomplete.args = {
   label: 'Autocomplete',
   disabled: false,
+};
+
+export const ThreeStateSwitch = (args) => (
+  <Form
+    layout={args.formLayout}
+    initialValues={{
+      a: true,
+      b: false,
+      c: undefined
+    }}
+    fields={[...['a', 'b', 'c'].map(name => getThreeStateSwitch({
+      name: name,
+      label: name,
+      size: args.size,
+      disabled: args.disabled,
+      options: [
+        { label: 'True Value', value: true },
+        { label: 'False Value', value: false },
+        { label: 'Undefined Value', value: undefined }
+      ],
+    })),
+    getSubmitMeta({ name: 'submit', label: 'Save' })
+    ]} onSubmit={handleSubmit} />
+);
+
+ThreeStateSwitch.args = {
+  disabled: false,
+  formLayout: 'vertical',
+  size: 'small',
+};
+ThreeStateSwitch.argTypes = {
+  formLayout: {
+    options: ['horizontal', 'vertical'],
+    control: {type: 'radio'},
+  },
+  size: {
+    options: ['small', 'medium', 'large'],
+    control: {type: 'radio'},
+  },
 };
 
 export default {
