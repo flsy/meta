@@ -135,7 +135,10 @@ export interface DateRangeMetaProps extends CommonProps {
     lastDay?: string;
     lastWeek?: string;
     lastMonth?: string;
-  }
+  },
+  //TODO
+  /** Caution: Full size is buggy in antd, and should be used with caution. Default is 'full'. */
+  size?: 'small' | 'full';
 }
 
 export interface MultistringMetaProps extends CommonProps {
