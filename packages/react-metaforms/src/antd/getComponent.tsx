@@ -184,7 +184,7 @@ export const getComponent: IProps['components'] = (props) => {
           {...input}
           format={props.field.withTimePicker ? 'DD.MM.YYYY HH:mm' : 'DD.MM.YYYY'}
           showTime={props.field.withTimePicker}
-          style={{ width: '100%' }}
+          style={props.field.size === 'small' ? {} : { width: '100%' }}
           ranges={{
             ...props.field.presets?.lastDay && { [props.field.presets?.lastDay]: [moment().subtract(1, 'day'), moment()] },
             ...props.field.presets?.lastWeek && { [props.field.presets?.lastWeek]: [moment().subtract(1, 'week'), moment()] },
