@@ -286,6 +286,7 @@ export const DateRange = (args) => (
         name: 'daterange',
         label: args.label,
         withTimePicker: args.withTimePicker,
+        size: args.smallSize ? 'small' : 'full',
         presets: {
           lastDay: 'Last day',
           lastWeek: 'Last week'
@@ -306,6 +307,7 @@ export const DateRange = (args) => (
 DateRange.args = {
   label: 'Date Range',
   withTimePicker: true,
+  smallSize: true
 };
 
 export const Multiselect = (args) => (
