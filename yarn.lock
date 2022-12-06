@@ -5483,10 +5483,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^16.7.2":
-  version: 16.10.1
-  resolution: "@types/node@npm:16.10.1"
-  checksum: 84d7f082e9421fdf1f08dbe00b66848897b2675eacc94a4fa445c4d34cef57c901ecd3276d03ebe110607a848d3df0ab33816aeff51a234e036111dd8ef1422f
+"@types/node@npm:^18.11.11":
+  version: 18.11.11
+  resolution: "@types/node@npm:18.11.11"
+  checksum: c4b1176a8f1714a3ee3fc2a5e1d568b0cd50209000282db5c68154b3c975952928dbb834ef3a0ce55bd7b345ae29f2cbf4a34635a070294d135a24254231386a
   languageName: node
   linkType: hard
 
@@ -17991,7 +17991,7 @@ __metadata:
     "@storybook/manager-webpack4": ^6.5.10
     "@storybook/react": ^6.5.10
     "@storybook/testing-library": ^0.0.13
-    "@types/node": ^16.7.2
+    "@types/node": ^18.11.11
     "@types/react": ^17.0.19
     "@types/react-dom": ^17.0.9
     antd: ^4.21.7
@@ -18026,7 +18026,7 @@ __metadata:
     "@storybook/manager-webpack4": ^6.5.10
     "@storybook/react": ^6.5.10
     "@storybook/testing-library": ^0.0.13
-    "@types/node": ^16.7.2
+    "@types/node": ^18.11.11
     "@types/react": ^17.0.19
     "@types/react-dom": ^17.0.9
     "@types/styled-components": ^5.1.25
