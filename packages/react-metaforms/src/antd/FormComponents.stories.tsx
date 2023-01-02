@@ -385,19 +385,20 @@ export const ThreeStateSwitch = (args) => (
   <Form
     layout={args.formLayout}
     initialValues={{
-      a: true,
-      b: false,
-      c: undefined
+      a: 'a',
+      b: 'b',
+      c: 'c'
     }}
-    fields={[...['a', 'b', 'c'].map(name => getThreeStateSwitch({
+    fields={[...['first', 'second', 'third'].map(name => getThreeStateSwitch({
       name: name,
       label: name,
       size: args.size,
       disabled: args.disabled,
+      align: args.alignRight ? 'right' : undefined, 
       options: [
-        { label: 'True Value', value: true },
-        { label: 'False Value', value: false },
-        { label: 'Undefined Value', value: undefined }
+        { label: args.showLabel && 'A Value', value: 'a', icon: args.showIcon && 'write' },
+        { label: args.showLabel && 'B Value', value: 'b', icon: args.showIcon && 'read' },
+        { label: args.showLabel && 'C Value', value: 'c', icon: args.showIcon && 'none' }
       ],
     })),
     getSubmitMeta({ name: 'submit', label: 'Save' })
@@ -408,6 +409,9 @@ ThreeStateSwitch.args = {
   disabled: false,
   formLayout: 'vertical',
   size: 'small',
+  alignRight: false,
+  showIcon: true,
+  showLabel: true
 };
 ThreeStateSwitch.argTypes = {
   formLayout: {
