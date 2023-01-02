@@ -1,6 +1,6 @@
 import { Segmented } from 'antd';
 import { EditOutlined, EyeOutlined, StopOutlined} from '@ant-design/icons';
-import { IThreeStateSwitch } from 'metaforms';
+import { IThreeStateSwitch, IThreeStateSwitchOption } from 'metaforms';
 import React from 'react';
 
 const getIcon = (icon: IThreeStateSwitchOption['icon'] ) => {
@@ -25,12 +25,19 @@ interface IProps extends Omit<IThreeStateSwitch, 'type'> {
 const ThreeStateSwitch = ({ name, value, onChange, options, disabled, size }: IProps) => {
   const defaultOptions: IThreeStateSwitch['options'] = [
     { label: 'Vše', value: undefined },
-    { label: 'Ano', value: true },
-    { label: 'Ne', value: false },
+    { label: 'Ano', value: 'ano' },
+    { label: 'Ne', value: 'ne' },
   ];
 
   return (
-    <Segmented name={name} options={(options || defaultOptions).map(option => ({label: option.label, value: option.label, disabled: option.disabled, icon: getIcon(option.icon)}))} onChange={(value) => onChange(value as string)} value={value} disabled={disabled} size={size} />
+    <Segmented
+      name={name}
+      options={(options || defaultOptions).map(option => ({label: option.label, value: option.label, disabled: option.disabled, icon: getIcon(option.icon) }))}
+      onChange={(value) => onChange(value as string)}
+      value={value}
+      disabled={disabled}
+      size={size}
+    />
   );
 };
 

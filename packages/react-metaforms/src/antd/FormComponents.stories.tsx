@@ -396,9 +396,9 @@ export const ThreeStateSwitch = (args) => (
       disabled: args.disabled,
       align: args.alignRight ? 'right' : undefined, 
       options: [
-        { label: args.showLabel && 'A Value', value: 'a', icon: args.showIcon && 'write' },
-        { label: args.showLabel && 'B Value', value: 'b', icon: args.showIcon && 'read' },
-        { label: args.showLabel && 'C Value', value: 'c', icon: args.showIcon && 'none' }
+        { label: args.showLabel && 'A Value', value: 'a', icon: args.showIcon ? 'write' : undefined },
+        { label: args.showLabel && 'B Value', value: 'b', icon: args.showIcon ? 'read' : undefined },
+        { label: args.showLabel && 'C Value', value: 'c', icon: args.showIcon ? 'none' : undefined }
       ],
     })),
     getSubmitMeta({ name: 'submit', label: 'Save' })
