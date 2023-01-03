@@ -36,6 +36,7 @@ interface CommonProps {
   arrayInitialValues?: MetaFieldValue;
   validation?: Validation[];
   errorMessage?: string;
+  align?: 'right';
 
   // TODO: better value type
   visible?: { targetName: string, value: any };
@@ -145,10 +146,12 @@ export interface MultistringMetaProps extends CommonProps {
   type: 'multistring'
 }
 
-interface IThreeStateSwitchOption {
-  label: string;
-  value: boolean | undefined;
-  disabled?: boolean
+// TODO: Maybe rename to something like Switch
+export interface IThreeStateSwitchOption {
+  label?: string;
+  value: string;
+  disabled?: boolean;
+  icon?: 'write' | 'read' | 'none';
 }
 export interface IThreeStateSwitch extends CommonProps {
   type: 'threeStateSwitch';
