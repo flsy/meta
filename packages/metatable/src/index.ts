@@ -149,8 +149,7 @@ export const toFormValues = (column: MetaColumn, filters: Filters): FilterValues
   }, {});
 };
 
-// asi se moc nehodi, lepsi by bylo neco lip otypovanyho
-export const toFilterValues = (filters: Filters): FilterValues => {
+export const toFilterValues = (filters: Filters): {[key: string]: FilterValues} => {
   return Object.entries(filters).reduce((all, [name, value]) => {
     if (isIStringInput(value)) {
       return {...all, [name]: {
@@ -175,5 +174,5 @@ export const toFilterValues = (filters: Filters): FilterValues => {
       } as BooleanFilterValues};
     }
     return all;
-  }, {});
+  }, {} as {[key: string]: FilterValues});
 };
