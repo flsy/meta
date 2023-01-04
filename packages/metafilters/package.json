@@ -1,6 +1,6 @@
 {
   "name": "metafilters",
-  "version": "5.1.1",
+  "version": "5.3.7",
   "description": "MetaFilters - library for dealing with filters",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

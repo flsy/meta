@@ -1,6 +1,6 @@
 {
   "name": "react-metatable",
-  "version": "5.2.1",
+  "version": "5.3.7",
   "main": "lib/export",
   "typings": "lib/export",
   "repository": {
