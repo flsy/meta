@@ -2074,7 +2074,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@falsy/metacore@workspace:^, @falsy/metacore@workspace:packages/metacore":
+"@falsy/metacore@^5.2.1, @falsy/metacore@workspace:packages/metacore":
   version: 0.0.0-use.local
   resolution: "@falsy/metacore@workspace:packages/metacore"
   dependencies:
@@ -14702,7 +14702,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "metafilters@workspace:packages/metafilters"
   dependencies:
-    "@falsy/metacore": "workspace:^"
+    "@falsy/metacore": ^5.2.1
     "@types/jest": ^29.0.0
     "@types/sqlite3": ^3.1.6
     fputils: ^1.2.4
@@ -14714,11 +14714,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"metaforms@workspace:^, metaforms@workspace:packages/metaforms":
+"metaforms@^5.2.1, metaforms@workspace:packages/metaforms":
   version: 0.0.0-use.local
   resolution: "metaforms@workspace:packages/metaforms"
   dependencies:
-    "@falsy/metacore": "workspace:^"
+    "@falsy/metacore": ^5.2.1
     "@types/jest": ^29.0.0
     "@types/ramda": ^0.28.15
     fputils: ^1.2.4
@@ -14729,11 +14729,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"metatable@workspace:^, metatable@workspace:packages/metatable":
+"metatable@^5.2.1, metatable@workspace:packages/metatable":
   version: 0.0.0-use.local
   resolution: "metatable@workspace:packages/metatable"
   dependencies:
-    "@falsy/metacore": "workspace:^"
+    "@falsy/metacore": ^5.2.1
     "@types/enzyme": ^3.10.8
     "@types/jest": ^29.0.0
     "@types/ramda": ^0.28.15
@@ -18020,12 +18020,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-metaforms@workspace:^, react-metaforms@workspace:packages/react-metaforms":
+"react-metaforms@^5.2.1, react-metaforms@workspace:packages/react-metaforms":
   version: 0.0.0-use.local
   resolution: "react-metaforms@workspace:packages/react-metaforms"
   dependencies:
     "@babel/core": ^7.18.13
-    "@falsy/metacore": "workspace:^"
+    "@falsy/metacore": ^5.2.1
     "@storybook/addon-actions": ^6.5.10
     "@storybook/addon-essentials": ^6.5.10
     "@storybook/addon-interactions": ^6.5.10
@@ -18043,7 +18043,7 @@ __metadata:
     fuse.js: ^6.5.3
     gh-pages: ^3.2.3
     lerna: ^5.5.0
-    metaforms: "workspace:^"
+    metaforms: ^5.2.1
     moment: ^2.29.4
     react: ^16.14.0
     react-dom: ^16.14.0
@@ -18060,7 +18060,7 @@ __metadata:
   resolution: "react-metatable@workspace:packages/react-metatable"
   dependencies:
     "@babel/core": ^7.18.13
-    "@falsy/metacore": "workspace:^"
+    "@falsy/metacore": ^5.2.1
     "@storybook/addon-actions": ^6.5.10
     "@storybook/addon-essentials": ^6.5.10
     "@storybook/addon-interactions": ^6.5.10
@@ -18074,10 +18074,10 @@ __metadata:
     "@types/react-dom": ^17.0.9
     "@types/styled-components": ^5.1.25
     babel-loader: ^8.2.2
-    metatable: "workspace:^"
+    metatable: ^5.2.1
     react: ^16.14.0
     react-dom: ^16.14.0
-    react-metaforms: "workspace:^"
+    react-metaforms: ^5.2.1
     react-resizable: ^3.0.4
     styled-components: ^5.3.5
     typescript: ~4.8.2

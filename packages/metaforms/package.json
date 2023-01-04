@@ -1,6 +1,6 @@
 {
   "name": "metaforms",
-  "version": "5.2.1",
+  "version": "5.3.7",
   "description": "metaforms - the heavy stuff",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/flsy/metaforms#readme",
   "dependencies": {
-    "@falsy/metacore": "workspace:^",
+    "@falsy/metacore": "^5.2.1",
     "fputils": "^1.2.4",
     "ramda": "^0.28.0"
   },
@@ -41,6 +41,5 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "rootDir": "src"
-  },
-  "gitHead": "a3c02f3cad9753a22f53110ae1b5c232f829e534"
+  }
 }
