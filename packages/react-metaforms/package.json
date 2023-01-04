@@ -32,11 +32,11 @@
     "react-dom": "^16.14.0 || 17.0.2"
   },
   "dependencies": {
-    "@falsy/metacore": "workspace:^",
+    "@falsy/metacore": "^5.2.1",
     "antd": "^4.21.7",
     "formik": "^2.2.9",
     "fuse.js": "^6.5.3",
-    "metaforms": "workspace:^",
+    "metaforms": "^5.2.1",
     "moment": "^2.29.4",
     "styled-components": "^5.3.5"
   },
@@ -60,8 +60,5 @@
     "react-dom": "^16.14.0",
     "typescript": "~4.8.2"
   },
-  "gitHead": "a3c02f3cad9753a22f53110ae1b5c232f829e534",
-  "workspaces": [
-    "packages/*"
-  ]
+  "gitHead": "a3c02f3cad9753a22f53110ae1b5c232f829e534"
 }

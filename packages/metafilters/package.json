@@ -31,7 +31,7 @@
     "verify": "yarn test && yarn build"
   },
   "dependencies": {
-    "@falsy/metacore": "workspace:^",
+    "@falsy/metacore": "^5.2.1",
     "fputils": "^1.2.4",
     "reflect-metadata": "^0.1.13",
     "typescript": "~4.8.2"
