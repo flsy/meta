@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { Menu } from 'antd';
-import {getDateRangeFilter, getMultiSelectFilter, getThreeStateFilter, getTextFilter} from 'metaforms';
+import {getDateRangeFilter, getMultiSelectFilter, getSegmentedSwitchFilter, getTextFilter} from 'metaforms';
 import React, { useState } from 'react';
 import DataTable from './DataTable';
 import { renderValue } from './renderValue';
@@ -24,10 +24,10 @@ const columns: MetaColumn[] = [
     filterForm: getTextFilter({ label: 'Label', withOperator: true }),
   },
   {
-    name: 'threeStateSwitch',
-    type: 'threeStateSwitch',
+    name: 'segmentedSwitch',
+    type: 'segmentedSwitch',
     label: 'Je povoleno',
-    filterForm: getThreeStateFilter(),
+    filterForm: getSegmentedSwitchFilter(),
   },
   {
     name: 'multiSelect',
@@ -53,7 +53,7 @@ const columns: MetaColumn[] = [
   },
   {
     name: 'isPublished',
-    type: 'threeStateSwitch',
+    type: 'segmentedSwitch',
     label: 'Is published',
   },
   {
@@ -84,7 +84,7 @@ const data: IRow[] = [...Array(10)].map((_, i) => ({
   createdAtFormatted: '1.1.2001',
   createdBy: { id: 1, name: 'Joe' },
   isPublished: true,
-  threeStateSwitch: false,
+  segmentedSwitch: false,
   multiSelect: [
     'First',
     'Second Second Second Second Second',

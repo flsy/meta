@@ -10,7 +10,7 @@ const Center = styled.div`
 `;
 
 export const renderValue = (value: unknown | unknown[], column: MetaColumn): React.ReactNode => {
-  if (column.type === 'threeStateSwitch') {
+  if (column.type === 'segmentedSwitch') {
     return (
       <Center>
         <BoolIcon value={value as boolean} showIndeterminate={true} />

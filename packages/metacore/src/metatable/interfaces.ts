@@ -39,5 +39,5 @@ export type MetaColumn = StringMetaColumn | DateRangeMetaColumn | ISegmentedSwit
 
 export const isStringFilterForm = (column: MetaColumn): column is StringMetaColumn => column.type === 'string';
 export const isDateRangeFilterForm = (column: MetaColumn): column is DateRangeMetaColumn => column.type === 'dateRange';
-export const isThreeStateSwitchFilterForm = (column: MetaColumn): column is ISegmentedSwitchMetaColumn => column.type === 'segmentedSwitch';
+export const isSegmentedSwitchFilterForm = (column: MetaColumn): column is ISegmentedSwitchMetaColumn => column.type === 'segmentedSwitch';
 export const isMultiselectFilterForm = (column: MetaColumn): column is MultiselectMetaColumn => column.type === 'multiselect';
