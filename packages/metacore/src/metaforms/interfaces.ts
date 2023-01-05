@@ -9,7 +9,7 @@ export type MetaFormValues = { [key: string]: MetaFieldValue | MetaFormValues }
 
 export type MetaField = AutocompleteMetaProps
     | ObjectMetaProps
-    | IThreeStateSwitch
+    | ISegmentedSwitch
     | DateRangeMetaProps
     | MultistringMetaProps
     | JsonMetaProps
@@ -146,18 +146,17 @@ export interface MultistringMetaProps extends CommonProps {
   type: 'multistring'
 }
 
-// TODO: Maybe rename to something like Switch
-export interface IThreeStateSwitchOption {
+export interface ISegmentedSwitchOption {
   label?: string;
   value: string;
   disabled?: boolean;
   icon?: 'write' | 'read' | 'none';
 }
-export interface IThreeStateSwitch extends CommonProps {
-  type: 'threeStateSwitch';
+export interface ISegmentedSwitch extends CommonProps {
+  type: 'segmentedSwitch';
   disabled?: boolean;
   size?: 'small' | 'middle' | 'large';
-  options?: [IThreeStateSwitchOption, IThreeStateSwitchOption, IThreeStateSwitchOption];
+  options?: [ISegmentedSwitchOption, ISegmentedSwitchOption, ISegmentedSwitchOption];
 }
 
 export interface ObjectMetaProps extends CommonProps {

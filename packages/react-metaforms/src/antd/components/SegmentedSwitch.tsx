@@ -1,9 +1,9 @@
 import { Segmented } from 'antd';
 import { EditOutlined, EyeOutlined, StopOutlined} from '@ant-design/icons';
-import { IThreeStateSwitch, IThreeStateSwitchOption } from 'metaforms';
+import { ISegmentedSwitch, ISegmentedSwitchOption } from 'metaforms';
 import React from 'react';
 
-const getIcon = (icon: IThreeStateSwitchOption['icon'] ) => {
+const getIcon = (icon: ISegmentedSwitchOption['icon'] ) => {
   switch(icon){
   case 'write':
     return <EditOutlined />;
@@ -17,13 +17,13 @@ const getIcon = (icon: IThreeStateSwitchOption['icon'] ) => {
 };
 
 
-interface IProps extends Omit<IThreeStateSwitch, 'type'> {
+interface IProps extends Omit<ISegmentedSwitch, 'type'> {
   value: string;
   onChange: (value: string) => void;
 }
 
-const ThreeStateSwitch = ({ name, value, onChange, options, disabled, size }: IProps) => {
-  const defaultOptions: IThreeStateSwitch['options'] = [
+export const SegmentedSwitch = ({ name, value, onChange, options, disabled, size }: IProps) => {
+  const defaultOptions: ISegmentedSwitch['options'] = [
     { label: 'Vše', value: undefined },
     { label: 'Ano', value: 'ano' },
     { label: 'Ne', value: 'ne' },
@@ -40,5 +40,3 @@ const ThreeStateSwitch = ({ name, value, onChange, options, disabled, size }: IP
     />
   );
 };
-
-export default ThreeStateSwitch;
