@@ -4122,14 +4122,14 @@ __metadata:
   linkType: hard
 
 "@storybook/addon-links@npm:^6.5.10":
-  version: 6.5.10
-  resolution: "@storybook/addon-links@npm:6.5.10"
+  version: 6.5.15
+  resolution: "@storybook/addon-links@npm:6.5.15"
   dependencies:
-    "@storybook/addons": 6.5.10
-    "@storybook/client-logger": 6.5.10
-    "@storybook/core-events": 6.5.10
+    "@storybook/addons": 6.5.15
+    "@storybook/client-logger": 6.5.15
+    "@storybook/core-events": 6.5.15
     "@storybook/csf": 0.0.2--canary.4566f4d.1
-    "@storybook/router": 6.5.10
+    "@storybook/router": 6.5.15
     "@types/qs": ^6.9.5
     core-js: ^3.8.2
     global: ^4.4.0
@@ -4145,7 +4145,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 5ffecdc7f1aac3d9f08ad443a05977da260f6cfbe9f9207bb9c6890dd797eb0304e41527cf70c6c9c68f69f98569ef89f5463bec57209814ff57471c1f0592d6
+  checksum: ef40b02a3f48de2f591486fb04910e996bcb8d5fd406e2d6b81752659551b366ffc64f6cfdb461585e52c0ae98fa102be8595678e63a27171f9e2a0e20869bd6
   languageName: node
   linkType: hard
 
