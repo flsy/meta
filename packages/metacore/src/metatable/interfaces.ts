@@ -1,6 +1,6 @@
 import {
   LayoutMetaProps,
-  IThreeStateSwitch,
+  ISegmentedSwitch,
   MultiSelectMetaProps,
   SelectMetaProps,
   TextMetaProps,
@@ -25,9 +25,9 @@ interface DateRangeMetaColumn extends Column {
     filterForm?: [DateRangeMetaProps, LayoutMetaProps]
 }
 
-interface ThreeStateSwitchMetaColumn extends Column {
-    type: 'threeStateSwitch',
-    filterForm?: [IThreeStateSwitch, LayoutMetaProps]
+interface ISegmentedSwitchMetaColumn extends Column {
+    type: 'segmentedSwitch',
+    filterForm?: [ISegmentedSwitch, LayoutMetaProps]
 }
 
 interface MultiselectMetaColumn extends Column {
@@ -35,9 +35,9 @@ interface MultiselectMetaColumn extends Column {
     filterForm?: [MultiSelectMetaProps, LayoutMetaProps];
 }
 
-export type MetaColumn = StringMetaColumn | DateRangeMetaColumn | ThreeStateSwitchMetaColumn | MultiselectMetaColumn;
+export type MetaColumn = StringMetaColumn | DateRangeMetaColumn | ISegmentedSwitchMetaColumn | MultiselectMetaColumn;
 
 export const isStringFilterForm = (column: MetaColumn): column is StringMetaColumn => column.type === 'string';
 export const isDateRangeFilterForm = (column: MetaColumn): column is DateRangeMetaColumn => column.type === 'dateRange';
-export const isThreeStateSwitchFilterForm = (column: MetaColumn): column is ThreeStateSwitchMetaColumn => column.type === 'threeStateSwitch';
+export const isSegmentedSwitchFilterForm = (column: MetaColumn): column is ISegmentedSwitchMetaColumn => column.type === 'segmentedSwitch';
 export const isMultiselectFilterForm = (column: MetaColumn): column is MultiselectMetaColumn => column.type === 'multiselect';

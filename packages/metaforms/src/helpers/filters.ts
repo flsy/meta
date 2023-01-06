@@ -3,13 +3,13 @@ import {
   getLayoutMeta,
   getMultiSelectMeta,
   getSubmitMeta,
-  getThreeStateSwitch,
+  getSegmentedSwitch,
   getSelectMeta,
   getTextMeta, getDateRangeMeta
 } from './fields';
 import {
   DateRangeMetaProps,
-  IThreeStateSwitch,
+  ISegmentedSwitch,
   LayoutMetaProps,
   MultiSelectMetaProps,
   SelectMetaProps,
@@ -63,8 +63,8 @@ export const getTextFilter = (options: { label?: string, withOperator?: boolean,
   return result;
 };
 
-export const getThreeStateFilter = (options: Omit<IThreeStateSwitch, 'type'| 'name'> = {}): [IThreeStateSwitch, LayoutMetaProps] => [
-  getThreeStateSwitch({...options, name: 'value'}),
+export const getSegmentedSwitchFilter = (options: Omit<ISegmentedSwitch, 'type'| 'name'> = {}): [ISegmentedSwitch, LayoutMetaProps] => [
+  getSegmentedSwitch({...options, name: 'value'}),
   actions,
 ];
 

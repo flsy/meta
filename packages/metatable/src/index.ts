@@ -5,7 +5,7 @@ import {
   isDateRangeFilterForm,
   isMultiselectFilterForm,
   isStringFilterForm,
-  isThreeStateSwitchFilterForm,
+  isSegmentedSwitchFilterForm,
   IStringInput, IStringsInput,
   MetaColumn, Operator
 } from '@falsy/metacore';
@@ -123,7 +123,7 @@ export const toFilters = (column: MetaColumn, values?: FilterValues): Filters =>
   if (isStringFilterForm(column)) {
     return { [column.name]: toStringInput(values as StringFilterValues) };
   }
-  if (isThreeStateSwitchFilterForm(column)) {
+  if (isSegmentedSwitchFilterForm(column)) {
     return { [column.name]: toBooleanInput(values as BooleanFilterValues) };
   }
 

@@ -7,7 +7,7 @@ import {
   FileMetaProps,
   HiddenMetaProps,
   ImageMetaProps,
-  IThreeStateSwitch,
+  ISegmentedSwitch,
   JsonMetaProps, LayoutMetaProps,
   MultiSelectMetaProps,
   MultistringMetaProps,
@@ -54,7 +54,7 @@ export const getDateRangeMeta = (props: Omit<DateRangeMetaProps, 'type'>): DateR
 
 export const getMultistringMeta = (props: Omit<MultistringMetaProps, 'type'>): MultistringMetaProps => ({ ...props, type: 'multistring' });
 
-export const getThreeStateSwitch = (props: Omit<IThreeStateSwitch, 'type'>): IThreeStateSwitch => ({ ...props, type: 'threeStateSwitch' });
+export const getSegmentedSwitch = (props: Omit<ISegmentedSwitch, 'type'>): ISegmentedSwitch => ({ ...props, type: 'segmentedSwitch' });
 
 export const getObjectMeta = (props: Omit<ObjectMetaProps, 'type'>): ObjectMetaProps => ({ ...props, type: 'object' });
 

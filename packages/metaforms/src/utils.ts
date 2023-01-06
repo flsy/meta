@@ -16,7 +16,7 @@ import {
   ObjectMetaProps,
   HiddenMetaProps,
   ActionMetaProps,
-  IThreeStateSwitch,
+  ISegmentedSwitch,
   LayoutMetaProps,
 } from '@falsy/metacore';
 
@@ -37,4 +37,4 @@ export const isAutocomplete = (field: MetaField): field is AutocompleteMetaProps
 export const isObject = (field: MetaField): field is ObjectMetaProps => field.type === 'object';
 export const isAction = (field: MetaField): field is ActionMetaProps => field.type === 'action';
 export const isLayout = (field: MetaField): field is LayoutMetaProps => field.type === 'layout';
-export const isThreeStateSwitch = (field: MetaField): field is IThreeStateSwitch => field.type === 'threeStateSwitch';
+export const isSegmentedSwitch = (field: MetaField): field is ISegmentedSwitch => field.type === 'segmentedSwitch';

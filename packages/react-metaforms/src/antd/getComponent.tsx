@@ -25,12 +25,12 @@ import {
   isSubmit,
   isText,
   isTextarea,
-  isThreeStateSwitch,
+  isSegmentedSwitch,
 } from 'metaforms';
 import ArrayControl from './components/ArrayControl';
 import ObjectControl from './components/ObjectControl';
 import HorizontalLayout from './layout/HorizontalLayout';
-import ThreeStateSwitch from './components/ThreeStateSwitch';
+import {SegmentedSwitch} from './components/SegmentedSwitch';
 
 export const getComponent: IProps['components'] = (props) => {
   if(isControlArray(props)) {
@@ -232,10 +232,10 @@ export const getComponent: IProps['components'] = (props) => {
     );
   }
 
-  if (isThreeStateSwitch(props.field)) {
+  if (isSegmentedSwitch(props.field)) {
     return (
       <FormItem label={props.field.label} errorMessage={meta.error} validation={props.field.validation} align={props.field.align}>
-        <ThreeStateSwitch
+        <SegmentedSwitch
           value={input.value}
           name={input.name}
           onChange={helpers.setValue}

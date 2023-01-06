@@ -12,7 +12,7 @@ import {
   getSelectMeta,
   getSubmitMeta,
   getTextareaMeta,
-  getTextMeta, getThreeStateSwitch, minlengthRule, requiredRule,
+  getTextMeta, getSegmentedSwitch, minlengthRule, requiredRule,
 } from 'metaforms';
 import React from 'react';
 import Form from './Form';
@@ -381,7 +381,7 @@ Autocomplete.args = {
   disabled: false,
 };
 
-export const ThreeStateSwitch = (args) => (
+export const SegmentedSwitch = (args) => (
   <Form
     layout={args.formLayout}
     initialValues={{
@@ -389,7 +389,7 @@ export const ThreeStateSwitch = (args) => (
       b: 'b',
       c: 'c'
     }}
-    fields={[...['first', 'second', 'third'].map(name => getThreeStateSwitch({
+    fields={[...['first', 'second', 'third'].map(name => getSegmentedSwitch({
       name: name,
       label: name,
       size: args.size,
@@ -405,7 +405,7 @@ export const ThreeStateSwitch = (args) => (
     ]} onSubmit={handleSubmit} />
 );
 
-ThreeStateSwitch.args = {
+SegmentedSwitch.args = {
   disabled: false,
   formLayout: 'vertical',
   size: 'small',
@@ -413,7 +413,7 @@ ThreeStateSwitch.args = {
   showIcon: true,
   showLabel: true
 };
-ThreeStateSwitch.argTypes = {
+SegmentedSwitch.argTypes = {
   formLayout: {
     options: ['horizontal', 'vertical'],
     control: {type: 'radio'},

@@ -1,7 +1,7 @@
 import {
   getDateRangeFilter,
   getMultiSelectFilter,
-  getThreeStateFilter,
+  getSegmentedSwitchFilter,
   getTextFilter
 } from 'metaforms';
 import React, { useState } from 'react';
@@ -40,11 +40,11 @@ const columns: MetaColumn[] = [
     filterForm: getTextFilter({ label: 'Label', withOperator: true, operatorLabel: 'Operator' }),
   },
   {
-    name: 'threeStateSwitch',
-    type: 'threeStateSwitch',
+    name: 'segmentedSwitch',
+    type: 'segmentedSwitch',
     label: 'Je povoleno',
     isSortable: true,
-    filterForm: getThreeStateFilter(),
+    filterForm: getSegmentedSwitchFilter(),
   },
   {
     name: 'system',
@@ -84,7 +84,7 @@ const data = new Array(daysAgo).fill(null).map((d, index) => getDateDaysAgo(inde
   text: 'Of course, lager! The only thing that can kill a vindaloo!',
   createdBy: { id: 1, name: 'Joe' },
   isPublished: randomBoolean(),
-  threeStateSwitch: randomBoolean(),
+  segmentedSwitch: randomBoolean(),
   system: 'system',
   level: randomInArray( [
     'error',
