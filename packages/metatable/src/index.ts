@@ -1,5 +1,5 @@
 import {
-  Filters, FilterType,
+  Filters,
   IBooleanInput,
   INumberInput,
   isDateRangeFilterForm,
@@ -9,6 +9,7 @@ import {
   IStringInput, IStringsInput,
   MetaColumn, Operator
 } from '@falsy/metacore';
+import { isIStringInput, isIBooleanInput, isIStringsInput, isINumberInput } from './utils';
 
 const isNumberValue = (values?: StringsFilterValues | NumberFilterValues): values is NumberFilterValues => values?.value?.map(value => typeof value === 'number').find((_, i) => i === 0) ?? false;
 
@@ -27,12 +28,6 @@ export type NumberFilterValues = {
     value?: number[];
 };
 
-const isFilterType = (filter: FilterType | Filters): filter is FilterType => Object.prototype.hasOwnProperty.call(filter, 'type');
-
-const isIStringInput = (filter?: FilterType | Filters): filter is IStringInput => filter && isFilterType(filter) && filter?.type === 'string';
-const isIStringsInput = (filter?: FilterType | Filters): filter is IStringsInput => filter && isFilterType(filter) && filter?.type === 'strings';
-const isIBooleanInput = (filter?: FilterType | Filters): filter is IBooleanInput => filter && isFilterType(filter) && filter?.type === 'boolean';
-const isINumberInput = (filter?: FilterType | Filters): filter is INumberInput => filter && isFilterType(filter) && filter?.type === 'number';
 
 export const getValue = (filters: Filters): { [columnName: string]: FilterValues } => {
   return Object.entries(filters).reduce((all, [name, field]) => {
@@ -78,7 +73,7 @@ export const toStringInput = (value: StringFilterValues): IStringInput => {
     type: 'string',
     filters: [
       {
-        value: value.value,
+        value: value.value || null,
         operator: value.operator
       }
     ]
@@ -88,7 +83,7 @@ export const toStringInput = (value: StringFilterValues): IStringInput => {
 export const toBooleanInput = (value: BooleanFilterValues): IBooleanInput => {
   return {
     type: 'boolean',
-    value: value.value
+    value: value.value || null
   };
 };
 
@@ -119,7 +114,9 @@ export const toRangeInput = (value: NumberFilterValues): INumberInput => {
   };
 };
 
-export const toFilters = (column: MetaColumn, values?: FilterValues): Filters => {
+export const toFilters = (column: MetaColumn, values?: FilterValues): Filters | undefined => {
+  if(!values?.value) return;
+
   if (isStringFilterForm(column)) {
     return { [column.name]: toStringInput(values as StringFilterValues) };
   }
