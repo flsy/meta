@@ -53,7 +53,7 @@ const stringOperator = (columnName: string, value: Nullable<string>, operator?: 
     if (value === null) {
       return `${columnName} is null`;
     }
-    return `${columnName} like '%${value}%'`;
+    return `coalesce(${columnName}, '') like '%${value}%'`;
   }
   }
 };

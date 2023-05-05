@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import type {MetaColumn, Filters} from '@falsy/metacore';
+import type { MetaColumn, Filters } from '@falsy/metacore';
 import Form from 'react-metaforms';
-import {toFormValues, toFilters, FilterValues } from 'metatable';
+import { toFormValues, toFilters, FilterValues } from 'metatable';
 
 interface IProps {
   column: MetaColumn;
@@ -14,7 +14,6 @@ const Wrapper = styled.div`
   padding: 1em 0.5em;
 `;
 
-
 const FilterDropdown = ({ column, onFilter, filters }: IProps) => {
   return (
     <Wrapper>
@@ -22,10 +21,10 @@ const FilterDropdown = ({ column, onFilter, filters }: IProps) => {
         size="small"
         initialValues={toFormValues(column, filters)}
         fields={column.filterForm}
-        onAction={({field, form}) => {
+        onAction={({ field, form }) => {
           if (field.id === 'reset') {
             form.resetForm({
-              values: {}
+              values: {},
             });
             return form.submitForm();
           }
@@ -33,8 +32,7 @@ const FilterDropdown = ({ column, onFilter, filters }: IProps) => {
         onSubmit={(values) => {
           const filters = toFilters(column, values as FilterValues);
           onFilter(filters);
-        }
-        }
+        }}
       />
     </Wrapper>
   );

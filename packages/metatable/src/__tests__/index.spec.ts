@@ -1,7 +1,4 @@
-import {
-  isFiltered,
-  toFilterValues
-} from './index';
+import { isFiltered, toFilterValues, toFilters } from '..';
 
 describe('metatable', () => {
   describe('isFiltered', () => {
@@ -47,6 +44,10 @@ describe('metatable', () => {
         }
       });
     });
+  });
+
+  describe('toFilters', () => {
+    expect(toFilters({name: 'createdBy', type: 'string'}, {operator: undefined, value: ''} )).toEqual(undefined);
   });
 });
 
