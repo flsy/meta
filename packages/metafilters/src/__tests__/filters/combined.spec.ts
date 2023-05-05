@@ -29,8 +29,8 @@ describe('filters combined', () => {
     await close(db);
 
     expect(response).toMatchObject({
-      count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" like \'%a%\' AND "firstName" like \'%a%\' AND "age" > 2 AND "age" <= 30 AND "isValid" = true;',
-      nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" like \'%a%\' AND "firstName" like \'%a%\' AND "age" > 2 AND "age" <= 30 AND "isValid" = true ORDER BY "age" ASC LIMIT 7;',
+      count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE coalesce("firstName", \'\') like \'%a%\' AND coalesce("firstName", \'\') like \'%a%\' AND "age" > 2 AND "age" <= 30 AND "isValid" = true;',
+      nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE coalesce("firstName", \'\') like \'%a%\' AND coalesce("firstName", \'\') like \'%a%\' AND "age" > 2 AND "age" <= 30 AND "isValid" = true ORDER BY "age" ASC LIMIT 7;',
     });
 
     expect(count).toEqual({ count: 2 });
