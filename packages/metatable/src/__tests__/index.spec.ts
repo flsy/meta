@@ -46,9 +46,9 @@ describe('metatable', () => {
     });
   });
 
-  describe('toFilters', () => {
-    expect(toFilters({name: 'createdBy', type: 'string'}, {operator: undefined, value: ''} )).toEqual(undefined);
+  describe('toFilters test', () => {
+    expect(toFilters({name: 'createdBy', type: 'string'}, {operator: undefined, value: ''} )).toEqual({createdBy: {filters: [{operator: undefined, value: null}], type: 'string'}});
   });
-});
+}); 
 
 
