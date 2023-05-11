@@ -115,8 +115,6 @@ export const toRangeInput = (value: NumberFilterValues): INumberInput => {
 };
 
 export const toFilters = (column: MetaColumn, values?: FilterValues): Filters | undefined => {
-  if(!values?.value) return;
-
   if (isStringFilterForm(column)) {
     return { [column.name]: toStringInput(values as StringFilterValues) };
   }

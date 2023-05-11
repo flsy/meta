@@ -23,8 +23,8 @@ describe('strings filter', () => {
       nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash";',
     });
 
-    expect(count).toEqual({ count: 4 });
-    expect(nodes.length).toEqual(4);
+    expect(count).toEqual({ count: 5 });
+    expect(nodes.length).toEqual(5);
   });
 
   it('should filter', async () => {
@@ -196,8 +196,8 @@ describe('strings filter', () => {
     const nodes = await all(db, filters.nodes);
     await db.close();
 
-    expect(count).toEqual({ count: 3 });
-    expect(nodes).toMatchObject([{ lastName: 'Tree' }, { lastName: 'Woods' }, { lastName: 'RainForest' }]);
+    expect(count).toEqual({ count: 4 });
+    expect(nodes.map(n => (n as any).lastName)).toMatchObject(['Tree', 'Woods', 'RainForest', 'FirstNameNull']);
   });
 
   it('filter by string default LIKE', async () => {
@@ -220,7 +220,7 @@ describe('strings filter', () => {
     expect(nodes).toMatchObject([{ firstName: 'Alpha' }, { firstName: 'Beta' }, { firstName: 'Carol' }]);
   });
 
-  it('filter by string with null value', async () => {
+  it('filter by string with null value (which means: give me eerything)', async () => {
     const db = await seed();
     const response = await metafilters('person-dash', exampleColumn, {
       filters: { firstName: { type: 'string', filters: [{ value: null }] } },
@@ -231,13 +231,12 @@ describe('strings filter', () => {
     await close(db);
 
     expect(response).toMatchObject({
-      count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" is null;',
-      nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" is null;',
+      count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE coalesce("firstName", \'\') like \'%%\';',
+      nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE coalesce("firstName", \'\') like \'%%\';',
     });
 
-    expect(count).toEqual({ count: 0 });
-    expect(nodes.length).toEqual(0);
-    expect(nodes).toMatchObject([]);
+    expect(count).toEqual({ count: 5 });
+    expect(nodes.length).toEqual(5);
   });
 
   it('handles undefined filters', async () => {
@@ -255,8 +254,8 @@ describe('strings filter', () => {
       nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash";',
     });
 
-    expect(count).toEqual({ count: 4 });
-    expect(nodes.length).toEqual(4);
+    expect(count).toEqual({ count: 5 });
+    expect(nodes.length).toEqual(5);
   });
 
   it('filter by string with user defined function', async () => {
