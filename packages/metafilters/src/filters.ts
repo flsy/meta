@@ -50,10 +50,13 @@ const stringOperator = (columnName: string, value: Nullable<string>, operator?: 
   }
   case 'LIKE':
   default: {
-    if (value === null) {
-      return `${columnName} is null`;
-    }
-    return `coalesce(${columnName}, '') like '%${value}%'`;
+    // TODO Zde by měly být rozlišeny dva stavy. 
+    // Stav kdy filtruju NULL a chci videt NULL zaznamy. 
+    // A stav kdy nefiltruju NIC a chci videt VSECHNY zaznamy.  
+    // Momentalne nelze vyfiltrovat pouze NULL zaznamy. 
+
+    // This coalesce includes null values into the result.
+    return `coalesce(${columnName}, '') like '%${value || ''}%'`;
   }
   }
 };

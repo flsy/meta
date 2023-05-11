@@ -11,6 +11,8 @@ export const seed = async () => {
     [2, 'Alpha', 'Tree', 2, true],
     [3, 'Beta', 'Woods', 30, true],
     [5, 'Carol', 'RainForest', 18, true],
+    [6, '', 'FirstNameNull', 18, true],
+
   ]);
 
   return db;
