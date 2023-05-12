@@ -5,9 +5,10 @@ import {
   getSubmitMeta,
   getSegmentedSwitch,
   getSelectMeta,
-  getTextMeta, getDateRangeMeta
+  getTextMeta, getDateRangeMeta, getCheckboxMeta
 } from './fields';
 import {
+  CheckboxMetaProps,
   DateRangeMetaProps,
   ISegmentedSwitch,
   LayoutMetaProps,
@@ -75,5 +76,10 @@ export const getMultiSelectFilter = (options: Omit<MultiSelectMetaProps, 'type'|
 
 export const getDateRangeFilter = (options: Omit<DateRangeMetaProps, 'type'| 'name'> = {}): [DateRangeMetaProps, LayoutMetaProps] => [
   getDateRangeMeta({...options, name: 'value'}),
+  actions,
+];
+
+export const getBooleanFilter = (options: Omit<CheckboxMetaProps, 'type'| 'name'> = {}): [CheckboxMetaProps, LayoutMetaProps] => [
+  getCheckboxMeta({...options, name: 'value'}),
   actions,
 ];
