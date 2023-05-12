@@ -78,8 +78,13 @@ const stringsFilter = (name: string, filter: IStringsInput): string[] => {
 
 const booleanFilter = (name: string, filter: IBooleanInput): string => {
   const columnName = prepareColumnName(name, filter.customFunction);
+  
+  // TODO Zde by měly být rozlišeny dva stavy. 
+  // Stav kdy filtruju NULL a chci videt NULL zaznamy. 
+  // A stav kdy nefiltruju NIC a chci videt VSECHNY zaznamy.  
+  // Momentalne nelze vyfiltrovat pouze NULL zaznamy. 
   if (filter.value === null) {
-    return `${columnName} is null`;
+    return `${columnName} = NULL OR ${columnName} = false OR ${columnName} = true`;
   }
   return [columnName, '=', filter.value].join(' ');
 };
