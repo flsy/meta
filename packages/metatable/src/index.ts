@@ -4,6 +4,7 @@ import {
   INumberInput,
   isDateRangeFilterForm,
   isMultiselectFilterForm,
+  isBooleanFilterForm,
   isStringFilterForm,
   isSegmentedSwitchFilterForm,
   IStringInput, IStringsInput,
@@ -12,6 +13,7 @@ import {
 import { isIStringInput, isIBooleanInput, isIStringsInput, isINumberInput } from './utils';
 
 const isNumberValue = (values?: StringsFilterValues | NumberFilterValues): values is NumberFilterValues => values?.value?.map(value => typeof value === 'number').find((_, i) => i === 0) ?? false;
+const isBooleanValue = (values?: StringsFilterValues | NumberFilterValues | BooleanFilterValues): values is BooleanFilterValues => values?.value ? typeof values.value === 'boolean' : false;
 
 export type FilterValues = StringFilterValues | BooleanFilterValues | StringsFilterValues | NumberFilterValues;
 export type StringFilterValues = {
@@ -133,6 +135,10 @@ export const toFilters = (column: MetaColumn, values?: FilterValues): Filters | 
       return { [column.name]: toNumberInput(values as NumberFilterValues) };
     }
     return { [column.name]: toStringsInput(values as StringsFilterValues) };
+  }
+
+  if(isBooleanFilterForm(column)) {
+    return { [column.name]: toBooleanInput(values as BooleanFilterValues) };
   }
 };
 
