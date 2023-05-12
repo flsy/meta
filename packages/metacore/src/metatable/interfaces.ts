@@ -4,7 +4,8 @@ import {
   MultiSelectMetaProps,
   SelectMetaProps,
   TextMetaProps,
-  DateRangeMetaProps
+  DateRangeMetaProps,
+  CheckboxMetaProps
 } from '../metaforms/interfaces';
 
 interface Column {
@@ -35,9 +36,16 @@ interface MultiselectMetaColumn extends Column {
     filterForm?: [MultiSelectMetaProps, LayoutMetaProps];
 }
 
-export type MetaColumn = StringMetaColumn | DateRangeMetaColumn | ISegmentedSwitchMetaColumn | MultiselectMetaColumn;
+interface BooleanMetaColumn extends Column {
+    type: 'boolean';
+    filterForm?: [CheckboxMetaProps, LayoutMetaProps];
+}
+
+export type MetaColumn = StringMetaColumn | DateRangeMetaColumn | ISegmentedSwitchMetaColumn | MultiselectMetaColumn | BooleanMetaColumn;
 
 export const isStringFilterForm = (column: MetaColumn): column is StringMetaColumn => column.type === 'string';
 export const isDateRangeFilterForm = (column: MetaColumn): column is DateRangeMetaColumn => column.type === 'dateRange';
 export const isSegmentedSwitchFilterForm = (column: MetaColumn): column is ISegmentedSwitchMetaColumn => column.type === 'segmentedSwitch';
 export const isMultiselectFilterForm = (column: MetaColumn): column is MultiselectMetaColumn => column.type === 'multiselect';
+export const isBooleanFilterForm = (column: MetaColumn): column is BooleanMetaColumn => column.type === 'boolean';
+
