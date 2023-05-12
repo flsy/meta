@@ -85,7 +85,7 @@ export const toStringInput = (value: StringFilterValues): IStringInput => {
 export const toBooleanInput = (value: BooleanFilterValues): IBooleanInput => {
   return {
     type: 'boolean',
-    value: value.value || null
+    value: value.value === undefined ? null : value.value
   };
 };
 
