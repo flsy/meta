@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@falsy/metacore": "^5.2.1",
-    "metaforms": "workspace:^",
     "metatable": "^5.2.1",
     "react-metaforms": "^5.2.1",
     "react-resizable": "^3.0.4",
