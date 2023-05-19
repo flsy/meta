@@ -26,8 +26,6 @@ interface IDataTableProps<TRow> {
   render?: (value: any, column: MetaColumn, row: TRow) => any;
   onRowSelect?: (row: TRow) => void;
   onColumnsChange?: (columns: MetaColumn[]) => void;
-
-
   sort?: Sort;
   onSortChange?: (sort: Sort) => void;
   filters?: Filters;
@@ -36,6 +34,7 @@ interface IDataTableProps<TRow> {
   isResizable?: boolean;
   components?: TableProps<TRow>['components'];
   expandable?: TableProps<TRow>['expandable'];
+  sticky?: boolean;
 }
 
 const getKeyColumn = (columns: MetaColumn[]): MetaColumn => columns.find((c) => c.key);
@@ -180,6 +179,7 @@ const DataTable = <TRow extends object>({
   isResizable,
   components,
   expandable,
+  sticky,
   ...props
 }: IDataTableProps<TRow>) => {
   const openFilters = useSelection([]);
@@ -289,6 +289,7 @@ const DataTable = <TRow extends object>({
         columnWidth: rowActions ? undefined : 0,
         selectedRowKeys: keyColumn && selectedRow ? [selectedRow[keyColumn]] : [],
       }}
+      sticky={sticky}
     />
   );
 };
