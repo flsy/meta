@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 
 const FilterDropdown = ({ column, onFilter, filters }: IProps) => {
   return (
-    <Wrapper>
+    <Wrapper onKeyDown={(e) => e.stopPropagation()}>
       <Form
         size="small"
         initialValues={toFormValues(column, filters)}

@@ -15050,7 +15050,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"metaforms@^5.2.1, metaforms@workspace:packages/metaforms":
+"metaforms@^5.2.1, metaforms@workspace:^, metaforms@workspace:packages/metaforms":
   version: 0.0.0-use.local
   resolution: "metaforms@workspace:packages/metaforms"
   dependencies:
@@ -18401,6 +18401,7 @@ __metadata:
     "@types/react-dom": ^17.0.9
     "@types/styled-components": ^5.1.25
     babel-loader: ^8.2.2
+    metaforms: "workspace:^"
     metatable: ^5.2.1
     react: ^16.14.0
     react-dom: ^16.14.0
