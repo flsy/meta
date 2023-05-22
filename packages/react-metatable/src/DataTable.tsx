@@ -35,6 +35,7 @@ interface IDataTableProps<TRow> {
   components?: TableProps<TRow>['components'];
   expandable?: TableProps<TRow>['expandable'];
   sticky?: boolean;
+  scroll?: { x?: number | string, y?: number | string };
 }
 
 const getKeyColumn = (columns: MetaColumn[]): MetaColumn => columns.find((c) => c.key);
@@ -180,6 +181,7 @@ const DataTable = <TRow extends object>({
   components,
   expandable,
   sticky,
+  scroll,
   ...props
 }: IDataTableProps<TRow>) => {
   const openFilters = useSelection([]);
@@ -290,6 +292,7 @@ const DataTable = <TRow extends object>({
         selectedRowKeys: keyColumn && selectedRow ? [selectedRow[keyColumn]] : [],
       }}
       sticky={sticky}
+      scroll={scroll}
     />
   );
 };

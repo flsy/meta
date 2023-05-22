@@ -158,6 +158,7 @@ export const Basic = (args) => {
 
         return renderValue(value, column);
       }}
+
     />
   );
 };
