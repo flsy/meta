@@ -9,7 +9,11 @@ const MIN_COL_WIDTH = 120;
 
 export const useResizableTableStyles = ({ isResizable, columnWidthSum }: IProps) => {
   const ref = useRef(null);
-  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = React.useState(0);
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+  }, []);
 
   const scroll = () => {
     if (ref.current) {
