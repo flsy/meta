@@ -134,6 +134,7 @@ export const Basic = (args) => {
   return (
     <DataTable
       rowKey="id"
+      sticky={args.sticky}
       expandable={{
         defaultExpandAllRows: true,
       }}
@@ -168,5 +169,6 @@ export default {
   title: 'Table/DataTable',
   args: {
     hasActions: false,
+    sticky: false,
   },
 };

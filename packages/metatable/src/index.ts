@@ -13,7 +13,6 @@ import {
 import { isIStringInput, isIBooleanInput, isIStringsInput, isINumberInput } from './utils';
 
 const isNumberValue = (values?: StringsFilterValues | NumberFilterValues): values is NumberFilterValues => values?.value?.map(value => typeof value === 'number').find((_, i) => i === 0) ?? false;
-const isBooleanValue = (values?: StringsFilterValues | NumberFilterValues | BooleanFilterValues): values is BooleanFilterValues => values?.value ? typeof values.value === 'boolean' : false;
 
 export type FilterValues = StringFilterValues | BooleanFilterValues | StringsFilterValues | NumberFilterValues;
 export type StringFilterValues = {
@@ -140,7 +139,11 @@ export const toFilters = (column: MetaColumn, values?: FilterValues): Filters | 
   }
 };
 
-export const toFormValues = (column: MetaColumn, filters: Filters): FilterValues => {
+export const toFormValues = (column: MetaColumn, filters?: Filters): FilterValues => {
+  if(!filters) {
+    return {};
+  }
+
   const values = getValue(filters);
   return Object.keys(filters).reduce((all, key) => {
     if (column.name === key) {

@@ -2,7 +2,7 @@ import FilterTwoTone from '@ant-design/icons/FilterTwoTone';
 import FilterOutlined from '@ant-design/icons/FilterOutlined';
 import { Table, TableProps } from 'antd';
 import {ColumnType, SortOrder} from 'antd/lib/table/interface';
-import { compose, lensPath, set } from 'ramda';
+import { adjust } from 'ramda';
 import React, { ReactElement, useMemo } from 'react';
 import { Resizable } from 'react-resizable';
 import styled from 'styled-components';
@@ -13,7 +13,7 @@ import FilterDropdown from './FilterDropdown';
 import { renderValue } from './renderValue';
 import { useResizableTableStyles } from './useResizableTableStyles';
 import { Filters, Sort, SortOrder as MetaSortOrder, MetaColumn } from '@falsy/metacore';
-import {isFiltered} from 'metatable';
+import { isFiltered } from 'metatable';
 
 interface IDataTableProps<TRow> {
   columns?: MetaColumn[];
@@ -82,10 +82,6 @@ const StyledTable = styled(Table)<{ $selectable: boolean }>`
       }
   `}
 
-  .ant-table {
-    overflow: auto;
-  }
-
   .ant-table tbody {
     background-color: ${({ theme }) => (theme.theme === 'dark' ? '#141414' : '#fff')};
   }
@@ -137,32 +133,10 @@ const ResizableTitle = (props: any) => {
   );
 };
 
-type ColumnWidths = { [key: string]: number };
+const getColumnWidths = (columns: MetaColumn[]): number[] => columns.map((c) => c.width || MIN_COL_WIDTH);
+const setColumnWidths = (widths: number[], columns: MetaColumn[]): MetaColumn[] => columns.map((c, idx) => ({ ...c, width: widths[idx] }));
 
-const getWidthFromColumns = (columns: MetaColumn[]): ColumnWidths => {
-  return columns.reduce((widths, ic, index) => {
-    if (index < columns.length - 1) {
-      return { ...widths, [ic.name]: ic.width || MIN_COL_WIDTH };
-    }
-
-    return widths;
-  }, {});
-};
-
-const sumColumnWidths = (columnWidths: ColumnWidths): number => {
-  return Object.values(columnWidths).reduce((sum, width) => sum + width, 0);
-};
-
-const setWidthsToColumns = (widths: ColumnWidths, columns: MetaColumn[]): MetaColumn[] => {
-  const sets = Object.entries(widths).map(([key, value]) => {
-    return set(lensPath([...key.split('.'), 'width']), value);
-  });
-
-  // TODO: why is this type failing?
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  return compose(...sets)(columns);
-};
+const sumColumnWidths = (columnWidths: number[]): number => columnWidths.reduce((sum, width) => sum + width, 0);
 
 const DataTable = <TRow extends object>({
   data,
@@ -181,13 +155,12 @@ const DataTable = <TRow extends object>({
   components,
   expandable,
   sticky,
-  scroll,
   ...props
 }: IDataTableProps<TRow>) => {
   const openFilters = useSelection([]);
 
-  const [columnWidths, setColumnWidths] = React.useState<ColumnWidths>(columns ? getWidthFromColumns(columns) : {});
-  const { ref } = useResizableTableStyles({ isResizable, columnWidthSum: sumColumnWidths(columnWidths) });
+  const [widths, setWidths] = React.useState<number[]>(columns ? getColumnWidths(columns) : []);
+  const { ref } = useResizableTableStyles({ isResizable, columnWidthSum: sumColumnWidths(widths) });
 
   const onFilter = (filters: Filters) => {
     if (onFilterChange) {
@@ -207,15 +180,11 @@ const DataTable = <TRow extends object>({
     }
   };
 
-  const handleResize =
-    (flatName: string) =>
-      (e, { size }) => {
-        setColumnWidths({ ...columnWidths, [flatName]: size.width });
-      };
+  const handleResize = (idx: number) => (e, { size }) => setWidths(adjust(idx, () => size.width, widths));
 
   const handleResizeStop = () => {
     if (onColumnsChange) {
-      onColumnsChange(setWidthsToColumns(columnWidths, columns));
+      onColumnsChange(setColumnWidths(widths, columns));
     }
   };
 
@@ -228,7 +197,6 @@ const DataTable = <TRow extends object>({
         return {
           title: c.label,
           dataIndex: c.name,
-          flatName: c.name,
           filterDropdownVisible: openFilters.isSelected(c.name),
           filterDropdown: c.filterForm ? () => (openFilters.isSelected(c.name) ? <FilterDropdown column={c} filters={filters} onFilter={onFilter} /> : null) : undefined,
           render: (colValue, rowValue) => (props.render ? props.render(colValue, c, rowValue) : renderValue(colValue, c)),
@@ -236,7 +204,7 @@ const DataTable = <TRow extends object>({
           sortOrder,
           sorter: c.isSortable,
           filterIcon: () => {
-            if (c.filterForm && filters) {
+            if (c.filterForm) {
               return isFiltered(filters, c) ? <FilterTwoTone  /> : <FilterOutlined />;
             }
           },
@@ -246,10 +214,10 @@ const DataTable = <TRow extends object>({
   );
 
   const columnsWithWidth = isResizable
-    ? mappedColumns.map((c: any) => ({
+    ? mappedColumns.map((c, i) => ({
       ...c,
-      width: columnWidths[c.flatName],
-      onHeaderCell: () => ({ width: columnWidths[c.flatName], onResize: handleResize(c.flatName), onResizeStop: handleResizeStop }),
+      width: widths[i],
+      onHeaderCell: () => ({ width: widths[i], onResize: handleResize(i), onResizeStop: handleResizeStop }),
     }))
     : mappedColumns;
 
@@ -292,7 +260,6 @@ const DataTable = <TRow extends object>({
         selectedRowKeys: keyColumn && selectedRow ? [selectedRow[keyColumn]] : [],
       }}
       sticky={sticky}
-      scroll={scroll}
     />
   );
 };
