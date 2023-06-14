@@ -6,7 +6,7 @@ import { toFormValues, toFilters, FilterValues } from 'metatable';
 
 interface IProps {
   column: MetaColumn;
-  filters: Filters;
+  filters?: Filters;
   onFilter: (filters: Filters) => void;
 }
 
