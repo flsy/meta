@@ -12,7 +12,7 @@ import {
   ArrayHelpers,
   FieldHelperProps,
   FieldInputProps,
-  FieldMetaProps
+  FieldMetaProps,
 } from 'formik';
 import {
   MetaField,
@@ -23,6 +23,7 @@ import {
   LayoutMetaProps,
 } from '@falsy/metacore';
 import { isAction, isLayout, isObject, validateForm} from 'metaforms';
+import { view, lensPath } from 'ramda';
 
 type FormContext = FormikContextType<MetaFormValues>;
 type FormHelpers = FormikHelpers<MetaFormValues>
@@ -34,6 +35,28 @@ export interface ArrayRenderProps { children: JSX.Element[], field: MetaField, a
 export interface LayoutRenderProps { children: JSX.Element[], field: LayoutMetaProps, form: FormContext }
 
 export type ComponentRenderProps = ControlRenderProps | ObjectRenderProps | ArrayRenderProps | ActionRenderProps | LayoutRenderProps;
+
+const ErrorFocus = ({ fieldRefs }: any) => {
+  const formik = useFormikContext();
+
+  useEffect(() => {
+    if(!formik.isSubmitting && !formik.isValid) {
+      const entry = Object.entries(fieldRefs.current).find(([name]) => !!view(lensPath(name.split('.')), formik.errors));
+
+      if(entry) {
+        const [, errFieldRef]: any = entry;
+
+        if(errFieldRef && 'focus' in errFieldRef) {
+          errFieldRef.focus();
+        }
+      }
+    }
+
+  }, [formik.isSubmitting]);
+
+
+  return null;
+};
 
 
 export interface IProps {
@@ -51,16 +74,15 @@ export const isControlObject = (c: ComponentRenderProps): c is ObjectRenderProps
 export const isControlLayout = (c: ComponentRenderProps): c is LayoutRenderProps => isLayout(c.field);
 
 const MetaForm = (props: IProps) => {
-  const firstEl = useRef<any>();
+  const fieldRefs = useRef<{[key: string]: HTMLElement }>({});
 
   const Field = ({ field }: { field: MetaField }): JSX.Element => {
     const [input, meta, helpers] = useField(field.name);
     const form = useFormikContext<MetaFormValues>();
 
     const ref = (el: any) => {
-      if(field.name === props.fields[0].name) {
-        firstEl.current = el;
-      }
+      const current = fieldRefs.current ?? {};
+      fieldRefs.current = { ...current, [field.name]: el };
     };
 
     if(field.visible) {
@@ -112,10 +134,11 @@ const MetaForm = (props: IProps) => {
 
   useEffect(() => {
     setTimeout(() => {
-      firstEl.current?.focus?.();
+      Object.values(fieldRefs.current)[0].focus();
     }, 200);
 
   }, []);
+
 
   return (
     <Formik
@@ -128,6 +151,7 @@ const MetaForm = (props: IProps) => {
         props.onSubmit(values, formikHelpers)}
     >
       <Form>
+        <ErrorFocus fieldRefs={fieldRefs} />
         {props.fields.map((field => (<Field key={field.name} field={field} />)))}
       </Form>
     </Formik>
