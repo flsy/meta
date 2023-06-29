@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { MutableRefObject, useEffect, useRef } from 'react';
 import {
   Form,
   Formik,
@@ -36,7 +36,7 @@ export interface LayoutRenderProps { children: JSX.Element[], field: LayoutMetaP
 
 export type ComponentRenderProps = ControlRenderProps | ObjectRenderProps | ArrayRenderProps | ActionRenderProps | LayoutRenderProps;
 
-const ErrorFocus = ({ fieldRefs }: any) => {
+const ErrorFocus = ({ fieldRefs }: { fieldRefs: MutableRefObject<{ [key: string]: HTMLElement }>}) => {
   const formik = useFormikContext();
 
   useEffect(() => {
