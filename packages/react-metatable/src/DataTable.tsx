@@ -169,13 +169,13 @@ const DataTable = <TRow extends object>({
     }
   };
 
-  const onTableChange = (pagination, filters, sorter, extra) => {
+  const onTableChange = (pagination, filters, sorter: { column: ColumnType<TRow>, order: SortOrder }, extra) => {
     if (extra.action === 'sort' && onSortChange) {
-      if (sorter?.column?.flatName) {
-        onSortChange({ [sorter.column.flatName]: makeMetaOrder(sorter.order) });
+      const dataIndex = sorter?.column?.dataIndex;
+      if (dataIndex && typeof dataIndex === 'string') {
+        onSortChange({ [dataIndex]: makeMetaOrder(sorter.order) });
       } else{
         onSortChange({});
-
       }
     }
   };
