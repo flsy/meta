@@ -190,7 +190,7 @@ const DataTable = <TRow extends object>({
 
   const mappedColumns = useMemo(
     () =>
-      columns.map((c) => {
+      columns.map((c, i) => {
 
         const sortOrder = c.isSortable && sort ? makeAntOrder(sort[c.name]) : undefined;
 
@@ -203,6 +203,7 @@ const DataTable = <TRow extends object>({
           onFilterDropdownVisibleChange: (v) => (v ? openFilters.add(c.name) : openFilters.remove(c.name)),
           sortOrder,
           sorter: c.isSortable,
+          width: widths[i],
           filterIcon: () => {
             if (c.filterForm) {
               return isFiltered(filters, c) ? <FilterTwoTone  /> : <FilterOutlined />;
