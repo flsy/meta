@@ -15,6 +15,7 @@ const columns: MetaColumn[] = [
     type: 'dateRange',
     label: 'Čas vytvoření',
     filterForm: getDateRangeFilter({ label: 'Čas vytvoření', withTimePicker: true }),
+    width: 400,
   },
   {
     name: 'longText',
