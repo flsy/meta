@@ -1,4 +1,4 @@
-import { exampleColumn, seed } from '../../testData';
+import { exampleColumn, seed, seededData } from '../../testData';
 import metafilters from '../../index';
 import { all, close, get } from '../../sqliteUtils';
 
@@ -23,8 +23,8 @@ describe('strings filter', () => {
       nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash";',
     });
 
-    expect(count).toEqual({ count: 5 });
-    expect(nodes.length).toEqual(5);
+    expect(count).toEqual({ count: seededData.length });
+    expect(nodes.length).toEqual(seededData.length);
   });
 
   it('should filter', async () => {
@@ -196,8 +196,8 @@ describe('strings filter', () => {
     const nodes = await all(db, filters.nodes);
     await db.close();
 
-    expect(count).toEqual({ count: 4 });
-    expect(nodes.map(n => (n as any).lastName)).toMatchObject(['Tree', 'Woods', 'RainForest', 'FirstNameNull']);
+    expect(count).toEqual({ count: 5 });
+    expect(nodes.map(n => (n as any).lastName)).toMatchObject(['Tree', 'Woods', 'RainForest', 'FirstNameEmptyStr', 'FirstNameNull']);
   });
 
   it('filter by string default LIKE', async () => {
@@ -220,7 +220,7 @@ describe('strings filter', () => {
     expect(nodes).toMatchObject([{ firstName: 'Alpha' }, { firstName: 'Beta' }, { firstName: 'Carol' }]);
   });
 
-  it('filter by string with null value (which means: give me eerything)', async () => {
+  it('filter by string with null value (which means: give me everything)', async () => {
     const db = await seed();
     const response = await metafilters('person-dash', exampleColumn, {
       filters: { firstName: { type: 'string', filters: [{ value: null }] } },
@@ -235,8 +235,8 @@ describe('strings filter', () => {
       nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE coalesce("firstName", \'\') like \'%%\';',
     });
 
-    expect(count).toEqual({ count: 5 });
-    expect(nodes.length).toEqual(5);
+    expect(count).toEqual({ count: seededData.length });
+    expect(nodes.length).toEqual(seededData.length);
   });
 
   it('handles undefined filters', async () => {
@@ -254,8 +254,8 @@ describe('strings filter', () => {
       nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash";',
     });
 
-    expect(count).toEqual({ count: 5 });
-    expect(nodes.length).toEqual(5);
+    expect(count).toEqual({ count: seededData.length });
+    expect(nodes.length).toEqual(seededData.length);
   });
 
   it('filter by string with user defined function', async () => {
@@ -277,4 +277,45 @@ describe('strings filter', () => {
     expect(nodes.length).toEqual(1);
     expect(nodes).toMatchObject([{ firstName: 'Beta' }]);
   });
+
+  
+  it('filter by EMPTY operator', async () => {
+    const db = await seed();
+    const response = await metafilters('person-dash', exampleColumn, {
+      filters: { firstName: { type: 'string', filters: [{operator: 'EMPTY', value: null}] } },
+    });
+
+    const count = await get(db, response.count);
+    const nodes = await all(db, response.nodes);
+    await close(db);
+
+    expect(response).toMatchObject({
+      count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" is null;', 
+      nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" is null;'}
+    );
+
+    expect(count).toEqual({ count: 1 });
+    expect(nodes.length).toEqual(1);
+    expect(nodes).toMatchObject([{ firstName: null }]);
+  });
+
+  it('filter by NONEMPTY operator', async () => {
+    const db = await seed();
+    const response = await metafilters('person-dash', exampleColumn, {
+      filters: { firstName: { type: 'string', filters: [{operator: 'NONEMPTY', value: null}] } },
+    });
+
+    const count = await get(db, response.count);
+    const nodes = await all(db, response.nodes);
+    await close(db);
+
+    expect(response).toMatchObject({
+      count: 'SELECT COUNT(*) as count FROM "person-dash" WHERE "firstName" is not null;', 
+      nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" WHERE "firstName" is not null;'}
+    );
+
+    expect(count).toEqual({ count: 5 });
+    expect(nodes.length).toEqual(5);
+  });
+
 });
