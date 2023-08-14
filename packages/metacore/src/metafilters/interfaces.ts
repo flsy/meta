@@ -18,7 +18,7 @@ type CustomFunction = Nullable<string>;
  * LT - Less than
  * LE - Less than or equal to
  */
-export type Operator = Nullable<'EQ' | 'LIKE' | 'GT' | 'LT' | 'GE' | 'LE' | 'NE'>;
+export type Operator = Nullable<'EQ' | 'LIKE' | 'GT' | 'LT' | 'GE' | 'LE' | 'NE' | 'EMPTY' | 'NONEMPTY'>;
 
 export interface IBooleanInput {
   type: 'boolean';
