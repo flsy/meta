@@ -1,5 +1,5 @@
 import metafilters from '../index';
-import { all, close } from '../sqliteUtils';
+import { all, close } from '../testHelpers/sqliteUtils';
 import { exampleColumn, seed } from '../testData';
 
 describe('common code', () => {

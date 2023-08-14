@@ -1,5 +1,5 @@
 import metafilters from '../index';
-import { close, get } from '../sqliteUtils';
+import { close, get } from '../testHelpers/sqliteUtils';
 import { exampleColumn, seed, seededData } from '../testData';
 
 describe('sort', () => {

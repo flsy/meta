@@ -1,6 +1,6 @@
 import { exampleColumn, seed } from '../../testData';
 import metafilters from '../../index';
-import { all, get } from '../../sqliteUtils';
+import { all, get } from '../../testHelpers/sqliteUtils';
 
 describe('number filter', () => {
   it('filter number by like operator', async () => {
