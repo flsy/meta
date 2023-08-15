@@ -21,6 +21,12 @@ const numberFilter = (name: string, filter: INumberInput): string[] =>
       }
       return [columnName, '!=', value].join(' ');
     }
+    case 'EMPTY': {
+      return `${columnName} is null`;
+    }
+    case 'NONEMPTY': {
+      return `${columnName} is not null`;
+    }
     case 'EQ':
     default:
       if (value === null) {
@@ -47,6 +53,12 @@ const stringOperator = (columnName: string, value: Nullable<string>, operator?: 
       return `${columnName} is not null`;
     }
     return `${columnName} != '${value}'`;
+  }
+  case 'EMPTY': {
+    return `${columnName} is null`;
+  }
+  case 'NONEMPTY': {
+    return `${columnName} is not null`;
   }
   case 'LIKE':
   default: {

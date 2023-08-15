@@ -1,6 +1,6 @@
 import metafilters from '../index';
-import { close, get } from '../sqliteUtils';
-import { exampleColumn, seed } from '../testData';
+import { close, get } from '../testHelpers/sqliteUtils';
+import { seed, exampleColumn, seededData } from '../testHelpers/testData';
 
 describe('sort', () => {
   it('return records sorted by string DESC', async () => {
@@ -15,7 +15,7 @@ describe('sort', () => {
       nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash" ORDER BY "firstName" DESC;',
     });
 
-    expect(count).toEqual({ count: 5 });
+    expect(count).toEqual({ count: seededData.length });
   });
   it('handles undefined sort', async () => {
     const db = await seed();
@@ -29,6 +29,6 @@ describe('sort', () => {
       nodes: 'SELECT "id", "firstName", "lastName", "age", "isValid" FROM "person-dash";',
     });
 
-    expect(count).toEqual({ count: 5 });
+    expect(count).toEqual({ count: seededData.length });
   });
 });

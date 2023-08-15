@@ -1,6 +1,6 @@
 import metafilters from '../index';
-import { all, close, get } from '../sqliteUtils';
-import { exampleColumn, seed } from '../testData';
+import { all, close, get } from '../testHelpers/sqliteUtils';
+import { seed, exampleColumn, seededData } from '../testHelpers/testData';
 
 describe('limit', () => {
   it('return all records when no limit specified', async () => {
@@ -11,9 +11,9 @@ describe('limit', () => {
     const nodes = await all(db, response.nodes);
     await close(db);
 
-    expect(count).toEqual({ count: 5 });
+    expect(count).toEqual({ count: seededData.length });
     expect(nodes[0]).toEqual({ id: 1, firstName: 'Joe', lastName: 'Forest', age: 52, isValid: 0 });
-    expect(nodes.length).toEqual(5);
+    expect(nodes.length).toEqual(seededData.length);
   });
 
   it('return all records when limit is larger than record count', async () => {
@@ -22,8 +22,8 @@ describe('limit', () => {
     const count = await get(db, response.count);
     const nodes = await all(db, response.nodes);
     await close(db);
-    expect(count).toEqual({ count: 5 });
-    expect(nodes.length).toEqual(5);
+    expect(count).toEqual({ count: seededData.length });
+    expect(nodes.length).toEqual(seededData.length);
   });
 
   it('limits returned records to 2', async () => {
@@ -34,7 +34,7 @@ describe('limit', () => {
     const nodes = await all(db, response.nodes);
     await close(db);
 
-    expect(count).toEqual({ count: 5 });
+    expect(count).toEqual({ count: seededData.length });
     expect(nodes.length).toEqual(2);
   });
 });

@@ -1,6 +1,6 @@
 import metafilters from '../index';
-import { all, close } from '../sqliteUtils';
-import { exampleColumn, seed } from '../testData';
+import { all, close } from '../testHelpers/sqliteUtils';
+import { seed, exampleColumn } from '../testHelpers/testData';
 
 describe('common code', () => {
   it('map records to table column names', async () => {
@@ -20,7 +20,9 @@ describe('common code', () => {
       { id: 2, firstName: 'Alpha', lastName: 'Tree', age: 2, isValid: 1 },
       { id: 3, firstName: 'Beta', lastName: 'Woods', age: 30, isValid: 1 },
       { id: 5, firstName: 'Carol', lastName: 'RainForest', age: 18, isValid: 1 },
-      { id: 6, firstName: '', lastName: 'FirstNameNull', age: 18, isValid: 1 },
+      { id: 6, firstName: '', lastName: 'FirstNameEmptyStr', age: 18, isValid: 1 },
+      { id: 7, firstName: null, lastName: 'FirstNameNull', age: 18, isValid: 1 },
+
     ]);
   });
   it('map use all columns if not provided', async () => {
