@@ -1,6 +1,6 @@
-import { exampleColumn, seed, seededData } from '../../testData';
 import metafilters from '../../index';
 import { all, close, get } from '../../testHelpers/sqliteUtils';
+import { seed, exampleColumn, seededData } from '../../testHelpers/testData';
 
 describe('strings filter', () => {
   it('should return all when empty filter', async () => {

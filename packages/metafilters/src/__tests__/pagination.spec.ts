@@ -1,6 +1,6 @@
-import { exampleColumn, seed, seededData } from '../testData';
 import metafilters from '../index';
 import { all, close, get } from '../testHelpers/sqliteUtils';
+import { seed, exampleColumn, seededData } from '../testHelpers/testData';
 
 describe('pagination', () => {
   it('paginate sorted by keyColumn ASC', async () => {

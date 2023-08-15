@@ -1,6 +1,6 @@
-import { exampleColumn, seed } from '../../testData';
 import metafilters from '../../index';
 import { all, close, get } from '../../testHelpers/sqliteUtils';
+import { seed, exampleColumn } from '../../testHelpers/testData';
 
 
 describe('filters combined', () => {

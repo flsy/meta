@@ -1,6 +1,6 @@
 import metafilters from '../index';
 import { all, close } from '../testHelpers/sqliteUtils';
-import { exampleColumn, seed } from '../testData';
+import { seed, exampleColumn } from '../testHelpers/testData';
 
 describe('common code', () => {
   it('map records to table column names', async () => {

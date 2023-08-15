@@ -1,6 +1,6 @@
 import metafilters from '../index';
 import { close, get } from '../testHelpers/sqliteUtils';
-import { exampleColumn, seed, seededData } from '../testData';
+import { seed, exampleColumn, seededData } from '../testHelpers/testData';
 
 describe('sort', () => {
   it('return records sorted by string DESC', async () => {

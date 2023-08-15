@@ -1,6 +1,6 @@
 import metafilters from '../index';
 import { all, close, get } from '../testHelpers/sqliteUtils';
-import { exampleColumn, seed, seededData } from '../testData';
+import { seed, exampleColumn, seededData } from '../testHelpers/testData';
 
 describe('limit', () => {
   it('return all records when no limit specified', async () => {
