@@ -1,33 +1,29 @@
 import MetaForm, { isControlLayout } from './Form';
 import React from 'react';
-import {getObjectMeta, getSubmitMeta, getTextMeta, isRequired, requiredRule } from 'metaforms';
+import { getObjectMeta, getSubmitMeta, getTextMeta, isRequired, requiredRule } from 'metaforms';
 import { MetaField } from '@falsy/metacore';
 import { action } from '@storybook/addon-actions';
 import { isControlArray, isControlObject, isControlAction } from './Form';
 
 const values = {
   user: {
-    name: 'John Doe'
+    name: 'John Doe',
   },
-  roles: [{ name: 'Admin'}, { name: 'Superuser' }],
-  friends: ['Karel', 'Ondra']
+  roles: [{ name: 'Admin' }, { name: 'Superuser' }],
+  friends: ['Karel', 'Ondra'],
 };
 
 const fields: MetaField[] = [
   getObjectMeta({
     name: 'roles',
     array: true,
-    validation: [
-      requiredRule('Please enter at least one role'),
-    ],
+    validation: [requiredRule('Please enter at least one role')],
     fields: [
       getTextMeta({
         name: 'name',
         label: 'Name',
-        validation: [
-          requiredRule('Please enter role name')
-        ],
-      })
+        validation: [requiredRule('Please enter role name')],
+      }),
     ],
   }),
   getTextMeta({
@@ -38,7 +34,7 @@ const fields: MetaField[] = [
   getSubmitMeta({
     name: 'submit',
     label: 'Submit',
-  })
+  }),
 ];
 
 const Label = (props: { fieldId: string; label: string; isRequired: boolean; children?: React.ReactChildren }) => (
@@ -58,19 +54,12 @@ const Submit = ({ isLoading, label, name }: any) => (
 const Input = React.forwardRef((props: any, ref: React.Ref<HTMLInputElement>) => (
   <div>
     {props.label && <Label fieldId={props.name} label={props.label} isRequired={isRequired(props.validation)} />}
-    <input
-      ref={ref}
-      name={props.name}
-      value={props.value}
-      onChange={props.onChange}
-      onBlur={props.onBlur}
-    />
+    <input ref={ref} name={props.name} value={props.value} onChange={props.onChange} onBlur={props.onBlur} />
     {props.errorMessage ? <div>{props.errorMessage}</div> : null}
   </div>
 ));
 
 Input.displayName = 'Input';
-
 
 export const Basic = () => {
   return (
@@ -85,21 +74,38 @@ export const Basic = () => {
       }}
       fields={fields}
       components={(componentProps) => {
-        if(isControlArray(componentProps)) {
+        if (isControlArray(componentProps)) {
           const { children, arrayHelpers } = componentProps;
-          return <>{children?.map((c, idx) => <React.Fragment key={idx}>{c} <button type="button" onClick={() => arrayHelpers.remove(idx)}>Remove</button></React.Fragment>)}<br /><button type="button" onClick={() => arrayHelpers.push(null)}>Add</button><br /><br /></>;
+          return (
+            <>
+              {children?.map((c, idx) => (
+                <React.Fragment key={idx}>
+                  {c}{' '}
+                  <button type="button" onClick={() => arrayHelpers.remove(idx)}>
+                    Remove
+                  </button>
+                </React.Fragment>
+              ))}
+              <br />
+              <button type="button" onClick={() => arrayHelpers.push(null)}>
+                Add
+              </button>
+              <br />
+              <br />
+            </>
+          );
         }
 
-        if(isControlObject(componentProps)) {
+        if (isControlObject(componentProps)) {
           const { children } = componentProps;
           return <div style={{ border: '2px solid lightblue', padding: '1em 0', marginBottom: '1em' }}>{children}</div>;
         }
 
-        if(isControlAction(componentProps)) {
+        if (isControlAction(componentProps)) {
           return <button>{componentProps.field.label}</button>;
         }
 
-        if(isControlLayout(componentProps)) {
+        if (isControlLayout(componentProps)) {
           return null;
         }
 
@@ -107,7 +113,17 @@ export const Basic = () => {
 
         switch (field.type) {
         case 'text':
-          return <Input ref={ref} name={field.name} label={field.label} value={input.value} onChange={input.onChange} onBlur={input.onBlur} errorMessage={meta.error}/>;
+          return (
+            <Input
+              ref={ref}
+              name={field.name}
+              label={field.label}
+              value={input.value}
+              onChange={input.onChange}
+              onBlur={input.onBlur}
+              errorMessage={meta.error}
+            />
+          );
         case 'submit':
           return <Submit isLoading={form.isSubmitting} name={field.name} label={field.label} />;
         default:
@@ -121,4 +137,3 @@ export const Basic = () => {
 export default {
   title: 'Form',
 };
-

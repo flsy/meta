@@ -42,11 +42,17 @@ interface CommonProps {
   visible?: { targetName: string, value: any };
 }
 
+export type MultiSelectParent = {children: MultiSelectOptions, label: string};
+export type MultiSelectLeaf = { value: string | number; label: string };
+
+export type MultiSelectOption = MultiSelectLeaf | MultiSelectParent;
+export type MultiSelectOptions = Array<MultiSelectLeaf>
+
 export interface MultiSelectMetaProps extends CommonProps {
   type: 'multiselect';
   disabled?: boolean;
   placeholder?: string;
-  options?: Array<{ value: string | number; label: string }>;
+  options?: MultiSelectOptions;
   showSelectedCounter?: boolean;
   showFilterInput?: boolean;
 }
