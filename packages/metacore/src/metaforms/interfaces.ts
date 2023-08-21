@@ -46,7 +46,7 @@ export interface MultiSelectMetaProps extends CommonProps {
   type: 'multiselect';
   disabled?: boolean;
   placeholder?: string;
-  options?: Array<{ value: string | number; label: string }>;
+  options?: Array<{ value: string | number; label: string, style?: React.CSSProperties }>;
   showSelectedCounter?: boolean;
   showFilterInput?: boolean;
 }
