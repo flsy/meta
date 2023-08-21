@@ -1,4 +1,4 @@
-import { Badge, Checkbox, List, Tree } from 'antd';
+import { Badge, Checkbox, List } from 'antd';
 import Fuse from 'fuse.js';
 import { head } from 'ramda';
 import React, { Ref, useEffect, useRef, useState } from 'react';
@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components';
 import { KeyboardKey, useBoolean, useKeyPress } from '../../hooks';
 import { toggleSelection } from '../../hooks/useSelection';
 import Input from './Input';
-import { MultiSelectLeaf, MultiSelectMetaProps, MultiSelectOption } from 'metaforms';
+import { MultiSelectMetaProps } from 'metaforms';
 
 type MultiSelectMetaValue = string | number;
 
@@ -35,7 +35,7 @@ const ListItemContent = styled.div`
   column-gap: 10px;
 `;
 
-const ToggleAllPanel = styled.div`
+const ToggleResults = styled.div`
   padding: 0.5em 0;
 
   & > span {
@@ -43,7 +43,7 @@ const ToggleAllPanel = styled.div`
   }
 `;
 
-const Multiselect = React.forwardRef(
+const MultiselectTree = React.forwardRef(
   (
     {
       options = [],
@@ -70,9 +70,6 @@ const Multiselect = React.forwardRef(
     const upPress = useKeyPress(KeyboardKey.arrowUp, shouldRegisterKeyPress);
     const spacePress = useKeyPress(KeyboardKey.space, shouldRegisterKeyPress);
 
-    const isMultiSelectLeaf = (option: MultiSelectOption): option is MultiSelectLeaf => option['children'] === undefined;
-    const isOnlyLabelItem = (option: MultiSelectLeaf) => option.value === undefined;
-
     const [filteredOptions, setFilteredOptions] = useState(options);
 
     const handleClick = (itemValue: MultiSelectMetaValue) => {
@@ -92,7 +89,7 @@ const Multiselect = React.forwardRef(
     };
 
     const handleSelectAll = (checked: boolean) => {
-      onChange(checked ? options.filter((o) => !isOnlyLabelItem(o)).map((opt) => opt.value) : []);
+      onChange(checked ? options.map((opt) => opt.value) : []);
     };
 
     const handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -159,11 +156,11 @@ const Multiselect = React.forwardRef(
             onBlur={handleInputBlur}
           />
         )}
-        <ToggleAllPanel>
+        <ToggleResults>
           <span>
             <Checkbox
-              checked={value.length && value.length === options.filter((o) => !isOnlyLabelItem(o)).length}
-              indeterminate={value.length && value.length < options.filter((o) => !isOnlyLabelItem(o)).length}
+              checked={value.length && value.length === options.length}
+              indeterminate={value.length && value.length < options.length}
               onChange={(e) => handleSelectAll(e.target.checked)}
             >
               Označit vše
@@ -175,14 +172,13 @@ const Multiselect = React.forwardRef(
               <span>Zobrazit pouze vybrané {value && <Badge size="small" count={value.length} />}</span>
             </>
           )}
-        </ToggleAllPanel>
+        </ToggleResults>
         <List
           bordered={true}
           size="small"
           style={{ maxHeight: '200px', overflow: 'auto' }}
-          dataSource={filteredOptions.filter(isMultiSelectLeaf)}
+          dataSource={filteredOptions}
           renderItem={(item) => {
-            if (item.value === undefined) return <ListItem $focused={false}>{item.label}</ListItem>;
             const isSelected = value.includes(item.value);
             const isFocused = focused === item.value;
             return (
@@ -200,6 +196,6 @@ const Multiselect = React.forwardRef(
   },
 );
 
-Multiselect.displayName = 'Multiselect';
+MultiselectTree.displayName = 'MultiselectTree';
 
-export default Multiselect;
+export default MultiselectTree;

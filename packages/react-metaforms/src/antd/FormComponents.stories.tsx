@@ -12,7 +12,10 @@ import {
   getSelectMeta,
   getSubmitMeta,
   getTextareaMeta,
-  getTextMeta, getSegmentedSwitch, minlengthRule, requiredRule,
+  getTextMeta,
+  getSegmentedSwitch,
+  minlengthRule,
+  requiredRule,
 } from 'metaforms';
 import React from 'react';
 import Form from './Form';
@@ -34,9 +37,7 @@ export const Number = (args) => (
         label: args.label,
         disabled: args.disabled,
         placeholder: args.placeholder,
-        validation: [
-          requiredRule('Required field'),
-        ],
+        validation: [requiredRule('Required field')],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -61,10 +62,7 @@ export const Text = (args) => (
         label: args.label,
         disabled: args.disabled,
         placeholder: args.placeholder,
-        validation: [
-          requiredRule('Required field'),
-          minlengthRule('Enter at least 2 characters', 2)
-        ],
+        validation: [requiredRule('Required field'), minlengthRule('Enter at least 2 characters', 2)],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -89,10 +87,7 @@ export const Password = (args) => (
         label: args.label,
         disabled: args.disabled,
         placeholder: args.placeholder,
-        validation: [
-          requiredRule('Required field'),
-          minlengthRule('Enter at least 2 characters', 2)
-        ],
+        validation: [requiredRule('Required field'), minlengthRule('Enter at least 2 characters', 2)],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -118,10 +113,7 @@ export const Textarea = (args) => (
         disabled: args.disabled,
         placeholder: args.placeholder,
         rows: args.rows,
-        validation: [
-          requiredRule('Required field'),
-          minlengthRule('Enter at least 2 characters', 2)
-        ],
+        validation: [requiredRule('Required field'), minlengthRule('Enter at least 2 characters', 2)],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -145,9 +137,7 @@ export const Image = (args) => (
       getImageMeta({
         name: 'image',
         label: args.label,
-        validation: [
-          requiredRule('Required field'),
-        ],
+        validation: [requiredRule('Required field')],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -169,9 +159,7 @@ export const File = (args) => (
         name: 'file',
         label: args.label,
         accept: args.accept,
-        validation: [
-          requiredRule('Required field'),
-        ],
+        validation: [requiredRule('Required field')],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -196,9 +184,7 @@ export const Date = (args) => (
         disabled: args.disabled,
         placeholder: args.placeholder,
         withTimePicker: args.withTimePicker,
-        validation: [
-          requiredRule('Required field'),
-        ],
+        validation: [requiredRule('Required field')],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -234,9 +220,7 @@ export const Select = (args) => (
             label: 'Two',
           },
         ],
-        validation: [
-          requiredRule('Required field'),
-        ],
+        validation: [requiredRule('Required field')],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -260,9 +244,7 @@ export const Checkbox = (args) => (
         name: 'checkbox',
         label: args.label,
         disabled: args.disabled,
-        validation: [
-          requiredRule('Required field'),
-        ],
+        validation: [requiredRule('Required field')],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -289,11 +271,9 @@ export const DateRange = (args) => (
         size: args.smallSize ? 'small' : 'full',
         presets: {
           lastDay: 'Last day',
-          lastWeek: 'Last week'
+          lastWeek: 'Last week',
         },
-        validation: [
-          requiredRule('Required field'),
-        ],
+        validation: [requiredRule('Required field')],
       }),
       getSubmitMeta({
         name: 'submit',
@@ -307,7 +287,7 @@ export const DateRange = (args) => (
 DateRange.args = {
   label: 'Date Range',
   withTimePicker: true,
-  smallSize: true
+  smallSize: true,
 };
 
 export const Multiselect = (args) => (
@@ -321,7 +301,7 @@ export const Multiselect = (args) => (
         options: [
           { label: 'Dog 1', value: 1 },
           { label: 'Cat 2', value: 2 },
-          { label: 'Pig 3', value: 3 },
+          { label: 'Pigs' },
           { label: 'Rat 4', value: 4 },
           { label: 'Dog 5', value: 5 },
           { label: 'Cat 6', value: 6 },
@@ -387,22 +367,27 @@ export const SegmentedSwitch = (args) => (
     initialValues={{
       a: 'a',
       b: 'b',
-      c: 'c'
+      c: 'c',
     }}
-    fields={[...['first', 'second', 'third'].map(name => getSegmentedSwitch({
-      name: name,
-      label: name,
-      size: args.size,
-      disabled: args.disabled,
-      align: args.alignRight ? 'right' : undefined, 
-      options: [
-        { label: args.showLabel && 'A Value', value: 'a', icon: args.showIcon ? 'write' : undefined },
-        { label: args.showLabel && 'B Value', value: 'b', icon: args.showIcon ? 'read' : undefined },
-        { label: args.showLabel && 'C Value', value: 'c', icon: args.showIcon ? 'none' : undefined }
-      ],
-    })),
-    getSubmitMeta({ name: 'submit', label: 'Save' })
-    ]} onSubmit={handleSubmit} />
+    fields={[
+      ...['first', 'second', 'third'].map((name) =>
+        getSegmentedSwitch({
+          name: name,
+          label: name,
+          size: args.size,
+          disabled: args.disabled,
+          align: args.alignRight ? 'right' : undefined,
+          options: [
+            { label: args.showLabel && 'A Value', value: 'a', icon: args.showIcon ? 'write' : undefined },
+            { label: args.showLabel && 'B Value', value: 'b', icon: args.showIcon ? 'read' : undefined },
+            { label: args.showLabel && 'C Value', value: 'c', icon: args.showIcon ? 'none' : undefined },
+          ],
+        }),
+      ),
+      getSubmitMeta({ name: 'submit', label: 'Save' }),
+    ]}
+    onSubmit={handleSubmit}
+  />
 );
 
 SegmentedSwitch.args = {
@@ -411,16 +396,16 @@ SegmentedSwitch.args = {
   size: 'small',
   alignRight: false,
   showIcon: true,
-  showLabel: true
+  showLabel: true,
 };
 SegmentedSwitch.argTypes = {
   formLayout: {
     options: ['horizontal', 'vertical'],
-    control: {type: 'radio'},
+    control: { type: 'radio' },
   },
   size: {
     options: ['small', 'medium', 'large'],
-    control: {type: 'radio'},
+    control: { type: 'radio' },
   },
 };
 
