@@ -161,12 +161,13 @@ export interface ISegmentedSwitch extends CommonProps {
 
 export interface ObjectMetaProps extends CommonProps {
   type: 'object';
-  render?: 'tabs',
+  render?: 'tabs';
+  activeTab?: string;
   fields: MetaField[];
 }
 
 export interface AutocompleteMetaProps extends CommonProps {
-  type: 'autocomplete',
+  type: 'autocomplete';
   disabled?: boolean;
   placeholder?: string;
   options: Array<{ value: string; }>;

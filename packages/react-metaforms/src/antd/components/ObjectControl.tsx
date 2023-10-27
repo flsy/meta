@@ -42,7 +42,7 @@ const ObjectControl = (props: ObjectRenderProps) => {
         }
       </Divider>
       {props.field.render === 'tabs' ?
-        <Tabs onChange={handleChange} defaultActiveKey={getIn(fieldValue, ACTIVE_TAB_KEY)}>
+        <Tabs onChange={handleChange} defaultActiveKey={getIn(fieldValue, ACTIVE_TAB_KEY)} activeKey={props.field.activeTab}>
           {children.map((c, i) =>
             <Tabs.TabPane key={field.fields[i].name} tab={field.fields[i]['label']}><NoLabel>{c}</NoLabel></Tabs.TabPane>
           )}
